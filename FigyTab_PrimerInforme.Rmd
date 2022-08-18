@@ -1,9 +1,61 @@
 ---
 title: "Figuras y Tablas para  Informe de Estatus y CBA de sardina común Centro sur "
-output:
-  pdf_document: default
+output: 
+    pdf_document:
+      toc: TRUE
+      toc_depth: '3'
+      number_sections: yes
+header-includes:
+- \usepackage{draftwatermark}
+- \SetWatermarkText{}
+- \usepackage[spanish,es-tabla]{babel}
+- \usepackage{setspace}
+- \usepackage{fancyhdr}
+- \usepackage{graphicx}
+- \usepackage{parskip}
+- \usepackage{caption}
+- \captionsetup[table]{name=\textbf{Tabla},labelsep=period}
+- \captionsetup[figure]{name=\textbf{Figura},labelsep=period}
+- \captionsetup{justification=justified,format=plain,font=small,labelfont=bf,margin=40pt}
+- \pagestyle{fancy}
+- \usepackage{geometry}
+- \geometry{top=1.5cm, bottom=1cm, left=2.5cm, right=2.5cm}
+- \usepackage{helvet}
+- \renewcommand{\familydefault}{\sfdefault}
+- \usepackage{multirow}
+- \usepackage{natbib}
+- \renewcommand{\baselinestretch}{1.2}
+- \newcommand{\sietepuntos}{\fontsize{7pt}{\baselineskip}\selectfont}
+- \newcommand{\cincopuntos}{\fontsize{6pt}{\baselineskip}\selectfont}
+- \usepackage{color,colortbl}
+- \definecolor{Gray}{rgb}{0.801,0.801,0.801}
+- \definecolor{Gray1}{rgb}{0.790,0.790,0.790}
+- \definecolor{Gray2}{rgb}{0.830,0.830,0.830}
+- \definecolor{Gray3}{rgb}{0.870,0.870,0.870}
+- \definecolor{Gray4}{rgb}{0.940,0.940,0.940}
+- \addtolength{\headheight}{4.5\baselineskip}
+- \setlength{\headheight}{70pt}
+- \setlength{\footskip}{5pt}
+- \setlength{\textheight}{658pt}
+- \fancyhead[CO,CE]{\includegraphics[height=1.5cm]{Figuras/logoifop.png}\\ \sietepuntos INSTITUTO DE FOMENTO PESQUERO / DIVISION INVESTIGACION PESQUERA}
+- \fancyhead[LO,LE]{ }
+- \fancyhead[RO,RE]{ }
+- \renewcommand{\headrulewidth}{0.5pt}
+- \fancyfoot[C]{\cincopuntos \thepage \\ \vspace{-0.2cm} ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ \\ \vspace{-0.2cm} \cincopuntos CONVENIO DE DESEMPEÑO 2023 IFOP/SUBSECRETARÍA DE ECONOMíA Y EMT \\ \vspace{-0.1cm} INFORME. SARDINA COMÚN, REGIÓN DE VALPARAÍSO A LA REGIÓN DE LOS LAGOS}
+
+
+bibliography: Referencias_noviembre2021.bib
+csl: apa_1.csl
+
+link-citations: yes
+
+linkcolor: blue
+urlcolor: blue
+citecolor: blue
 ---
 
+
+\pagebreak
 
 ```{r llama codigos, warning=F, include=T, message=F, echo=FALSE}
 library(knitr) # para generar reporte Rmarkdown
@@ -414,7 +466,10 @@ kable(NM_Ian)
 
 \footnotesize
 
-# 1. ANTECEDENTES
+
+# ANTECEDENTES
+
+## Pesquería
 
 ```{r Fig2, echo=F,warning=F, include=T,eval=T, message=F,fig.height=3.5,fig.width=6.5,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="Desembarques (t) oficiales y corregidos de sardina común centro-sur"}
 
@@ -486,7 +541,7 @@ ggplot(des_art_ind)+
 
 \pagebreak
 
-```{r Fig4,warning=F, include=T, message=F, echo=T,fig.height=3.3,fig.width=5.8,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="Capturas mensuales de sardina común realizadas entre 1995-2021, registradas por SERNAPESCA en la zona centro-sur"}
+```{r Fig4,warning=F, include=T, message=F, echo=F,fig.height=3.3,fig.width=5.8,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="Capturas mensuales de sardina común realizadas entre 1995-2021, registradas por SERNAPESCA en la zona centro-sur"}
 
 ano<-ant$desembarques_sernapesca[,1]
 des_mes<-data.frame(mes=rep(seq(1,12,1),27),
@@ -499,10 +554,10 @@ boxplot(des_mes$desem[145:264]/10^3~des_mes$mes[145:264],las=1,xlab="Mes",
 
 ```
 
+
 \pagebreak
 
-
-```{r Fig7, warning=F, include=T, message=F, echo=F,fig.height=4.5,fig.width=4.5,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig7, warning=F, include=T, message=F,eval=F, echo=F,fig.height=4.5,fig.width=4.5,fig.align="center",fig.path=dir.Fig,dev=fig}
 
 x<-rep1$reclasobs[rep1$reclasobs>0&rep1$pelacesobs>0]/10^6
 y<-rep1$pelacesobs[rep1$reclasobs>0&rep1$pelacesobs>0]/10^6
@@ -522,7 +577,7 @@ text(2.1,2.8, "R^2=0.00039",col=4,cex=0.8)
 ```
 \pagebreak
 
-```{r Fig8,warning=F, include=T, message=F, echo=F,fig.height=3.5,fig.width=10,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig8,warning=F, include=T, message=F,eval=F, echo=F,fig.height=3.5,fig.width=10,fig.align="center",fig.path=dir.Fig,dev=fig}
 
 anorecl  <- ant$reclas_BT_BR_AT_AR[,1]
 BTreclas <- ant$reclas_BT_BR_AT_AR[,2]
@@ -545,7 +600,7 @@ legend(2000, 2000,c("Abundancia Total","Abundancia Reclutas"),pch=19,lwd=2,col=c
 ```
 
 
-```{r Fig6b, echo=FALSE,fig.height=5,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig6b, echo=FALSE,fig.height=5,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig, fig.cap="Razón $BD/BD_{RMS}$ de sardina común y anchoveta de las regiones de Valparaíso a Los Lagos."}
 years<-seq(1997,2022)
 sardina<-c(0.80,0.43,0.38,0.24,0.15,0.31,0.33,0.27,0.16,0.21,0.77,0.68,1.57,1.10,
            1.15,1.42,1.36,1.07,1.57,1.28,1.04,1.13,1.62,1.06,0.64,1.14)
@@ -570,114 +625,14 @@ ggplot(dataEstatus )+
 
 \pagebreak
 
-# 2. METODOLOGÍA
+\normalsize
 
-```{r Fig15,  warning=F, include=T, message=F, echo=F,fig.height=3,fig.width=5,fig.align="center",fig.path=dir.Fig,dev=fig}
-library(strucchange)
-years     <- rep2$years
-nyears    <- length(years)
-bp.nile   <- breakpoints(log(rep2$Reclutas/1000) ~ 1)
-fm0       <- lm(log(rep2$Reclutas/1000) ~ 1)
-fm1       <- lm(log(rep2$Reclutas/1000) ~ breakfactor(bp.nile, breaks = 2))
-quiebres3 <- fitted(fm1)
+# METODOLOGÍA
 
-par(mfrow=c(1,1),mar=c(2,4,1,1))
-plot(years,rep2$Reclutas/1000,type="l",lty=2,pch=19,ylim=c(0,700),
-     xaxp=c(1990,2022,32),yaxs="i",xlab="",ylab="Reclutamientos (miles de millones de ind.)",main="Análisis de quiebres",cex.main=0.8,cex.axis=0.7,cex.lab=0.7)
-points(years,rep2$Reclutas/1000,col=1,pch=19)
-lines(years,exp(quiebres3),lwd=2,col=4)
-text(c(1999,2010,2017),
-     c(exp(fitted(fm1)[1]),
-      exp(fitted(fm1)[18]),
-      exp(fitted(fm1)[23])),
-     round(c(exp(fitted(fm1)[1]),
-             exp(fitted(fm1)[18]),
-             exp(fitted(fm1)[23])),0),
-     col=2,font=1,cex=0.8)
-
-```
-
-\pagebreak
-
-```{r Fig16,warning=F, include=T, message=F, echo=F,fig.height=4.5,fig.width=9,fig.align="center",fig.path=dir.Fig,dev=fig}
-years1  <-rep1$years
-nyears1 <-length(years1)
-age     <-seq(0,4,1)                                            
-nage    <-length(age)
-pobsF   <-rep1$pf_obs 
-  
-#Proporcion observada                                        
-WmedF <-dat1$Wmed                                             
-WiniF <-dat1$Wini                                 
-#Proporciones                                                
-Wm    <-c(WmedF); 
-Wm[Wm==0]  <-NA                     
-Wi    <-c(WiniF); 
-Wi[Wi==0]  <-NA 
-
-x1 <-c(years1[1],years1[nyears1]+1,nyears1+1/2)
-#Proporci?n de edad
-par(mar=c(4,4,2,1),mfrow=c(1,2))
-# pesos medios
-plot(years1,WmedF[,1],type="n",las=1,ylim=c(0,75),xlim=c(1990,years1[nyears1]),
-     ylab="Pesos medios (grs)",xlab="",xaxp=x1,main="")
-for(i in 1:5){
-lines(years1,WmedF[,i],col=i,type="o", pch=19)}
-legend(1990,75,c("edad 0","edad 1","edad 2","edad 3","edad 4"),pch=19,lwd=1,col=1:5,bty="n")
+El modelo de evaluación de stock de sardina común se basa en el análisis estadístico de la dinámica de estructuras de edad anual y pesos medios a la edad estimados del muestreo de tallas de los desembarques (período 1990 - junio 2022) y de los cruceros acústicos de verano (RECLAS, desde 2001 - 2022) y otoño (PELACES, período desde 2007 hasta 2022), de los índices de biomasa de los cruceros acústicos (biomasa de reclutas en verano, período desde 2000 hasta 2022 y biomasa vulnerable en otoño, desde 2003 al 2022 y los desembarques totales (período 1990 - junio 2022), estos últimos convertidos a temporada de pesca considerando la estacionalidad de la pesquería. Las fuentes de información utilizados en la evaluación de sardina común se resumen en la \textbf{Figura \ref{Fig19}}. 
 
 
-plot(age,colMeans(WmedF),type="o",pch=19,ylab="Pesos medios (grs)",xlab="Edad (años)")
-lines(age,colMeans(WmedF[(nyears1-5):nyears1,]),col=2,type="o",pch=19)
-legend(0,35,c("peso medio histórico","peso medio últimos 5 años"),pch=19,lwd=1,col=c(1,2),bty="n")
-```
-
-\pagebreak
-
-```{r desembarques y descarte, echo=FALSE,eval=T}
-
-bioyear<-c("1990-91","1991-92","1992-93","1993-94","1994-95",
-           "1995-96","1996-97","1997-98","1998-99","1999-00",
-           "2000-01","2001-02","2002-03","2003-04","2004-05",
-           "2005-06","2006-07","2007-08","2008-09","2009-10",
-           "2010-11","2011-12","2012,13","2013-14","2014-15",
-           "2015-16","2016-17","2017-18","2018-19","2019-20",
-           "2020-21",'2021-22')
-
-desemYdesc_previo<-c(494567,514787,250237,358949,120608,
-                     361735,552515,73892,212993,205616,
-                     52469,317467,293654,387597,252695,
-                     516296,358380,742168,942051,627588,
-                     828172,859565,418607,520667,417249,
-                     300574,407403,355545,319650,289779,
-                     391294.5,218835)
-
-desc_previo<-c(rep(1,10),rep(1.04,16),rep(1.02,2),rep(1.06,2),1.04,1.04)
-desembarque<-desemYdesc_previo/desc_previo
-
-desc_actualizado<-c(rep(1,10),rep(1.04,17),1.07,1.05,1.04,1.04,1.04)
-CapturaDescartada<- -(1-desc_actualizado)*desembarque
-CapturaTotal<-desembarque+CapturaDescartada
-
-porcDesc_actualizado<-c(rep("0%",10),rep("4%",17),"7%","5%","4%","4%",'4%')
-
-data<-data.frame("Año biológico"=bioyear,
-                 "Desembarques t."=round(desembarque,0),
-                 "Porcentaje descarte" =porcDesc_actualizado,
-                 "Captura descartada t."=round(CapturaDescartada,0),
-                 "Captura total t."=round(CapturaTotal,0))
-
-kable(data, align = 'c')
-
-write.csv(data, file="Tablas/DatosCapturaydescarte.csv")
-
-```
-
-
-\pagebreak
-# 3. RESULTADOS
-
-
-```{r Fig19, warning=F, include=T, message=F, echo=F,fig.height=4.5,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig19, warning=F, include=T, message=F, echo=F,fig.height=4.5,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig, fig.cap="\\label{Fig19}Datos de entrada al modelo de evaluación de stock de sardina común"}
 setwd(dir.1)
 years  <- rep1$years 
 nyears <- dat1$nanos                                                                
@@ -715,9 +670,75 @@ text(rep(2027.5,8),1:8,ejey,cex=0.8)
 box()
 ```
 
+
+## Descripción de los datos
+
+Una de las principales características del stock de sardina común es el comportamiento estacional de las capturas, donde cerca del 70% de la captura total anual se obtiene al primer semestre de cada año, con máximos entre marzo y abril. Esta estacionalidad es altamente influenciada por el pulso de reclutamiento de enero, observándose una fuerte relación entre la biomasa estimada por el crucero de enero y los desembarques. Al respecto, se observa que durante los años 2015 al 2019, las biomasas acústicas de verano se mantuvieron en niveles en torno a los 2 millones de toneladas, lo cual se ve reflejado también en una estabilidad en las capturas totales en torno a las 360 mil toneladas. Por otro lado, las biomasas acústicas estimadas por el crucero de otoño reflejan el efecto de la remoción ejercidas por la pesca y causas naturales, con biomasas en general menores a las estimadas en el crucero de verano, en torno a 1,2 millones de toneladas promedio entre el 2015 al 2019 (\textbf{Tabla \ref{t1}} y \textbf{Figura \ref{Fig20}}). No obstante, para el año 2020 la biomasa estimada por el crucero acústico de verano se redujo a un millón de toneladas (54% menor al 2019), la biomasa del crucero de otoño disminuye un 39% respecto al 2019 y las capturas totales del año 2019/20 se redujeron un 10% respecto al año previo. El desembarque 2020 estuvo en torno a las 258 mil toneladas, equivalente a un 80% de la CBA 2020 recomendada por el CCT-PP (321.307 toneladas). La biomasa total estimada por el crucero de enero 2021 retorno a los niveles observados entre el 2015 al 2019 (2,36 millones de t), incrementando un 125% respecto a lo estimado para el año 2020 (\textbf{Tabla \ref{t1}} y \textbf{Figura \ref{Fig20}}). En el crucero de otoño, se estimó una biomasa de 1,1 millón de t, lo que equivale a un incremento del 26,8% respecto del año anterior. En relación con la captura total 2020/21 se registró un aumento del 38% respecto del año biológico 2019/20 (\textbf{Tabla \ref{t1}}). Para el año 2022, el crucero de enero registró un aumento del 35 % de la biomasa respecto al año previo, el crucero de otoño se mantuvo en torno al millón de toneladas y los niveles de capturas se redujeron un 44% respecto al año previo.
+
 \pagebreak
 
-```{r Fig20, warning=F, include=T, message=F, echo=F,fig.height=8,fig.width=5,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r indices, echo=FALSE,eval=T,warning=F, include=T, message=F,}
+
+dataInd<-data.frame(dat1$Ind[,c(1,2,4,6,8)])
+colnames(dataInd)<-c("años", "crucero verano", "crucero otoño","crucero huevos","desembarques")
+write.csv(dataInd, file="Tablas/Datosindices.csv")
+
+kbl(dataInd, booktabs = T,format = "latex",position="h!",align="c",format.args=list(big.mark = '.'),
+caption = "\\label{t1} Estimaciones de biomasas utilizadas en la evaluación de stock de sardina común provenientes de los cruceros de Verano (RECLAS), Otoño (PELACES), crucero de huevos (MPDH) y desembarques") %>% 
+  kable_styling(latex_options = c("striped", "condensed"),
+                full_width = FALSE,font_size=10)
+
+
+```
+
+\pagebreak
+
+```{r desembarques y descarte, echo=FALSE,eval=T,warning=F, include=T, message=F,}
+
+bioyear<-c("1990-91","1991-92","1992-93","1993-94","1994-95",
+           "1995-96","1996-97","1997-98","1998-99","1999-00",
+           "2000-01","2001-02","2002-03","2003-04","2004-05",
+           "2005-06","2006-07","2007-08","2008-09","2009-10",
+           "2010-11","2011-12","2012,13","2013-14","2014-15",
+           "2015-16","2016-17","2017-18","2018-19","2019-20",
+           "2020-21",'2021-22')
+
+desemYdesc_previo<-c(494567,514787,250237,358949,120608,
+                     361735,552515,73892,212993,205616,
+                     52469,317467,293654,387597,252695,
+                     516296,358380,742168,942051,627588,
+                     828172,859565,418607,520667,417249,
+                     300574,407403,355545,319650,289779,
+                     391294.5,218835)
+
+desc_previo<-c(rep(1,10),rep(1.04,16),rep(1.02,2),rep(1.06,2),1.04,1.04)
+desembarque<-desemYdesc_previo/desc_previo
+
+desc_actualizado<-c(rep(1,10),rep(1.04,17),1.07,1.05,1.04,1.04,1.04)
+CapturaDescartada<- -(1-desc_actualizado)*desembarque
+CapturaTotal<-desembarque+CapturaDescartada
+
+porcDesc_actualizado<-c(rep("0%",10),rep("4%",17),"7%","5%","4%","4%",'4%')
+
+data<-data.frame("Año biológico"=bioyear,
+                 "Desembarques t."=round(desembarque,0),
+                 "Porcentaje descarte" =porcDesc_actualizado,
+                 "Captura descartada t."=round(CapturaDescartada,0),
+                 "Captura total t."=round(CapturaTotal,0))
+
+
+kbl(data, booktabs = T,format = "latex",position="h!",align="c",format.args=list(big.mark = '.'),
+caption = "\\label{t2} Desembarques en toneladas, porcentaje de descarte supuesto,
+captura descartada (toneladas) y captura total (toneladas) estimadas en año biológico para sardina común de las Regiones de Valparaíso a Los Lagos.") %>% kable_styling(latex_options = c("striped", "condensed"),
+                full_width = FALSE,font_size=10)
+
+write.csv(data, file="Tablas/DatosCapturaydescarte.csv")
+
+```
+
+
+
+```{r Fig20, warning=F, include=T, message=F, echo=F,fig.height=8,fig.width=5,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig20}Serie de desembarques y biomasas estimadas por la evaluación hidroacústica de verano y otoño utilizadas como datos de entrada al modelo de evaluación de stock de sardina común de las Regiones de Valparaíso a Los Lagos. Los datos de desembarques se agrupan en año biológico. Los datos de cruceros representa al año calendario."}
  
 des_obs <- data.frame(rep1$desembarqueobs)
 bc_obs  <- data.frame(rep1$reclasobs)
@@ -750,18 +771,14 @@ p +  theme(panel.background = element_rect(fill ="gray99")) +
 
 ```
 
-```{r indices, echo=FALSE,eval=T}
 
-dataInd<-dat1$Ind
-write.csv(dataInd, file="Tablas/Datosindices.csv")
+\pagebreak
 
-kbl(dataInd, booktabs = T,format = "latex",position="h!",
-caption = "\\label{t1}") %>% 
-  kable_styling(latex_options = c("striped", "condensed"),
-                full_width = FALSE,font_size=10)
+La pesquería de sardina común está sustentada principalmente por la abundancia del grupo de edad 0, con una proporción en torno al 60-70% de la captura en número de la flota. La captura en número a la edad se caracteriza por presentar una alta variabilidad interanual, siendo los años 2007, 2013, 2016, 2019 y 2020 los años con menor proporción de reclutas. Los pesos medios del grupo de edad 0 se encuentra en torno a los 8 grs. Se observa una estabilización de los pesos medios a partir del 2013 para todos los grupos de edad (\textbf{Figuras \ref{Fig22}}). En relación de la composición de edad de los cruceros de verano se observa que el grupo de edad 0 representa el 77% de la captura en número. Por otro lado, en el caso del crucero de otoño, el grupo de edad 0 representa el 67% de la captura en número (\textbf{Figuras \ref{Fig24}}). 
 
+Los resultados del crucero de verano 2019 y 2020 presentan una disminución en los niveles de abundancia de la fracción recluta, el estimado de biomasa total del crucero de verano 2019 estuvo sostenido por la fracción adulta (edad 1+) principalmente.  Esta disminución se observó al actualizar la composición de edad de la flota 2018/19 y 2019/20 y del crucero de otoño 2019 y 2020. Por lo tanto, la disminución de la biomasa total 2020 estaría fuertemente relacionada a la reducción del número de individuos de los grupos de edad 0 y 1 principalmente.
 
-```
+Los resultados del crucero de verano 2021 mostraron un incremento significativo en los niveles de abundancia de la fracción recluta (94% individuos de edad 0), a diferencia de los dos años previos, la biomasa total del crucero de verano 2021 estuvo sostenido principalmente por la fracción recluta (edad 0), observandose una baja presencia de individuos adultos (edad 1+). Esta importante participación de la fracción recluta continúa en el crucero de otoño, con un 83% de individuos de edad 0 y una baja presencia de ejemplares adultos (edad 1+). Para el año 2022, el crucero de verano registró una disminución en la abundancia de la fracción recluta (46% individuos de edad 0), a diferencia de lo observado el año 2021. La biomasa total estimada por el crucero es sostenida por la fracción recluta y adulta (edad 1, principalmente). El crucero de otoño 2022 y flota 2021/2022 también evidencian una reducción del grupo de edad 0 (70% crucero de otoño y 16% flota de individuos de edad 0).
 
 \pagebreak
 
@@ -811,9 +828,9 @@ f2<-ggplot(WmedF, aes(x = years, y = value, group=variable,colour=variable))+
 f1 + f2
 
 ```
-\pagebreak
 
-```{r Fig22,warning=F, include=T, message=F, echo=F,fig.height=6,fig.width=9,fig.align="center",fig.path=dir.Fig,dev=fig}
+
+```{r Fig22,warning=F, include=T, message=F, echo=F,fig.height=6,fig.width=9,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig22}Variabilidad interanual de la proporción de la captura de la flota (panel izquierdo superior) y pesos medios (panel derecho superior) de cada grupo de edad (edad 0 a 4). Composición de edad de la captura de la flota (panel izquierdo inferior) y pesos medios (panel derecho inferior) utilizados en la evaluación de stock de sardina común de las Regiones de Valparaíso a Los Lagos."}
 pobsF    <- rep1$pf_obs      
 pF       <- c(pobsF); pF[pF==0]  <-NA
 WmedF    <- dat1$Wmed    
@@ -898,8 +915,7 @@ f1 + f2
 
 ```
 
-\pagebreak
-```{r Fig24,warning=F, include=T, message=F, echo=F,fig.height=6,fig.width=9,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig24,warning=F, include=T, message=F, echo=F,fig.height=6,fig.width=9,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig24}Variabilidad interanual de la proporción de la captura del crucero de verano (panel izquierdo superior) y crucero de otoño (panel derecho superior) de cada grupo de edad (edad 0 a 4). Composición de edad de la captura de los cruceros de verano (panel izquierdo inferior) y otoño (panel derecho inferior) utilizados en la evaluación de stock."}
 pobsR    <- rep1$pobs_RECLAS        
 pR       <- c(pobsR); pR[pR==0]  <-NA
 pobsP    <- rep1$pobs_PELACES      
@@ -936,7 +952,71 @@ g1 + g2
 
 ```
 
-## 3.1. Ajuste del modelo a los datos
+```{r Fig15,  warning=F, include=T, message=F, echo=F,fig.height=3,fig.width=5,fig.align="center",fig.path=dir.Fig,dev=fig}
+library(strucchange)
+years     <- rep2$years
+nyears    <- length(years)
+bp.nile   <- breakpoints(log(rep2$Reclutas/1000) ~ 1)
+fm0       <- lm(log(rep2$Reclutas/1000) ~ 1)
+fm1       <- lm(log(rep2$Reclutas/1000) ~ breakfactor(bp.nile, breaks = 2))
+quiebres3 <- fitted(fm1)
+
+par(mfrow=c(1,1),mar=c(2,4,1,1))
+plot(years,rep2$Reclutas/1000,type="l",lty=2,pch=19,ylim=c(0,700),
+     xaxp=c(1990,2022,32),yaxs="i",xlab="",ylab="Reclutamientos (miles de millones de ind.)",main="Análisis de quiebres",cex.main=0.8,cex.axis=0.7,cex.lab=0.7)
+points(years,rep2$Reclutas/1000,col=1,pch=19)
+lines(years,exp(quiebres3),lwd=2,col=4)
+text(c(1999,2010,2017),
+     c(exp(fitted(fm1)[1]),
+      exp(fitted(fm1)[18]),
+      exp(fitted(fm1)[23])),
+     round(c(exp(fitted(fm1)[1]),
+             exp(fitted(fm1)[18]),
+             exp(fitted(fm1)[23])),0),
+     col=2,font=1,cex=0.8)
+
+```
+
+\pagebreak
+
+```{r Fig16,warning=F, include=T, message=F, echo=F,fig.height=4.5,fig.width=9,fig.align="center",fig.path=dir.Fig,dev=fig}
+years1  <-rep1$years
+nyears1 <-length(years1)
+age     <-seq(0,4,1)                                            
+nage    <-length(age)
+pobsF   <-rep1$pf_obs 
+  
+#Proporcion observada                                        
+WmedF <-dat1$Wmed                                             
+WiniF <-dat1$Wini                                 
+#Proporciones                                                
+Wm    <-c(WmedF); 
+Wm[Wm==0]  <-NA                     
+Wi    <-c(WiniF); 
+Wi[Wi==0]  <-NA 
+
+x1 <-c(years1[1],years1[nyears1]+1,nyears1+1/2)
+#Proporci?n de edad
+par(mar=c(4,4,2,1),mfrow=c(1,2))
+# pesos medios
+plot(years1,WmedF[,1],type="n",las=1,ylim=c(0,75),xlim=c(1990,years1[nyears1]),
+     ylab="Pesos medios (grs)",xlab="",xaxp=x1,main="")
+for(i in 1:5){
+lines(years1,WmedF[,i],col=i,type="o", pch=19)}
+legend(1990,75,c("edad 0","edad 1","edad 2","edad 3","edad 4"),pch=19,lwd=1,col=1:5,bty="n")
+
+
+plot(age,colMeans(WmedF),type="o",pch=19,ylab="Pesos medios (grs)",xlab="Edad (años)")
+lines(age,colMeans(WmedF[(nyears1-5):nyears1,]),col=2,type="o",pch=19)
+legend(0,35,c("peso medio histórico","peso medio últimos 5 años"),pch=19,lwd=1,col=c(1,2),bty="n")
+```
+
+
+\pagebreak
+# RESULTADOS
+
+
+## Ajuste del modelo a los datos
 
 ```{r Fig26,warning=F, include=T, message=F, echo=F,fig.height=6.7,fig.width=6.5,fig.align="center",fig.path=dir.Fig,dev=fig}
 
@@ -1673,7 +1753,7 @@ box()
 
 
 
-## 3.2. Comparación con asesorías previas
+## Comparación con asesorías previas
 
 ```{r VariablesSept_std, echo=F,message=FALSE, warning=FALSE, include=T}
 
@@ -1919,7 +1999,7 @@ Rt/BD/Ft
 ```
 
 
-## 3.3. Análisis retrospectivo
+## Análisis retrospectivo
 
 ```{r Dat_Retrospectivo, echo=F, message=FALSE, warning=FALSE, include=T,eval=T}
 dir<-paste(dir.0,"/Retrospectivo_sept",sep="")
@@ -2115,7 +2195,7 @@ Rt/BD/Ft |Rtrel/BDrel/Ftrel
 
 
 
-## 3.4. Perfil de verosimilitud
+## Perfil de verosimilitud
 
 
 ```{r Fig34,eval=T, warning=F, include=T, message=F, echo=F,fig.height=4,fig.width=5,fig.align="center",fig.path=dir.Fig,dev=fig}
@@ -2248,7 +2328,7 @@ fig1
 
 
 
-## 3.5. Variables poblacionales
+## Variables poblacionales
 
 ```{r Variables_sept, echo=F,message=FALSE, warning=FALSE, include=T}
 
@@ -2602,7 +2682,7 @@ g1
 
 \pagebreak
 
-## 3.6. Puntos biológicos de referencia
+## Puntos biológicos de referencia
 
 ```{r Data_PBR_biologico_sept, echo=F}
 #PBR año biologico
@@ -2923,7 +3003,7 @@ pe_sept<-1-pnorm(1.1,FrprSEPT,FrprSEPTstd,lower.tail = TRUE,log.p = F)
 
 
 
-## 3.7. Estatus
+## Estatus
 
 ```{r Estatus_marzo, echo=F,message=FALSE, warning=FALSE, include=T}
 
@@ -3364,21 +3444,21 @@ kable(Tabla4.1,align='c')
 
 \pagebreak
 
-## 3.8. CBA 2022 Inicial (Asesoría de septiembre 2021)
+## CBA Inicial (Asesoría de septiembre)
 
 
 ```{r proyecciona,warning=F, include=T, message=F,eval=T, echo=F}
 
 dira<-paste(dir.0,"/CBA_sept/",sep="")
 setwd(dira)
-reps1a     <- reptoRlist("MAE092211.rep")  
-reps2a     <- reptoRlist("MAE092212.rep") 
-reps3a     <- reptoRlist("MAE092213.rep") 
+reps1a     <- reptoRlist("MAE92211.rep")  
+reps2a     <- reptoRlist("MAE92212.rep") 
+reps3a     <- reptoRlist("MAE92213.rep") 
 
 carpeta<-"/CBA_sept/"
-stds1     <- read.table(paste(dir.0,carpeta,"MAE092211.std", sep=''),header=T,sep="",na="NA",fill=T) 
-stds2     <- read.table(paste(dir.0,carpeta,"MAE092212.std", sep=''),header=T,sep="",na="NA",fill=T) 
-stds3     <- read.table(paste(dir.0,carpeta,"MAE092213.std", sep=''),header=T,sep="",na="NA",fill=T) 
+stds1     <- read.table(paste(dir.0,carpeta,"MAE92211.std", sep=''),header=T,sep="",na="NA",fill=T) 
+stds2     <- read.table(paste(dir.0,carpeta,"MAE92212.std", sep=''),header=T,sep="",na="NA",fill=T) 
+stds3     <- read.table(paste(dir.0,carpeta,"MAE92213.std", sep=''),header=T,sep="",na="NA",fill=T) 
 
 bds1     <- subset(stds1,name=="BD_p0")$value ; 
 bds1std  <- subset(stds1,name=="BD_p0")$std #reclutamiento medios
@@ -3620,7 +3700,7 @@ abline(v=yearProy[1]-1,lty=2)
 
 
 
-## 4.0.  Proyección del stock (Asesoría de septiembre 2021)
+## Proyección del stock (Asesoría de septiembre)
 
 ```{r Tabla32_CBA_septiembre, echo=FALSE, warning=F, include=T, message=F}
 dir.4<-paste(dir.0,"/CBA_sept/",sep="")
@@ -3637,7 +3717,7 @@ buffer   <- matrix(ncol=nq,nrow=nes)
 descarte <- matrix(ncol=nq,nrow=nes)
 
 for(i in 1:nes){
-	std     <- read.table(paste(dir.4,"MAE09211",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
+	std     <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
 	CBAp[i]    <-subset(std,name=="CBA_c0")$value[1]
 	CBApstd[i] <-subset(std,name=="CBA_c0")$std[1]
 	for(j in 1:nq){	CBA[i,j]<-qnorm(q[j],CBAp[i],CBApstd[i])}}
@@ -3652,14 +3732,14 @@ source(paste(dir.fun,"Fn_Estatus_proy.R",sep=""))
 setwd(paste(dir.0,"/CBA_sept/",sep=""))
 mfyr<-c(11,21,31)
 escR<-"1991-2007"
-Estatusproy_sept("MAE0921",mfyr,escR,year1="2019/20",year2="2020/21",year3="2021/22",year4="2022/23")
+Estatusproy_sept("MAE922",mfyr,escR,year1="2019/20",year2="2020/21",year3="2021/22",year4="2022/23")
 ```
 
 ```{r Tabla_32b,eval=T, warning=F, include=T, message=F, echo=FALSE}
 setwd(paste(dir.0,"/CBA_sept/",sep=""))
 mfyr<-c(12,22,32)
 escR<-"2008-2012"
-Estatusproy_sept("MAE0921",mfyr,escR,year1="2019/20",year2="2020/21",year3="2021/22",year4="2022/23")
+Estatusproy_sept("MAE922",mfyr,escR,year1="2019/20",year2="2020/21",year3="2021/22",year4="2022/23")
 
 ```
 
@@ -3667,13 +3747,13 @@ Estatusproy_sept("MAE0921",mfyr,escR,year1="2019/20",year2="2020/21",year3="2021
 setwd(paste(dir.0,"/CBA_sept/",sep=""))
 mfyr<-c(13,23,33)
 escR<-"2013-2021"
-Estatusproy_sept("MAE0921",mfyr,escR,year1="2019/20",year2="2020/21",year3="2021/22",year4="2022/23")
+Estatusproy_sept("MAE922",mfyr,escR,year1="2019/20",year2="2020/21",year3="2021/22",year4="2022/23")
 ```
 
 ```{r DF_proysept, eval=T,warning=F, include=T, message=F, echo=FALSE,fig.height=2.7,fig.width=2.7}
 setwd(paste(dir.0,"/CBA_sept/",sep=""))
 
-admb_sept<-"MAE0921"
+admb_sept<-"MAE922"
 data1        <- lisread(paste(admb_sept,".dat",sep=""))#lee los datos de la ultima evaluacion
 names(data1) <- str_trim(names(data1), side="right")
 dat1         <- data
@@ -3707,7 +3787,7 @@ escR<-c(rep("Reclprom 1991-2007",1),
 pF<-rep(c("Frms*1","Frms*0.9","Frms*1.1"),3)
 n<-3
 nesc<-c(11,21,31)
-admb_sept<-"MAE0921"
+admb_sept<-"MAE922"
 
 for(i in 1:n){
 name<-escR[1]
@@ -3769,7 +3849,7 @@ escR<-c(rep("Reclprom 1991-2007",1),
 pF<-rep(c("Frms*1","Frms*0.9","Frms*1.1"),3)
 n<-3
 nesc<-c(12,22,32)
-admb_sept<-"MAE0921"
+admb_sept<-"MAE922"
 
 for(i in 1:n){
 name<-escR[2]
@@ -3831,7 +3911,7 @@ escR<-c(rep("Reclprom 1991-2007",1),
 pF<-rep(c("Frms*1","Frms*0.9","Frms*1.1"),3)
 n<-3
 nesc<-c(13,23,33)
-admb_sept<-"MAE0921"
+admb_sept<-"MAE922"
 
 for(i in 1:n){
 name<-escR[3]
@@ -3926,7 +4006,7 @@ buffer   <- matrix(ncol=nq,nrow=nes)
 descarte <- matrix(ncol=nq,nrow=nes)
 
 for(i in 1:nes){
-	std     <- read.table(paste(dir.4,"MAE09211",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
+	std     <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
 	CBAp_sept[i]    <-subset(std,name=="CBA_c0")$value[1]
 	CBApstd_sept[i] <-subset(std,name=="CBA_c0")$std[1]
 	for(j in 1:nq){	CBA_sept[i,j]<-qnorm(q[j],CBAp_sept[i],CBApstd_sept[i])}}
@@ -3948,7 +4028,7 @@ CBApd_sept    <- matrix(ncol=1,nrow=1)
 CBApdstd_sept <- matrix(ncol=1,nrow=1)
 
 for(i in 1:nes){
-	std     <- read.table(paste(dir.4,"MAE09211",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
+	std     <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
 	CBApd_sept[i]    <-subset(std,name=="CBA_c0d")$value[1]
 	CBApdstd_sept[i] <-subset(std,name=="CBA_c0d")$std[1]
 	for(j in 1:nq){	CBAd_sept[i,j]<-qnorm(q[j],CBApd_sept[i],CBApdstd_sept[i])}}
@@ -3973,7 +4053,7 @@ CBApd_sept    <- matrix(ncol=1,nrow=1)
 CBApdstd_sept <- matrix(ncol=1,nrow=1)
 
 for(i in 1:nes){
-	std     <- read.table(paste(dir.4,"MAE09211",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
+	std     <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
 	CBApd_sept[i]    <-subset(std,name=="CBA_c0d")$value[1]
 	CBApdstd_sept[i] <-subset(std,name=="CBA_c0d")$std[1]
 	for(j in 1:nq){	CBAd_sept[i,j]<-qnorm(q[j],CBApd_sept[i],CBApdstd_sept[i])}}
@@ -4014,9 +4094,9 @@ kable(t(round(tCBAd,0)))
 
 dira<-paste(dir.0,"/CBA_sept",sep="")
 setwd(dira)
-reps1a     <- reptoRlist("MAE092111.rep")  
-reps2a     <- reptoRlist("MAE092112.rep") 
-reps3a     <- reptoRlist("MAE092113.rep") 
+reps1a     <- reptoRlist("MAE92211.rep")  
+reps2a     <- reptoRlist("MAE92212.rep") 
+reps3a     <- reptoRlist("MAE92213.rep") 
 
 #===============================================================================================================
 # escenario 1
@@ -4150,11 +4230,11 @@ kable(t(data.frame(C1eryearR1,C1eryearR2,C1eryearR3,C2doyearR1,C2doyearR2,C2doye
 
 \pagebreak
 
-## 3.9.  Primera revisión CBA 2022  (Asesoría de marzo)
+## Primera revisión CBA  (Asesoría de marzo)
 
 
 
-```{r proyeccion1eraRevision,warning=F, include=T, message=F,eval=T, echo=F}
+```{r proyeccion1eraRevision,warning=F, include=T, message=F,eval=F, echo=F}
 
 dira<-paste(dir.0,"/CBA_marzo/",sep="")
 setwd(dira)
@@ -4239,7 +4319,7 @@ bds0std  <- subset(stds1,name=="SSB")$std[nyears2]
 
 
 
-```{r estatusproyectado_marzo,warning=F, include=T, message=F, echo=F}
+```{r estatusproyectado_marzo,warning=F, include=T, message=F, echo=F,eval=F}
 
 # ULTIMO AÑO EVALUACIÓN DE STOCK
 #######################################################################################
@@ -4334,7 +4414,7 @@ kable(probEstatus)
 
 # Figuras de proyección  (Asesoría de marzo)
 
-```{r Fig34a_marzo, warning=F, include=T, message=F,eval=T, echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig}
+```{r Fig34a_marzo, warning=F, include=T, message=F,eval=F, echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig}
 par(mfrow=c(2,2),mar=c(4,4,1,1)+0.5)
 yearProy<-c(2023)
 
@@ -4445,7 +4525,7 @@ text(2024,900000,"d)")
 
 # Proyeccion de Estatus de proyección (Asesoría de marzo)
 
-```{r Tabla32_CBA_marzo, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla32_CBA_marzo, echo=FALSE, warning=F, include=T, message=F,eval=F}
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
 
 EscRecl<-seq(1,3,1) #escenarios de reclutamiento basado en anÃ¡lisis de quiebres
@@ -4468,7 +4548,7 @@ for(i in 1:nes){
 ```
 
 
-```{r Tabla_32a_marzo,eval=T, warning=F, include=T, message=F, echo=FALSE}
+```{r Tabla_32a_marzo,eval=F, warning=F, include=T, message=F, echo=FALSE}
 source(paste(dir.fun,"Fn_Estatus_proy.R",sep=""))
 setwd(paste(dir.0,"/CBA_marzo/",sep=""))
 mfyr<-c(11,21,31)
@@ -4476,7 +4556,7 @@ escR<-"1991-2007"
 Estatusproy_marzo("MAE322",mfyr,escR,year2="2021/22",year3="2022/23")
 ```
 
-```{r Tabla_32b_marzo,eval=T, warning=F, include=T, message=F, echo=FALSE}
+```{r Tabla_32b_marzo,eval=F, warning=F, include=T, message=F, echo=FALSE}
 setwd(paste(dir.0,"/CBA_marzo/",sep=""))
 mfyr<-c(12,22,32)
 escR<-"2008-2012"
@@ -4484,14 +4564,14 @@ Estatusproy_marzo("MAE322",mfyr,escR,year2="2021/22",year3="2022/23")
 
 ```
 
-```{r Tabla_32c_marzo,eval=T, warning=F, include=T, message=F, echo=FALSE}
+```{r Tabla_32c_marzo,eval=F, warning=F, include=T, message=F, echo=FALSE}
 setwd(paste(dir.0,"/CBA_marzo/",sep=""))
 mfyr<-c(13,23,33)
 escR<-"2013-2021"
 Estatusproy_marzo("MAE322",mfyr,escR,year2="2021/22",year3="2022/23")
 ```
 
-```{r DF_proymarzo2, eval=T,warning=F, include=T, message=F, echo=FALSE,fig.height=2.7,fig.width=2.7}
+```{r DF_proymarzo2, eval=F,warning=F, include=T, message=F, echo=FALSE,fig.height=2.7,fig.width=2.7}
 setwd(paste(dir.0,"/CBA_marzo/",sep=""))
 
 admb_marzo<-"MAE322"
@@ -4518,7 +4598,7 @@ Fyr        <- exp(subset(std2,name=="log_Ft")$value)
 
 
 
-```{r Fig45a_marzo, eval=T, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
+```{r Fig45a_marzo, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 
 source(paste(dir.fun,"Fn_DiagramaFase_proy.R",sep=""))
 source(paste(dir.fun,"Fn_ProbEstatus_proy.R",sep=""))
@@ -4586,7 +4666,7 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 ```
 
 
-```{r Fig45b_marzo, eval=T, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
+```{r Fig45b_marzo, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 escR<-c(rep("Reclprom 1991-2007",1), 
         rep("Reclprom 2008-2012",1),
         rep("Reclprom 2013-2022",1))
@@ -4648,7 +4728,7 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 #ProbEstatusproy_sept("MAE0920",nesc,name,pF,nyears=30)
 ```
 
-```{r Fig45c_marzo, eval=T, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
+```{r Fig45c_marzo, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 escR<-c(rep("Reclprom 1991-2007",1), 
         rep("Reclprom 2008-2012",1),
         rep("Reclprom 2013-2022",1))
@@ -4715,9 +4795,9 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 
 \pagebreak
 
-# CBA 2022 (Asesoría de marzo 2022)
+# PRIMERA REVISIÓN DE CBA (Asesoría de marzo)
 
-```{r CBAinicial_marzo, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r CBAinicial_marzo, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
 
@@ -4741,7 +4821,7 @@ for(i in 1:nes){
 ```
 
 
-```{r CBAinicial_marzoDescarte, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r CBAinicial_marzoDescarte, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
 
@@ -4765,7 +4845,7 @@ for(i in 1:nes){
 ```
 
 
-```{r Tabla29a_CBAinicial_marzo,eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla29a_CBAinicial_marzo,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzo<-cbind(CBAp_marzo,CBApstd_marzo,CBA_marzo)
 colnames(tCBA_marzo)<-c("mean","std",c("10%","20%","30%","40%","50%"))
 row.names(tCBA_marzo)<-c("1991-2007","2008-2012","2013-2022")
@@ -4773,7 +4853,7 @@ kable(t(round(tCBA_marzo,0)))
 ```
 
 
-```{r Tabla29a_CBAinicial_marzoDescarte,eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla29a_CBAinicial_marzoDescarte,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD<-cbind(CBAp_marzoD,CBApstd_marzoD,CBA_marzoD)
 colnames(tCBA_marzoD)<-c("mean","std",c("10%","20%","30%","40%","50%"))
 row.names(tCBA_marzoD)<-c("1991-2007","2008-2012","2013-2022")
@@ -4781,7 +4861,7 @@ kable(t(round(tCBA_marzoD,0)))
 ```
 
 
-```{r Tabla30_resguardo_marzo, eval=T,echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla30_resguardo_marzo, eval=F,echo=FALSE, warning=F, include=T, message=F}
 for(i in 1:nes){for(j in 1:nq){	
 buffer[i,j]<-round(1-CBA_marzo[i,j]/CBA_marzo[i,5],2)}}
 colnames(buffer)<-c("10%","20%","30%","40%","50%")
@@ -4790,7 +4870,7 @@ kable(t(buffer))
 ```
 
 
-```{r Tabla31b_diferenciasdescarte_marzo, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla31b_diferenciasdescarte_marzo, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 descarte_marzo <- matrix(ncol=nq,nrow=nes)
 descarte_sept <- matrix(ncol=nq,nrow=nes)
@@ -4809,10 +4889,10 @@ kable(t(tablaincrementos))
 
 
 
-# CBA - desembarque (Asesoría de marzo 2022)
+# CBA - desembarque (Asesoría de marzo)
 
 
-```{r CBAinicial_marzo-desembarque2doSem, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r CBAinicial_marzo-desembarque2doSem, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
 
@@ -4839,7 +4919,7 @@ for(i in 1:nes){
 
 
 
-```{r CBAinicial_marzoDescarte-desembarque2doSem, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r CBAinicial_marzoDescarte-desembarque2doSem, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
 
@@ -4866,7 +4946,7 @@ for(i in 1:nes){
 
 
 
-```{r Tabla29a_CBA_marzo-Desembarque2doSem,eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla29a_CBA_marzo-Desembarque2doSem,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD2S<-cbind(CBAp_marzoD2S,CBApstd_marzoD2S,CBA_marzoD2S)
 colnames(tCBA_marzoD2S)<-c("mean","std",c("10%","20%","30%","40%","50%"))
 row.names(tCBA_marzoD2S)<-c("1991-2007","2008-2012","2013-2022")
@@ -4874,7 +4954,7 @@ kable(t(round(tCBA_marzoD2S,0)))
 ```
 
 
-```{r Tabla29a_CBA_marzoDescarte-Desembarque2doSem,eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla29a_CBA_marzoDescarte-Desembarque2doSem,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD2Sd<-cbind(CBAp_marzoD2Sd,CBApstd_marzoD2Sd,CBA_marzoD2Sd)
 colnames(tCBA_marzoD2Sd)<-c("mean","std",c("10%","20%","30%","40%","50%"))
 row.names(tCBA_marzoD2Sd)<-c("1991-2007","2008-2012","2013-2022")
@@ -4883,7 +4963,7 @@ kable(t(round(tCBA_marzoD2Sd,0)))
 
 
 
-```{r Tabla30_resguardo_marzo-Desembarque2doSem, eval=T,echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla30_resguardo_marzo-Desembarque2doSem, eval=F,echo=FALSE, warning=F, include=T, message=F}
 for(i in 1:nes){for(j in 1:nq){	
 bufferD2S[i,j]<-round(1-CBA_marzoD2S[i,j]/CBA_marzoD2S[i,5],2)}}
 colnames(bufferD2S)<-c("10%","20%","30%","40%","50%")
@@ -4892,7 +4972,7 @@ kable(t(bufferD2S))
 ```
 
 
-```{r Tabla31b_diferenciasdescarte_marzo-Desembarque2doSem, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla31b_diferenciasdescarte_marzo-Desembarque2doSem, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 descarte_marzoD2S <- matrix(ncol=nq,nrow=nes)
 descarte_sept <- matrix(ncol=nq,nrow=nes)
@@ -4912,10 +4992,10 @@ kable(t(tablaincrementosD2S))
 
 
 
-# CBA - desembarque - Remanente (Asesoría de marzo 2022)
+# CBA - desembarque - Remanente (Asesoría de marzo)
 
 
-```{r CBA_marzo-desembarque2doSem-Remanente, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r CBA_marzo-desembarque2doSem-Remanente, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
 
@@ -4946,7 +5026,7 @@ for(i in 1:nes){
 
 
 
-```{r Tabla29a_CBA_marzo-desembarque2doSem-Remanente,eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla29a_CBA_marzo-desembarque2doSem-Remanente,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD2SR<-cbind(CBAp_marzoD2SR,
                       CBApstd_marzoD2SR,
                       CBA_marzoD2SR)
@@ -4957,7 +5037,7 @@ kable(t(round(tCBA_marzoD2SR,0)))
 ```
 
 
-```{r CBA_marzoDescarte-desembarque2doSem-Remanente, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r CBA_marzoDescarte-desembarque2doSem-Remanente, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
 
@@ -4985,7 +5065,7 @@ for(i in 1:nes){
 ```
 
 
-```{r Tabla29a_CBA_marzoDescarte-desembarque2doSem-Remanente,eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla29a_CBA_marzoDescarte-desembarque2doSem-Remanente,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD2SdR<-cbind(CBAp_marzoD2SdR,
                        CBApstd_marzoD2SdR,
                        CBA_marzoD2SdR)
@@ -4995,7 +5075,7 @@ kable(t(round(tCBA_marzoD2SdR,0)))
 ```
 
 
-```{r Tabla30_resguardo_marzo-Desembarque2doSem-Remanente, eval=T,echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla30_resguardo_marzo-Desembarque2doSem-Remanente, eval=F,echo=FALSE, warning=F, include=T, message=F}
 for(i in 1:nes){for(j in 1:nq){	
 bufferD2SR[i,j]<-round(1-CBA_marzoD2SR[i,j]/CBA_marzoD2SR[i,5],2)}}
 colnames(bufferD2SR)<-c("10%","20%","30%","40%","50%")
@@ -5004,7 +5084,7 @@ kable(t(bufferD2SR))
 ```
 
 
-```{r Tabla31b_diferenciasdescarte_marzo-Desembarque2doSem-Remanente, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla31b_diferenciasdescarte_marzo-Desembarque2doSem-Remanente, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 descarte_marzoD2SdR <- matrix(ncol=nq,nrow=nes)
 descarte_sept <- matrix(ncol=nq,nrow=nes)
@@ -5026,7 +5106,7 @@ kable(t(tablaincrementosD2SR))
 # Figuras de CBA_RMS
 
 
-```{r Fig27_CBAmarzo,warning=F, include=T, message=F, echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
+```{r Fig27_CBAmarzo,warning=F, include=T, message=F,eval=F, echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
 
 dira<-paste(dir.0,"/CBA_marzo",sep="")
 setwd(dira)
@@ -5177,11 +5257,11 @@ kable(t(data.frame(C1eryearR1act2,C1eryearR12,C1eryearR22,C1eryearR32)))
 
 \pagebreak
 
-## SEGUNDA REVISION CBA 2022  (Asesoría de JULIO)
+## SEGUNDA REVISION CBA (Asesoría de JULIO)
 
 
 
-```{r proyeccion2daRevision,warning=F, include=T, message=F,eval=T, echo=F}
+```{r proyeccion2daRevision,warning=F, include=T, message=F,eval=F, echo=F}
 
 dira<-paste(dir.0,"/CBA_julio/",sep="")
 setwd(dira)
@@ -5267,7 +5347,7 @@ bds0std  <- subset(stds1,name=="SSB")$std[nyears3]
 
 
 
-```{r estatusproyectado_julio,warning=F, include=T, message=F, echo=F}
+```{r estatusproyectado_julio,warning=F, include=T, message=F, echo=F,eval=F}
 
 prop1erSem<-0.845885
 # ULTIMO AÑO EVALUACIÓN DE STOCK
@@ -5366,7 +5446,7 @@ kable(probEstatus)
 
 # Figuras de proyección  (Asesoría de julio)
 
-```{r Fig34a_julio, warning=F, include=T, message=F,eval=T, echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig}
+```{r Fig34a_julio, warning=F, include=T, message=F,eval=F, echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig}
 par(mfrow=c(2,2),mar=c(4,4,1,1)+0.5)
 yearProy<-c(2023)
 
@@ -5476,7 +5556,7 @@ text(2024,900000,"d)")
 
 # Proyeccion de Estatus de proyección (Asesoría de julio)
 
-```{r Tabla32_CBA_julio, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla32_CBA_julio, echo=FALSE, warning=F, include=T, message=F,eval=F}
 dir.4<-paste(dir.0,"/CBA_julio/",sep="")
 
 EscRecl <- seq(1,3,1) #escenarios de reclutamiento basado en anÃ¡lisis de quiebres
@@ -5501,7 +5581,7 @@ for(i in 1:nes){
 ```
 
 
-```{r Tabla_32a_julio,eval=T, warning=F, include=T, message=F, echo=FALSE}
+```{r Tabla_32a_julio,eval=F, warning=F, include=T, message=F, echo=FALSE}
 source(paste(dir.fun,"Fn_Estatus_proy.R",sep=""))
 setwd(paste(dir.0,"/CBA_julio/",sep=""))
 mfyr<-c(11,21,31)
@@ -5509,7 +5589,7 @@ escR<-"1991-2007"
 Estatusproy_marzo("MAE722",mfyr,escR,year2="2021/22",year3="2022/23")
 ```
 
-```{r Tabla_32b_julio,eval=T, warning=F, include=T, message=F, echo=FALSE}
+```{r Tabla_32b_julio,eval=F, warning=F, include=T, message=F, echo=FALSE}
 setwd(paste(dir.0,"/CBA_julio/",sep=""))
 mfyr<-c(12,22,32)
 escR<-"2008-2012"
@@ -5517,14 +5597,14 @@ Estatusproy_marzo("MAE722",mfyr,escR,year2="2021/22",year3="2022/23")
 
 ```
 
-```{r Tabla_32c_julio,eval=T, warning=F, include=T, message=F, echo=FALSE}
+```{r Tabla_32c_julio,eval=F, warning=F, include=T, message=F, echo=FALSE}
 setwd(paste(dir.0,"/CBA_julio/",sep=""))
 mfyr<-c(13,23,33)
 escR<-"2013-2021"
 Estatusproy_marzo("MAE722",mfyr,escR,year2="2021/22",year3="2022/23")
 ```
 
-```{r DF_proy_julio2, eval=T,warning=F, include=T, message=F, echo=FALSE,fig.height=2.7,fig.width=2.7}
+```{r DF_proy_julio2, eval=F,warning=F, include=T, message=F, echo=FALSE,fig.height=2.7,fig.width=2.7}
 setwd(paste(dir.0,"/CBA_julio/",sep=""))
 
 admb_julio<-"MAE722"
@@ -5551,7 +5631,7 @@ Fyr        <- exp(subset(std3,name=="log_Ft")$value)
 
 
 
-```{r Fig45a_julio, eval=T, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
+```{r Fig45a_julio, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 
 source(paste(dir.fun,"Fn_DiagramaFase_proy.R",sep=""))
 source(paste(dir.fun,"Fn_ProbEstatus_proy.R",sep=""))
@@ -5619,7 +5699,7 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 ```
 
 
-```{r Fig45b_julio, eval=T, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
+```{r Fig45b_julio, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 escR<-c(rep("Reclprom 1991-2007",1), 
         rep("Reclprom 2008-2012",1),
         rep("Reclprom 2013-2022",1))
@@ -5681,7 +5761,7 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 #ProbEstatusproy_sept("MAE0920",nesc,name,pF,nyears=30)
 ```
 
-```{r Fig45c_julio, eval=T, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
+```{r Fig45c_julio, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 escR<-c(rep("Reclprom 1991-2007",1), 
         rep("Reclprom 2008-2012",1),
         rep("Reclprom 2013-2022",1))
@@ -5747,10 +5827,10 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 
 \pagebreak
 
-# CBA 2022 (Asesoría de julio 2022)
+# CBA (Asesoría de julio)
 
 ## CBA julio
-```{r CBA_julio, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r CBA_julio, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_julio/",sep="")
 
@@ -5776,7 +5856,7 @@ for(i in 1:nes){
 ```
 
 
-```{r Tabla29a_CBA_julio,eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla29a_CBA_julio,eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 tCBA_julio            <- cbind(CBAp_julio,CBApstd_julio,CBA_julio)
 colnames(tCBA_julio)  <- c("mean","std",c("10%","20%","30%","40%","50%"))
@@ -5786,7 +5866,7 @@ kable(t(round(tCBA_julio,0)))
 ```
 
 ## CBA julio menos descarte 
-```{r CBA_julio_Descarte, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r CBA_julio_Descarte, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_julio/",sep="")
 
@@ -5812,7 +5892,7 @@ for(i in 1:nes){
 ```
 
 
-```{r Tabla29a_CBA_julio_Descarte,eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla29a_CBA_julio_Descarte,eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 tCBA_julio_D            <- cbind(CBAp_julio_D,CBApstd_julio_D,CBA_julio_D)
 colnames(tCBA_julio_D)  <- c("mean","std",c("10%","20%","30%","40%","50%"))
@@ -5822,7 +5902,7 @@ kable(t(round(tCBA_julio_D,0)))
 ```
 
 ## Resguardo CBA julio
-```{r Tabla30_resguardo_julio, eval=T,echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla30_resguardo_julio, eval=F,echo=FALSE, warning=F, include=T, message=F}
 
 for(i in 1:nes){for(j in 1:nq){	
 buffer[i,j]       <- round(1-CBA_julio[i,j]/CBA_julio[i,5],2)}}
@@ -5834,7 +5914,7 @@ kable(t(buffer))
 
 
 ## Diferencia entre CBAs asesoría de septiembre y julio
-```{r Tabla31b_diferenciasdescarte_julioseptiembre, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla31b_diferenciasdescarte_julioseptiembre, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 descarte_julio <- matrix(ncol=nq,nrow=nes)
 descarte_marzo <- matrix(ncol=nq,nrow=nes)
@@ -5857,7 +5937,7 @@ kable(t(tablaincrementos_julio_sept))
 
 ## Diferencia entre CBAs asesoría de marzo y julio
 
-```{r Tabla31b_diferenciasdescarte_juliomarzo, eval=T, echo=FALSE, warning=F, include=T, message=F}
+```{r Tabla31b_diferenciasdescarte_juliomarzo, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 descarte_julio <- matrix(ncol=nq,nrow=nes)
 descarte_marzo <- matrix(ncol=nq,nrow=nes)
@@ -5886,7 +5966,7 @@ kable(t(tablaincrementos_julio_marzo))
 # Figuras de CBA_RMS
 
 
-```{r Fig27_CBAjulio,warning=F, include=T, message=F, echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
+```{r Fig27_CBAjulio,warning=F, include=T, message=F,eval=F, echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
 
 dira<-paste(dir.0,"/CBA_julio",sep="")
 setwd(dira)
