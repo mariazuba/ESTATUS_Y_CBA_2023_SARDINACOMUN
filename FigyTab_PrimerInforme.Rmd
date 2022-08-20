@@ -1014,11 +1014,69 @@ legend(0,35,c("peso medio histórico","peso medio últimos 5 años"),pch=19,lwd=
 
 \pagebreak
 # RESULTADOS
+```{r echo=F}
+
+asesoria_1<-"Septiembre 2022"
+
+```
+
+En la asesoría de `r asesoria_1` se realizaron los siguientes análisis
+
 
 
 ## Ajuste del modelo a los datos
 
-```{r Fig26,warning=F, include=T, message=F, echo=F,fig.height=6.7,fig.width=6.5,fig.align="center",fig.path=dir.Fig,dev=fig}
+Los índices de abundancia de los cruceros acústicos de verano y otoño contienen un importante nivel de variabilidad que se resume en la amplitud de los intervalos de confianza supuestos con coeficiente de variación cv=0,3. El modelo reproduce la tendencia general de la variabilidad en los niveles de biomasa que han presentado las estimaciones de los cruceros, siendo los valores más altos los que se escapan del ajuste, lo cual es consistente con la distribución de probabilidades empleada log-normal que considera sesgo positivo en su distribución. La \textbf{Figura \ref{Fig26}} muestra que a partir del 2014 el modelo ajusta muy bien la señal de los cruceros acústicos de verano y otoño. Para el año 2022 el modelo no logra capturar el incremento que se observa al incorporar  la  biomasa del crucero de verano 2022. No obstante es consistente con la señal que entrega el crucero de otoño y desembarques del último año.
+
+El suavizador tipo oess de los residuales del modelo sugieren tendencias,  principalmente la serie de cruceros de verano y otoño, quienes tienen mayor variabilidad y lejanía relativa respecto de la línea esperada en el qqplot (\textbf{Figura \ref{Fig27}}). Los datos de captura (desembarques) se asumen insesgados y precisos con un CV de residuos de 0,01 lo cual se refleja en un buen ajuste del modelo a los datos de entrada.
+
+El ajuste del modelo a la información de composición de edades en general presenta un buen desempeño, particularmente en representar de mejor forma la composición de edades de los cruceros de verano (\textbf{Figuras \ref{Fig28}}, \textbf{\ref{Fig29}} y \textbf{\ref{Fig30}}). El supuesto de invariabilidad anual de los patrones de explotación como medida de parsimonia, genera algunos desajustes en las composiciones de edades de las capturas, principalmente al inicio de la serie histórica y grupo de edad 0. El comportamiento de los residuales de las composiciones de edades de los cruceros sugiere ciertos patrones que se reflejan principalmente en una tendencia a la subestimación de los grupos de edad 0 en los cruceros de verano y otoño (\textbf{Figura \ref{Fig31}}).
+
+
+
+## Comparación con asesorías previas
+
+
+Se comparan los resultados de los principales indicadores de estatus del modelo base actual (`r asesoria_1`), con versiones anteriores para evaluar la consistencia de la evaluación presente (\textbf{Figura \ref{Fig32}}). Al respecto, el análisis no muestra diferencias significativas entre asesorías en términos de reclutamientos y biomasa desovante. Las diferencias observadas en términos de la mortalidad por pesca tiene relación con el supuesto de captura utilizado en las asesorías de marzo, que es corregido en la asesoría de julio y septiembre. La actualización de datos de la actual asesoría genera un reescalamiento de la serie en torno al 7% de la mortalidad por pesca (disminuye respecto de la asesoría previa) y un 8% de la biomasa desovante (incrementa respecto de la asesoría previa).
+
+
+
+## Análisis retrospectivo
+
+En la \textbf{Figura \ref{Fig33}} se muestra el patrón retrospectivo estándar y relativo de los reclutas, biomasa desovante y de la mortalidad por pesca de sardina común para el caso base de `r asesoria_1`. El análisis retrospectivo del modelo de evaluación muestra que en términos de rho (promedio de anomalías retrospectivas) la reducción de información genera un patrón de subestimación de los reclutas y de la biomasa desovante (rho = -0,19 y rho = -0,01, respectivamente), con una sobreestimación de la mortalidad por pesca (rho = +0,14). En general, los últimos años de las series pueden variar sustancialmente entre las sucesivas actualizaciones, mientras que hacia los primeros años tienden a converger a valores estables. La varianza estadística de las variables utilizadas para medidas de manejo tiende a aumentar en los últimos años de la serie, por lo tanto, son considerados estimaciones menos confiables.
+
+
+
+
+## Perfil de verosimilitud
+
+La \textbf{Figura \ref{Fig34}} muestra el perfil de verosimilitud realizado para la asesoría de `r asesoria_1` de cada fuente de dato cuyo mínimo representa la estimación máxima a posteriori del reclutamiento medio ($R_0$) para cada fuente de error del caso base. El perfil muestra que los datos cuyos perfiles estuvieron más próximos entre si y la diferencia del log verosimilitud respecto del mínimo se elevó por sobre el criterio estadístico $X^2=1,92$ fueron la biomasa acústica de verano (Bio_Reclas) y la proporción de edad del crucero de verano (C.Edad_Recl).  No obstante, la proporción de edad de la flota (C.Edad_Flota) estaría generando  un incremento en Ro, generando el reescalamiento de las series históricas (Ro_julio_2022 = 121, Ro_marzo_2022 = 118).
+
+
+### Indicadores del stock
+
+#### Reclutamientos:
+\quad
+
+Las tendencias de los reclutamientos han mostrado importantes fluctuaciones interanuales y en su historia conocida se aprecian tres períodos relevantes, a) Reclutamiento promedio del período 1991-2007 con los niveles más bajos de reclutamientos (117 mil millones de peces), b) Reclutamiento promedio del período 2008-2012 con los más altos niveles de reclutamiento (427 mil millones de peces) y c) Reclutamiento promedio del período 2013-2022 en torno a 187 mil millones de peces. Se destaca una recuperación importante de la clase anual 2021 respecto de los bajos niveles estimados en los 2 años precedentes. En relación a los tres períodos relevantes, el reclutamiento 2022 es un 12% mayor al Reclutamiento bajo (período 1991-2007), un 76% menor al Reclutamiento alto (período 2008-2012) y un 45% menor al Reclutamiento medio (2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}).  El reclutamiento 2022 disminuye un 42% respecto a lo estimado en la asesoría previa al incorporar información del crucero de otoño (biomasa acústica y composición de edad) y flota (desembarques, composición de edad y pesos medios).
+
+
+#### Biomasa total y desovante:
+\quad
+
+La biomasa total de este recurso, es sustentada esencialmente en los grupos de edad 0 y 1 año. En general, los grupos de edad 2+ no revisten mayor contribución en la producción tanto a nivel de desove como de biomasa disponible a la flota. La tendencia de la biomasa total muestra un importante crecimiento a partir del año 2008 que genera un cambio de nivel que se mantiene hasta el 2018. Sin embargo, presenta una alta variabilidad producto de las fluctuaciones del reclutamiento. El promedio de la biomasa total para el período de mayor productividad de sardina común entre los años 2008 y 2012 es de 2,88 millones de toneladas. Para el año 2022 se estimó una biomasa total actualizada de 2 millones de toneladas, un 29% menor al promedio del período de mayor productividad y un 14% mayor al promedio histórico de la serie (promedio 1991-2022 = 1,77 millones de t.) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). Por otro lado, la biomasa desovante promedio de la serie histórica se encuentra en torno a 806 mil toneladas, mientras que el promedio de los ultimos 10 años  (período 2013-2022) de la serie es de 1,10 millones de toneladas. Al respecto, la biomasa desovante esperada para el año biológico 2021/2022 es un 46% mayor al promedio histórico y un 7% menor al promedio de los últimos 10 años (período 2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). La biomasa desovante al Máximo Rendimiento Sostenido (BD~RMS~) está en torno a las 859 mil toneladas, de esta forma la BD~2021/2022~ esperada está un 37% sobre BD~RMS~ (\textbf{Tabla \ref{Tab22}} y \textbf{\ref{Tab21}} y \textbf{Figura \ref{Fig35}}). La biomasa desovante está sustentada principalente por la fracción adulta, correspondiente a individuos de edad 1+, la cual disminuyó su abundancia producto de la disminución del reclutamiento de dos años previos consecutivos 2019 y 2020 junto a la disminución de la biomasa adulta (1+ años) el 2020, provocando que la biomasa desovante del año biológico 2020/2021 disminuyera significativamente respecto a años previos. No obstante, los altos reclutamientos registrados durante el 2021, junto a la disminución de las capturas permitirían retornar a  niveles de biomasa desovante sobre la biomasa objetivo para el año actual (2021/2022).
+
+#### Mortalidad por pesca:
+
+\quad
+
+La mortalidad por pesca (Ft) ha sido más bien baja, en general menor a la mortalidad natural (M=1,0 año^-1^), excepto para el año 2004 cuando los niveles de biomasa eran bajos. Esto se ve reflejado en las capturas, que, en promedio, han seguido las fluctuaciones en biomasa con tasas de explotación moderadas (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). A partir del año 2005, la mortalidad por pesca ha seguido una tendencia al descenso, acentuada desde el año 2013 bajo el valor de F~RMS~ producto de la aplicación de F60%. Para el año 2021/2022 la mortalidad por pesca se redujo en un 55% respecto al año previo (año 2021) y un 57% respecto al supuesto de captura de la asesoría previa (marzo 2022) en torno al RMS.
+
+\pagebreak
+
+# FIGURAS
+
+```{r Fig26,warning=F, include=T, message=F, echo=F,fig.show = "hide",fig.height=6.7,fig.width=6.5,fig.align="center",fig.path=dir.Fig,dev=fig}
 
 yrs   <- rep1$years
 nyrs  <- length(yrs)
@@ -1143,7 +1201,7 @@ BcV/BcP/d + plot_layout(guides="collect")
 \pagebreak
 
 
-```{r Fig_ajusteindices_sardcom,warning=F, include=T, message=F, echo=F,fig.height=5.7,fig.width=6.5,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig_ajusteindices_sardcom,warning=F, include=T, message=F, echo=F,fig.height=5.7,fig.width=6.5,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig26}Ajustes del modelo anual en edades a los valores de biomasas de cruceros de verano, otoño y desembarques. Las barras corresponden al intervalo de confianza asintótico y el círculo al valor del estimador central. Los años de la serie de desembarques corresponden a año biológico."}
 
 yrs   <- rep1$years
 nyrs  <- length(yrs)
@@ -1337,44 +1395,7 @@ obsD95s <- obsD*exp(1.96*cvdes)
 
 \pagebreak
 
-```{r Fig27, warning=F, include=T, message=F, echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path=dir.Fig,dev=fig}
-par(mfcol=c(3,3),mar=c(2,4,1,1)+0.5)
-
- plot(years,Res_reclas,xaxp=x1,cex.axis=0.8,ylim=c(-1.1,1.1),
-      type="h",main="Cruceros de Verano",ylab="Residuales (escala log)",xlab="")
-	#mtext("b)",side=3,line=0.25,adj=-0.15,cex=1.5)
-	abline(h=0,col="darkgray")
-	plot(log(predR),Res_reclas, ylim=c(-1.1,1.1),
-	     main="Residuales vs ajustado",ylab="Residuales",xlab="Valor ajustado")
-	abline(h=0,col="darkgray")
-	#hist(Res_reclas,xlab="Residuales",ylab="Frecuencia",main="Histograma de Residuos")
-	qqnorm(Res_reclas,ylim=c(-1.1,1.1)); qqline(Res_reclas, col = 2)
-	
-	plot(years,Res_Pelaces,xaxp=x1,ylim=c(-1.1,1.1),cex.axis=0.8,
-	     type="h",main="Cruceros de Otoño",ylab="Residuales (escala log)",xlab="")
-	#mtext("b)",side=3,line=0.25,adj=-0.15,cex=1.5)
-	abline(h=0,col="darkgray")
-	plot(log(predP),Res_Pelaces,ylim=c(-1.1,1.1), 
-	     main="Residuales vs ajustado",ylab="Residuales",xlab="Valor ajustado")
-	abline(h=0,col="darkgray")
-	#hist(Res_Pelaces,xlab="Residuales",ylab="Frecuencia",main="Histograma de Residuos")
-	qqnorm(Res_Pelaces,ylim=c(-1.1,1.1)); qqline(Res_Pelaces, col = 2)
-	
-  plot(years,Res_Desemb,xaxp=x1,cex.axis=0.8,ylim=c(-1.1,1.1),
-       type="h",main="Desembarques",ylab="Residuales (escala log)",xlab="")
-#	mtext("b)",side=3,line=0.25,adj=-0.15,cex=1.5)
-	abline(h=0,col="darkgray")
-	plot(log(predD),Res_Desemb, ylim=c(-1.1,1.1),
-	     main="Residuales vs ajustado",ylab="Residuales",xlab="Valor ajustado")
-	abline(h=0,col="darkgray")
-	#hist(Res_Desemb,xlab="Residuales",ylab="Frecuencia",main="Histograma de Residuos")
-	qqnorm(Res_Desemb,ylim=c(-1.1,1.1)); qqline(Res_Desemb, col = 2)
-	
-```
-
-
-
-```{r Fig_residuosIndices_sardcom,warning=F, include=T, message=F, echo=F,fig.height=5.7,fig.width=6.5,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig_residuosIndices_sardcom,warning=F, include=T, message=F, echo=F,fig.height=5.7,fig.width=6.5,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig27}Residuales (escala log) del ajuste del modelo base actual a los datos de entrada. Línea azul y zona gris corresponden a un suavizador tipo Loess."}
 
 
 yrs      <- rep1$years
@@ -1485,7 +1506,7 @@ r1.1 + r2.2 + r4.4
 
 \pagebreak
 
-```{r Fig28,warning=F, include=T, message=F, echo=F,fig.height=7,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig28,warning=F, include=T, message=F, echo=F,fig.height=7,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig28}Ajuste del modelo base a las composiciones de edades de la flota de sardina común de las Regiones de Valparaíso a Los Lagos. Los años corresponden a año biológico."}
 
 years   <- dat1$Ind[,1] 
 nyears  <- length(years)  
@@ -1544,7 +1565,7 @@ etcf3_pre <- rep3$pf_pred
 ```
 \pagebreak
 
-```{r Fig29,warning=F, include=T, message=F, echo=F,fig.height=7,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig29,warning=F, include=T, message=F, echo=F,fig.height=7,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig29}Ajuste del modelo base a las composiciones de edades de los Cruceros de verano de sardina común de las Regiones de Valparaíso a Los Lagos."}
 
 years   <- dat1$Ind[,1] 
 nyears  <- length(years)  
@@ -1600,7 +1621,7 @@ etcf3_pre <- rep3$ppred_RECLAS
 
 \pagebreak
 
-```{r Fig30,warning=F, include=T, message=F, echo=F,fig.height=7,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig30,warning=F, include=T, message=F, echo=F,fig.height=7,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig30}Ajuste del modelo base a las composiciones de edades de los Cruceros de otoño de sardina común de las Regiones de Valparaíso a Los Lagos."}
 
 years   <- dat1$Ind[,1] 
 nyears  <- length(years)  
@@ -1655,7 +1676,7 @@ etcf3_pre <- rep3$ppred_PELACES
 
 \pagebreak
 
-```{r Fig31, echo=F, warning=F, include=T, message=F,fig.height=5,fig.width=10,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig31, echo=F, warning=F, include=T, message=F,fig.height=5,fig.width=10,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig31}Residuales del modelo base actual a las composiciones de edades de la flota y cruceros. Subestimaciones (círculos negros) y sobreestimaciones (circulo blanco), donde el tamaño corresponde a la magnitud relativa de error por edad."}
 
 ppredF<-rep1$pf_pred                                          
 ppredR<-rep1$ppred_RECLAS                                     
@@ -1753,7 +1774,7 @@ box()
 
 
 
-## Comparación con asesorías previas
+
 
 ```{r VariablesSept_std, echo=F,message=FALSE, warning=FALSE, include=T}
 
@@ -1932,7 +1953,7 @@ x2 <-c(years[1]-1,years[nyears]+1) #xlim
 
 
 
-```{r Fig32, echo=F, message=FALSE, warning=FALSE, include=T, fig.align="center", fig.height=7, fig.width=7,fig.path=dir.Fig,dev=fig}
+```{r Fig32, echo=F, message=FALSE, warning=FALSE, include=T, fig.align="center", fig.height=7, fig.width=7,fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig32}Comparación con asesorías anteriores del reclutamiento, biomasa desovante y mortalidad por pesca ($F año^{-1}$) de la sardina común. Los años en el eje x corresponden a año biológico."}
 
 year_retros <- c('2022_sept','2022_julio',"2022_marzo",'2021_sept',"2021_julio","2021_marzo","2020_sept","2020_julio","2020_marzo")
 nretros <- 8
@@ -1999,7 +2020,7 @@ Rt/BD/Ft
 ```
 
 
-## Análisis retrospectivo
+
 
 ```{r Dat_Retrospectivo, echo=F, message=FALSE, warning=FALSE, include=T,eval=T}
 dir<-paste(dir.0,"/Retrospectivo_sept",sep="")
@@ -2095,7 +2116,7 @@ Ft_retroRel<- data.frame(x=years,
 
 
 
-```{r Fig33, echo=F, message=FALSE, warning=FALSE, include=T, fig.align="center", fig.height=10, fig.width=10,fig.path=dir.Fig,dev=fig}
+```{r Fig33, echo=F, message=FALSE, warning=FALSE, include=T, fig.align="center", fig.height=10, fig.width=10,fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig33}Patrón retrospectivo estándar (panel izquierdo) y relativo (panel derecho) de los reclutamientos, biomasa desovante y de la mortalidad por pesca de sardina común centro-sur para el modelo base actual. Los años en el eje x corresponden a año biológico."}
 
 #Retrospectivo tradicional
 Rt <- ggplot(Rt_retro) + 
@@ -2195,49 +2216,9 @@ Rt/BD/Ft |Rtrel/BDrel/Ftrel
 
 
 
-## Perfil de verosimilitud
 
 
-```{r Fig34,eval=T, warning=F, include=T, message=F, echo=F,fig.height=4,fig.width=5,fig.align="center",fig.path=dir.Fig,dev=fig}
-
-dir<-paste(dir.0,"/Verosimilitud_sept",sep="")
-setwd(dir)
-
-casos <-23
-logRo    <- rep(0,casos)
-likeval  <- matrix(ncol=15,nrow=casos)
-slikeval <- matrix(ncol=16,nrow=casos)
-
-for(i in 1:casos){
-report      <- reptoRlist(paste(dir,"/MAE922",i,".rep",sep=""))
-logRo[i]    <- report$log_Ro
-likeval[i,] <- report$likeval}
-
-like    <- data.frame(round(likeval,3),Total=apply(likeval,1,sum))
-minLik  <- apply(like,2,min)                         # busca el mínimo
-for(i in 1:16){slikeval[,i]<-like[,i]-minLik[i]}    # Estandarización
-
-names<-c("Ro","Reclas","Pelaces","Desembarques","MPDH","propF",
-	"propRecl","propPel","prepPelTall","DesvRt","qreclas","qpela","PenFt",
-	"PenFspr","NA","NA","Total")
-# Tabla verosimilitud
-TLk1 <- data.frame(exp(logRo),like);colnames(TLk1)<-names
-# Tabla estandarizada
-TLk2 <- data.frame(exp(logRo),slikeval);colnames(TLk2)<-names
-
-par(mar=c(4,4,1,1))
-plot(TLk2$Ro,TLk2$Total,type="l",lwd=3,ylim=c(0,3),xlim=c(10^4,32*10^4),
-	xaxs= "i",	ylab="L-min(L)",xlab="Ro",las=1,main='Asesoría Septiembre 2022',cex.main=0.8,cex.axis=0.8,cex.lab=0.8)
-lines(c(0,TLk2$Ro),rep(2,casos+1),lty=2,lwd=2)
-for(i in 2:8){lines(TLk2$Ro,TLk2[,i],col=i,lty=2,lwd=2)}
-#for(i in 9:14){lines(TLk2$Ro,TLk2[,i],col=i,lty=3,lwd=2)}
-legend(210000,2.9,names[c(17,2:8)],col=1:8,lty=c(1,rep(2,7)),lwd=2,bty="n",cex=0.75)
-#legend(230000,1.5,names[9:14],col=9:14,lty=3,lwd=2,bty="n",cex=0.8)
-
-```
-
-
-```{r Fig_Vesorimilitud_Sardcomun,warning=F, include=T, message=F, echo=F,fig.height=4,fig.width=7,fig.align="center",fig.path=dir.Fig,dev=fig}
+```{r Fig_Vesorimilitud_Sardcomun,warning=F, include=T, message=F, echo=F,fig.height=4,fig.width=7,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig34}Perfiles de verosimilitud donde la línea horizontal representa el nivel crítico para el test $X^2$."}
 
 dir<-paste(dir.0,"/Verosimilitud_sept",sep="")
 setwd(dir)
@@ -4230,7 +4211,8 @@ kable(t(data.frame(C1eryearR1,C1eryearR2,C1eryearR3,C2doyearR1,C2doyearR2,C2doye
 
 \pagebreak
 
-## Primera revisión CBA  (Asesoría de marzo)
+<!--- # Primera revisión CBA  (Asesoría de marzo) -->
+
 
 
 
@@ -4412,7 +4394,7 @@ kable(probEstatus)
 ```
 
 
-# Figuras de proyección  (Asesoría de marzo)
+<!--- # Figuras de proyección  (Asesoría de marzo) -->
 
 ```{r Fig34a_marzo, warning=F, include=T, message=F,eval=F, echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig}
 par(mfrow=c(2,2),mar=c(4,4,1,1)+0.5)
@@ -4523,7 +4505,7 @@ text(2024,900000,"d)")
 
 \pagebreak
 
-# Proyeccion de Estatus de proyección (Asesoría de marzo)
+<!--- # Proyeccion de Estatus de proyección (Asesoría de marzo) -->
 
 ```{r Tabla32_CBA_marzo, echo=FALSE, warning=F, include=T, message=F,eval=F}
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
@@ -4795,7 +4777,7 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 
 \pagebreak
 
-# PRIMERA REVISIÓN DE CBA (Asesoría de marzo)
+<!--- # PRIMERA REVISIÓN DE CBA (Asesoría de marzo) -->
 
 ```{r CBAinicial_marzo, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
@@ -4889,7 +4871,7 @@ kable(t(tablaincrementos))
 
 
 
-# CBA - desembarque (Asesoría de marzo)
+<!--- # CBA - desembarque (Asesoría de marzo) -->
 
 
 ```{r CBAinicial_marzo-desembarque2doSem, eval=F, echo=FALSE, warning=F, include=T, message=F}
@@ -4992,7 +4974,7 @@ kable(t(tablaincrementosD2S))
 
 
 
-# CBA - desembarque - Remanente (Asesoría de marzo)
+<!--- # CBA - desembarque - Remanente (Asesoría de marzo) -->
 
 
 ```{r CBA_marzo-desembarque2doSem-Remanente, eval=F, echo=FALSE, warning=F, include=T, message=F}
@@ -5103,7 +5085,7 @@ kable(t(tablaincrementosD2SR))
 
 
 
-# Figuras de CBA_RMS
+<!--- # Figuras de CBA_RMS -->
 
 
 ```{r Fig27_CBAmarzo,warning=F, include=T, message=F,eval=F, echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
@@ -5257,7 +5239,7 @@ kable(t(data.frame(C1eryearR1act2,C1eryearR12,C1eryearR22,C1eryearR32)))
 
 \pagebreak
 
-## SEGUNDA REVISION CBA (Asesoría de JULIO)
+<!--- # SEGUNDA REVISION CBA (Asesoría de JULIO) -->
 
 
 
@@ -5444,7 +5426,7 @@ kable(probEstatus)
 
 
 
-# Figuras de proyección  (Asesoría de julio)
+<!--- # Figuras de proyección  (Asesoría de julio) -->
 
 ```{r Fig34a_julio, warning=F, include=T, message=F,eval=F, echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig}
 par(mfrow=c(2,2),mar=c(4,4,1,1)+0.5)
@@ -5554,7 +5536,7 @@ text(2024,900000,"d)")
 
 \pagebreak
 
-# Proyeccion de Estatus de proyección (Asesoría de julio)
+<!--- # Proyeccion de Estatus de proyección (Asesoría de julio) -->
 
 ```{r Tabla32_CBA_julio, echo=FALSE, warning=F, include=T, message=F,eval=F}
 dir.4<-paste(dir.0,"/CBA_julio/",sep="")
@@ -5827,9 +5809,9 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 
 \pagebreak
 
-# CBA (Asesoría de julio)
+<!--- # CBA (Asesoría de julio) -->
 
-## CBA julio
+
 ```{r CBA_julio, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_julio/",sep="")
@@ -5901,7 +5883,9 @@ kable(t(round(tCBA_julio_D,0)))
 
 ```
 
-## Resguardo CBA julio
+<!--- # Resguardo CBA julio -->
+
+
 ```{r Tabla30_resguardo_julio, eval=F,echo=FALSE, warning=F, include=T, message=F}
 
 for(i in 1:nes){for(j in 1:nq){	
@@ -5913,7 +5897,8 @@ kable(t(buffer))
 ```
 
 
-## Diferencia entre CBAs asesoría de septiembre y julio
+<!--- # Diferencia entre CBAs asesoría de septiembre y julio -->
+
 ```{r Tabla31b_diferenciasdescarte_julioseptiembre, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 descarte_julio <- matrix(ncol=nq,nrow=nes)
@@ -5935,7 +5920,7 @@ kable(t(tablaincrementos_julio_sept))
 
 ```
 
-## Diferencia entre CBAs asesoría de marzo y julio
+<!--- # Diferencia entre CBAs asesoría de marzo y julio -->
 
 ```{r Tabla31b_diferenciasdescarte_juliomarzo, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
@@ -5963,7 +5948,7 @@ kable(t(tablaincrementos_julio_marzo))
 
 
 
-# Figuras de CBA_RMS
+<!--- # Figuras de CBA_RMS -->
 
 
 ```{r Fig27_CBAjulio,warning=F, include=T, message=F,eval=F, echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
