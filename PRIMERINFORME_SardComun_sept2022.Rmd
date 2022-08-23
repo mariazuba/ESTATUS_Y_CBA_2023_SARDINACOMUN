@@ -72,7 +72,7 @@ citecolor: blue
 
 \spacing{1.5}
 
-# RESUMEN EJECUTIVO
+# RESUMEN EJECUTIVO {-}
 
 El presente informe contiene la segunda actualización del Estatus del año biológico 2021/22 y de la Captura Biológicamente Aceptable (CBA) del año calendario 2022 para el stock de sardina común en la Unidad de Pesquería Centro-Sur (UPCS) de Chile, Región de Valparaíso a Región de Los Lagos. El estudio es actualizado con la información disponible a junio de 2022: (1) Estadísticas de desembarques SERNAPESCA desde 1990/91 hasta 2021/22; (2) El porcentaje de descarte proveniente del Programa de Descarte de IFOP corresponde al período 2015-2021; (3) Información de captura a la edad y pesos individuales a la edad provenientes del "Programa de Seguimiento de las Principales Pesquerías Nacionales (Pesquerías Pelágicas)" desde 1990/91 hasta 2021/22; (4) Series de biomasas acústicas y composiciones de edad de verano (años 2000 a 2022) y otoño (años 2003 a 2022) provenientes del programa de cruceros IFOP "Evaluación hidroacústica de los stocks de anchoveta y sardina común entre las Regiones de Valparaíso y Los Lagos".; (5) publicaciones científicas y técnicas relacionadas con los parámetros del ciclo de vida (mortalidad natural y madurez).
 

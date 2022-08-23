@@ -1,15 +1,15 @@
  index   name              value      std.dev
      1   A50flota          2.3650e-01 1.7337e-01
-     2   log_rangoflota   -2.7132e-07 5.4263e-04
-     3   A50reclas        -2.3876e-02 8.9865e+02
-     4   log_rangoreclas  -2.6391e+00 1.7457e+03
-     5   A50pelaces        1.2579e-03 9.0386e+02
-     6   log_rangopelaces -2.5656e+00 1.8449e+03
+     2   log_rangoflota   -2.7133e-07 5.4264e-04
+     3   A50reclas        -2.3894e-02 8.9855e+02
+     4   log_rangoreclas  -2.6390e+00 1.7454e+03
+     5   A50pelaces        1.3385e-03 9.0353e+02
+     6   log_rangopelaces -2.5657e+00 1.8445e+03
      7   log_Ro            1.1701e+01 1.0615e-01
      8   log_desv_No      -5.3345e-01 1.0710e+00
      9   log_desv_No       1.4814e+00 4.1642e-01
     10   log_desv_No      -2.4671e-01 4.4920e+00
-    11   log_desv_No      -9.9699e+00 1.3289e+02
+    11   log_desv_No      -9.9699e+00 1.3286e+02
     12   log_desv_Rt       1.8179e-01 2.9636e-01
     13   log_desv_Rt      -4.0669e-01 2.6485e-01
     14   log_desv_Rt      -3.7633e-01 2.6824e-01
