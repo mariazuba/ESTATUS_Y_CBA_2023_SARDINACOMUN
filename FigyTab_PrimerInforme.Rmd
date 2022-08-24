@@ -2,7 +2,7 @@
 title: "Figuras y Tablas para  Informe de Estatus y CBA de sardina común Centro sur "
 output: 
     pdf_document:
-      toc: TRUE
+      toc: FALSE
       toc_depth: '3'
       number_sections: yes
       extra_dependencies: ["flafter"]
@@ -5961,7 +5961,7 @@ tCBA<-t(data.frame(CBAp_sept,CBApstd_sept,CBA_sept))
 colnames(tCBA)<-escrec
 row.names(tCBA)<-c('mean','sd',percentiles)
 
-kbl(round(tCBA,0), booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
+kbl(round(tCBA,0), booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,format.args=list(big.mark = '.'),
 caption = "CBA 2023 asesoría de septiembre") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=8)%>% 
@@ -5980,7 +5980,7 @@ tCBAd<-t(data.frame(CBApd_sept,CBApdstd_sept,CBAd_sept))
 colnames(tCBAd)<-escrec
 row.names(tCBAd)<-c('mean','sd',percentiles)
 
-kbl(round(tCBAd,0), booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
+kbl(round(tCBAd,0), booktabs = T,format = "latex",position="h!",escape = FALSE,align="c",format.args=list(big.mark = '.'),
 caption = "CBA 2023 con descuento del descarte asesoría de septiembre") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=8)%>% 
@@ -6004,7 +6004,7 @@ colnames(buffer2)<-escrec
 row.names(buffer2)<-percentiles
 
 
-kbl(buffer2, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
+kbl(buffer2, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,format.args=list(decimal.mark = ','),
 caption = "Buffer asesoría de septiembre") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=8)%>% 
