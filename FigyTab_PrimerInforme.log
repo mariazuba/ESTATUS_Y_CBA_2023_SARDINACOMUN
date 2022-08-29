@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.10)  23 AUG 2022 18:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.27)  29 AUG 2022 15:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **FigyTab_PrimerInforme.tex
 (./FigyTab_PrimerInforme.tex
 LaTeX2e <2022-06-01> patch level 5
-L3 programming layer <2022-08-05> (/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
+L3 programming layer <2022-08-23> (/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
 (/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/tex/latex/base/size10.clo
 File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
@@ -554,7 +554,7 @@ LaTeX Font Info:    Trying to load font information for T1+phv on input line 129
 (/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 ) (/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2022-08-05 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2022-08-23 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count316
 \l__pdf_internal_box=\box73
 ) (./FigyTab_PrimerInforme.aux
@@ -562,9 +562,6 @@ LaTeX Info: Redefining \. on input line 22.
 LaTeX Info: Redefining \% on input line 22.
 
 LaTeX Warning: Label `Fig44cs' multiply defined.
-
-
-LaTeX Warning: Label `tab:estatusproyectado' multiply defined.
 
 )
 \openout1 = `FigyTab_PrimerInforme.aux'.
@@ -782,16 +779,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 
 [6]
 
-LaTeX Warning: Reference `Tab25s' on page 7 undefined on input line 518.
-
-
-LaTeX Warning: Reference `Tab25s' on page 7 undefined on input line 528.
-
-
 LaTeX Warning: Reference `Fig44bs' on page 7 undefined on input line 529.
-
-
-LaTeX Warning: Reference `Tab26s' on page 7 undefined on input line 531.
 
 
 LaTeX Warning: Reference `Tab27s' on page 7 undefined on input line 562.
@@ -812,7 +800,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.67097pt}.
 
 [7]
-<Figuras/Fig19-1.pdf, id=175, 578.16pt x 325.215pt>
+<Figuras/Fig19-1.pdf, id=180, 578.16pt x 325.215pt>
 File: Figuras/Fig19-1.pdf Graphic file (type pdf)
 <use Figuras/Fig19-1.pdf>
 Package pdftex.def Info: Figuras/Fig19-1.pdf  used on input line 587.
@@ -827,17 +815,17 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [8 <./Figuras/Fig19-1.pdf>]
-<Figuras/Fig20-1.pdf, id=186, 361.35pt x 578.16pt>
+<Figuras/Fig20-1.pdf, id=191, 361.35pt x 578.16pt>
 File: Figuras/Fig20-1.pdf Graphic file (type pdf)
 <use Figuras/Fig20-1.pdf>
 Package pdftex.def Info: Figuras/Fig20-1.pdf  used on input line 598.
 (pdftex.def)             Requested size: 361.34912pt x 578.15858pt.
-<Figuras/Fig21-1.pdf, id=187, 650.43pt x 289.08pt>
+<Figuras/Fig21-1.pdf, id=192, 650.43pt x 289.08pt>
 File: Figuras/Fig21-1.pdf Graphic file (type pdf)
 <use Figuras/Fig21-1.pdf>
 Package pdftex.def Info: Figuras/Fig21-1.pdf  used on input line 607.
 (pdftex.def)             Requested size: 472.04094pt x 209.79596pt.
-<Figuras/Fig22-1.pdf, id=188, 650.43pt x 433.62pt>
+<Figuras/Fig22-1.pdf, id=193, 650.43pt x 433.62pt>
 File: Figuras/Fig22-1.pdf Graphic file (type pdf)
 <use Figuras/Fig22-1.pdf>
 Package pdftex.def Info: Figuras/Fig22-1.pdf  used on input line 611.
@@ -872,12 +860,12 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [11 <./Figuras/Fig22-1.pdf>]
-<Figuras/Fig23-1.pdf, id=220, 650.43pt x 289.08pt>
+<Figuras/Fig23-1.pdf, id=225, 650.43pt x 289.08pt>
 File: Figuras/Fig23-1.pdf Graphic file (type pdf)
 <use Figuras/Fig23-1.pdf>
 Package pdftex.def Info: Figuras/Fig23-1.pdf  used on input line 620.
 (pdftex.def)             Requested size: 472.04094pt x 209.79596pt.
-<Figuras/Fig24-1.pdf, id=221, 650.43pt x 433.62pt>
+<Figuras/Fig24-1.pdf, id=226, 650.43pt x 433.62pt>
 File: Figuras/Fig24-1.pdf Graphic file (type pdf)
 <use Figuras/Fig24-1.pdf>
 Package pdftex.def Info: Figuras/Fig24-1.pdf  used on input line 624.
@@ -892,7 +880,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [12 <./Figuras/Fig23-1.pdf> <./Figuras/Fig24-1.pdf>]
-<Figuras/Fig_ajusteindices_sardcom-1.pdf, id=240, 469.755pt x 411.5375pt>
+<Figuras/Fig_ajusteindices_sardcom-1.pdf, id=245, 469.755pt x 411.5375pt>
 File: Figuras/Fig_ajusteindices_sardcom-1.pdf Graphic file (type pdf)
 <use Figuras/Fig_ajusteindices_sardcom-1.pdf>
 Package pdftex.def Info: Figuras/Fig_ajusteindices_sardcom-1.pdf  used on input line 637.
@@ -907,7 +895,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [13 <./Figuras/Fig_ajusteindices_sardcom-1.pdf>]
-<Figuras/Fig_residuosIndices_sardcom-1.pdf, id=251, 469.755pt x 411.5375pt>
+<Figuras/Fig_residuosIndices_sardcom-1.pdf, id=256, 469.755pt x 411.5375pt>
 File: Figuras/Fig_residuosIndices_sardcom-1.pdf Graphic file (type pdf)
 <use Figuras/Fig_residuosIndices_sardcom-1.pdf>
 Package pdftex.def Info: Figuras/Fig_residuosIndices_sardcom-1.pdf  used on input line 650.
@@ -922,7 +910,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [14 <./Figuras/Fig_residuosIndices_sardcom-1.pdf>]
-<Figuras/Fig28-1.pdf, id=264, 578.16pt x 505.89pt>
+<Figuras/Fig28-1.pdf, id=269, 578.16pt x 505.89pt>
 File: Figuras/Fig28-1.pdf Graphic file (type pdf)
 <use Figuras/Fig28-1.pdf>
 Package pdftex.def Info: Figuras/Fig28-1.pdf  used on input line 661.
@@ -937,7 +925,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [15 <./Figuras/Fig28-1.pdf>]
-<Figuras/Fig29-1.pdf, id=274, 578.16pt x 505.89pt>
+<Figuras/Fig29-1.pdf, id=279, 578.16pt x 505.89pt>
 File: Figuras/Fig29-1.pdf Graphic file (type pdf)
 <use Figuras/Fig29-1.pdf>
 Package pdftex.def Info: Figuras/Fig29-1.pdf  used on input line 671.
@@ -952,7 +940,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [16 <./Figuras/Fig29-1.pdf>]
-<Figuras/Fig30-1.pdf, id=285, 578.16pt x 505.89pt>
+<Figuras/Fig30-1.pdf, id=290, 578.16pt x 505.89pt>
 File: Figuras/Fig30-1.pdf Graphic file (type pdf)
 <use Figuras/Fig30-1.pdf>
 Package pdftex.def Info: Figuras/Fig30-1.pdf  used on input line 682.
@@ -967,7 +955,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [17 <./Figuras/Fig30-1.pdf>]
-<Figuras/Fig31-1.pdf, id=295, 722.7pt x 361.35pt>
+<Figuras/Fig31-1.pdf, id=300, 722.7pt x 361.35pt>
 File: Figuras/Fig31-1.pdf Graphic file (type pdf)
 <use Figuras/Fig31-1.pdf>
 Package pdftex.def Info: Figuras/Fig31-1.pdf  used on input line 693.
@@ -982,7 +970,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [18 <./Figuras/Fig31-1.pdf>]
-<Figuras/Fig32-1.pdf, id=305, 505.89pt x 505.89pt>
+<Figuras/Fig32-1.pdf, id=310, 505.89pt x 505.89pt>
 File: Figuras/Fig32-1.pdf Graphic file (type pdf)
 <use Figuras/Fig32-1.pdf>
 Package pdftex.def Info: Figuras/Fig32-1.pdf  used on input line 706.
@@ -1005,7 +993,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [19 <./Figuras/Fig32-1.pdf>]
-<Figuras/Fig33-1.pdf, id=323, 722.7pt x 722.7pt>
+<Figuras/Fig33-1.pdf, id=328, 722.7pt x 722.7pt>
 File: Figuras/Fig33-1.pdf Graphic file (type pdf)
 <use Figuras/Fig33-1.pdf>
 Package pdftex.def Info: Figuras/Fig33-1.pdf  used on input line 719.
@@ -1020,7 +1008,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [20 <./Figuras/Fig33-1.pdf>]
-<Figuras/Fig_Vesorimilitud_Sardcomun-1.pdf, id=336, 505.89pt x 289.08pt>
+<Figuras/Fig_Vesorimilitud_Sardcomun-1.pdf, id=341, 505.89pt x 289.08pt>
 File: Figuras/Fig_Vesorimilitud_Sardcomun-1.pdf Graphic file (type pdf)
 <use Figuras/Fig_Vesorimilitud_Sardcomun-1.pdf>
 Package pdftex.def Info: Figuras/Fig_Vesorimilitud_Sardcomun-1.pdf  used on input line 730.
@@ -1035,7 +1023,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [21 <./Figuras/Fig_Vesorimilitud_Sardcomun-1.pdf>]
-<Figuras/Fig35-1.pdf, id=346, 578.16pt x 433.62pt>
+<Figuras/Fig35-1.pdf, id=351, 578.16pt x 433.62pt>
 File: Figuras/Fig35-1.pdf Graphic file (type pdf)
 <use Figuras/Fig35-1.pdf>
 Package pdftex.def Info: Figuras/Fig35-1.pdf  used on input line 743.
@@ -1050,7 +1038,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [22 <./Figuras/Fig35-1.pdf>]
-<Figuras/Fig36-1.pdf, id=359, 252.945pt x 252.945pt>
+<Figuras/Fig36-1.pdf, id=364, 252.945pt x 252.945pt>
 File: Figuras/Fig36-1.pdf Graphic file (type pdf)
 <use Figuras/Fig36-1.pdf>
 Package pdftex.def Info: Figuras/Fig36-1.pdf  used on input line 754.
@@ -1065,12 +1053,12 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [23 <./Figuras/Fig36-1.pdf>]
-<Figuras/Fig37-1.pdf, id=369, 650.43pt x 325.215pt>
+<Figuras/Fig37-1.pdf, id=374, 650.43pt x 325.215pt>
 File: Figuras/Fig37-1.pdf Graphic file (type pdf)
 <use Figuras/Fig37-1.pdf>
 Package pdftex.def Info: Figuras/Fig37-1.pdf  used on input line 765.
 (pdftex.def)             Requested size: 472.04094pt x 236.02046pt.
-<Figuras/Fig38-1.pdf, id=370, 542.025pt x 252.945pt>
+<Figuras/Fig38-1.pdf, id=375, 542.025pt x 252.945pt>
 File: Figuras/Fig38-1.pdf Graphic file (type pdf)
 <use Figuras/Fig38-1.pdf>
 Package pdftex.def Info: Figuras/Fig38-1.pdf  used on input line 774.
@@ -1085,12 +1073,12 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [24 <./Figuras/Fig37-1.pdf> <./Figuras/Fig38-1.pdf>]
-<Figuras/Fig39-1.pdf, id=389, 578.16pt x 469.755pt>
+<Figuras/Fig39-1.pdf, id=394, 578.16pt x 469.755pt>
 File: Figuras/Fig39-1.pdf Graphic file (type pdf)
 <use Figuras/Fig39-1.pdf>
 Package pdftex.def Info: Figuras/Fig39-1.pdf  used on input line 785.
 (pdftex.def)             Requested size: 472.02992pt x 383.52432pt.
-<Figuras/Fig40-1.pdf, id=390, 289.08pt x 289.08pt>
+<Figuras/Fig40-1.pdf, id=395, 289.08pt x 289.08pt>
 File: Figuras/Fig40-1.pdf Graphic file (type pdf)
 <use Figuras/Fig40-1.pdf>
 Package pdftex.def Info: Figuras/Fig40-1.pdf  used on input line 794.
@@ -1108,7 +1096,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [25 <./Figuras/Fig39-1.pdf>]
-<Figuras/Fig34a-1.pdf, id=405, 650.43pt x 505.89pt>
+<Figuras/Fig34a-1.pdf, id=410, 650.43pt x 505.89pt>
 File: Figuras/Fig34a-1.pdf Graphic file (type pdf)
 <use Figuras/Fig34a-1.pdf>
 Package pdftex.def Info: Figuras/Fig34a-1.pdf  used on input line 805.
@@ -1116,17 +1104,17 @@ Package pdftex.def Info: Figuras/Fig34a-1.pdf  used on input line 805.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Figuras/Fig45a_sept-1.pdf, id=406, 158.5925pt x 165.61874pt>
+<Figuras/Fig45a_sept-1.pdf, id=411, 158.5925pt x 165.61874pt>
 File: Figuras/Fig45a_sept-1.pdf Graphic file (type pdf)
 <use Figuras/Fig45a_sept-1.pdf>
 Package pdftex.def Info: Figuras/Fig45a_sept-1.pdf  used on input line 812.
 (pdftex.def)             Requested size: 158.59933pt x 165.6259pt.
-<Figuras/Fig45a_sept-2.pdf, id=407, 158.5925pt x 165.61874pt>
+<Figuras/Fig45a_sept-2.pdf, id=412, 158.5925pt x 165.61874pt>
 File: Figuras/Fig45a_sept-2.pdf Graphic file (type pdf)
 <use Figuras/Fig45a_sept-2.pdf>
 Package pdftex.def Info: Figuras/Fig45a_sept-2.pdf  used on input line 813.
 (pdftex.def)             Requested size: 158.59933pt x 165.6259pt.
-<Figuras/Fig45a_sept-3.pdf, id=408, 158.5925pt x 165.61874pt>
+<Figuras/Fig45a_sept-3.pdf, id=413, 158.5925pt x 165.61874pt>
 File: Figuras/Fig45a_sept-3.pdf Graphic file (type pdf)
 <use Figuras/Fig45a_sept-3.pdf>
 Package pdftex.def Info: Figuras/Fig45a_sept-3.pdf  used on input line 814.
@@ -1136,17 +1124,17 @@ Overfull \hbox (8.00673pt too wide) in paragraph at lines 812--815
 [][] [] [] 
  []
 
-<Figuras/Fig45b_sept-1.pdf, id=409, 158.5925pt x 165.61874pt>
+<Figuras/Fig45b_sept-1.pdf, id=414, 158.5925pt x 165.61874pt>
 File: Figuras/Fig45b_sept-1.pdf Graphic file (type pdf)
 <use Figuras/Fig45b_sept-1.pdf>
 Package pdftex.def Info: Figuras/Fig45b_sept-1.pdf  used on input line 816.
 (pdftex.def)             Requested size: 158.59933pt x 165.6259pt.
-<Figuras/Fig45b_sept-2.pdf, id=410, 158.5925pt x 165.61874pt>
+<Figuras/Fig45b_sept-2.pdf, id=415, 158.5925pt x 165.61874pt>
 File: Figuras/Fig45b_sept-2.pdf Graphic file (type pdf)
 <use Figuras/Fig45b_sept-2.pdf>
 Package pdftex.def Info: Figuras/Fig45b_sept-2.pdf  used on input line 817.
 (pdftex.def)             Requested size: 158.59933pt x 165.6259pt.
-<Figuras/Fig45b_sept-3.pdf, id=411, 158.5925pt x 165.61874pt>
+<Figuras/Fig45b_sept-3.pdf, id=416, 158.5925pt x 165.61874pt>
 File: Figuras/Fig45b_sept-3.pdf Graphic file (type pdf)
 <use Figuras/Fig45b_sept-3.pdf>
 Package pdftex.def Info: Figuras/Fig45b_sept-3.pdf  used on input line 818.
@@ -1166,17 +1154,17 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [26 <./Figuras/Fig40-1.pdf> <./Figuras/Fig45a_sept-1.pdf> <./Figuras/Fig45a_sept-2.pdf> <./Figuras/Fig45a_sept-3.pdf>]
-<Figuras/Fig45c_sept-1.pdf, id=438, 158.5925pt x 165.61874pt>
+<Figuras/Fig45c_sept-1.pdf, id=443, 158.5925pt x 165.61874pt>
 File: Figuras/Fig45c_sept-1.pdf Graphic file (type pdf)
 <use Figuras/Fig45c_sept-1.pdf>
 Package pdftex.def Info: Figuras/Fig45c_sept-1.pdf  used on input line 820.
 (pdftex.def)             Requested size: 158.59933pt x 165.6259pt.
-<Figuras/Fig45c_sept-2.pdf, id=439, 158.5925pt x 165.61874pt>
+<Figuras/Fig45c_sept-2.pdf, id=444, 158.5925pt x 165.61874pt>
 File: Figuras/Fig45c_sept-2.pdf Graphic file (type pdf)
 <use Figuras/Fig45c_sept-2.pdf>
 Package pdftex.def Info: Figuras/Fig45c_sept-2.pdf  used on input line 821.
 (pdftex.def)             Requested size: 158.59933pt x 165.6259pt.
-<Figuras/Fig45c_sept-3.pdf, id=440, 158.5925pt x 165.61874pt>
+<Figuras/Fig45c_sept-3.pdf, id=445, 158.5925pt x 165.61874pt>
 File: Figuras/Fig45c_sept-3.pdf Graphic file (type pdf)
 <use Figuras/Fig45c_sept-3.pdf>
 Package pdftex.def Info: Figuras/Fig45c_sept-3.pdf  used on input line 822.
@@ -1206,12 +1194,12 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [28 <./Figuras/Fig45c_sept-1.pdf> <./Figuras/Fig45c_sept-2.pdf> <./Figuras/Fig45c_sept-3.pdf>]
-<Figuras/Fig27_CBA-1.pdf, id=484, 722.7pt x 361.35pt>
+<Figuras/Fig27_CBA-1.pdf, id=489, 722.7pt x 361.35pt>
 File: Figuras/Fig27_CBA-1.pdf Graphic file (type pdf)
 <use Figuras/Fig27_CBA-1.pdf>
 Package pdftex.def Info: Figuras/Fig27_CBA-1.pdf  used on input line 828.
 (pdftex.def)             Requested size: 472.03212pt x 236.01607pt.
-<Figuras/Fig27_CBA-2.pdf, id=485, 722.7pt x 361.35pt>
+<Figuras/Fig27_CBA-2.pdf, id=490, 722.7pt x 361.35pt>
 File: Figuras/Fig27_CBA-2.pdf Graphic file (type pdf)
 <use Figuras/Fig27_CBA-2.pdf>
 Package pdftex.def Info: Figuras/Fig27_CBA-2.pdf  used on input line 836.
@@ -1276,6 +1264,9 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [34]
+
+LaTeX Warning: Command \' invalid in math mode on input line 1133.
+
 File: Figuras/logoifop.png Graphic file (type png)
 <use Figuras/logoifop.png>
 Package pdftex.def Info: Figuras/logoifop.png  used on input line 1141.
@@ -1286,9 +1277,12 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 (fancyhdr)                \setlength{\footskip}{7.875pt}.
 
 [35]
+
+LaTeX Warning: Command \' invalid in math mode on input line 1159.
+
 File: Figuras/logoifop.png Graphic file (type png)
 <use Figuras/logoifop.png>
-Package pdftex.def Info: Figuras/logoifop.png  used on input line 1191.
+Package pdftex.def Info: Figuras/logoifop.png  used on input line 1185.
 (pdftex.def)             Requested size: 35.29353pt x 42.6774pt.
 
 Package fancyhdr Warning: \footskip is too small (5.0pt): 
@@ -1298,7 +1292,7 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 [36]
 File: Figuras/logoifop.png Graphic file (type png)
 <use Figuras/logoifop.png>
-Package pdftex.def Info: Figuras/logoifop.png  used on input line 1262.
+Package pdftex.def Info: Figuras/logoifop.png  used on input line 1256.
 (pdftex.def)             Requested size: 35.29353pt x 42.6774pt.
 
 Package fancyhdr Warning: \footskip is too small (5.0pt): 
@@ -1307,15 +1301,15 @@ Package fancyhdr Warning: \footskip is too small (5.0pt):
 
 [37]
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 1277.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 1271.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1269--1279
+Underfull \hbox (badness 10000) in paragraph at lines 1263--1273
 \T1/phv/m/n/10 (+13) biologicos _ de _ referencia _ Rendimiento _ Maximo _ Sostenible _ en _ las _ pesquerias _ nacionales _ Review _
  []
 
 File: Figuras/logoifop.png Graphic file (type png)
 <use Figuras/logoifop.png>
-Package pdftex.def Info: Figuras/logoifop.png  used on input line 1281.
+Package pdftex.def Info: Figuras/logoifop.png  used on input line 1275.
 (pdftex.def)             Requested size: 35.29353pt x 42.6774pt.
 
 Package fancyhdr Warning: \footskip is too small (5.0pt): 
@@ -1336,18 +1330,18 @@ Package rerunfilecheck Info: File `FigyTab_PrimerInforme.out' has not changed.
 (rerunfilecheck)             Checksum: 39C004767C6FA96B50ED343F4B66B0A0;2384.
  ) 
 Here is how much of TeX's memory you used:
- 18782 strings out of 479620
- 314423 string characters out of 5875529
- 693233 words of memory out of 5000000
- 36452 multiletter control sequences out of 15000+600000
- 555152 words of font info for 338 fonts, out of 8000000 for 9000
+ 18790 strings out of 479471
+ 314524 string characters out of 5871662
+ 695679 words of memory out of 5000000
+ 36603 multiletter control sequences out of 15000+600000
+ 555374 words of font info for 342 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,17n,67p,1018b,471s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}</Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on FigyTab_PrimerInforme.pdf (38 pages, 1235222 bytes).
+{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}</Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on FigyTab_PrimerInforme.pdf (38 pages, 1235449 bytes).
 PDF statistics:
- 656 PDF objects out of 1000 (max. 8388607)
- 512 compressed objects within 6 object streams
+ 664 PDF objects out of 1000 (max. 8388607)
+ 518 compressed objects within 6 object streams
  108 named destinations out of 1000 (max. 500000)
  71955 words of extra memory for PDF output out of 74296 (max. 10000000)
 

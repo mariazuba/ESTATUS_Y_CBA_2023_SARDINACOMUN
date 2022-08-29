@@ -5089,8 +5089,6 @@ Fyr        <- exp(subset(std3,name=="log_Ft")$value)
 
 ```
 
-
-
 ```{r Fig45a_julio, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 
 source(paste(dir.fun,"Fn_DiagramaFase_proy.R",sep=""))
@@ -5825,7 +5823,7 @@ colnames(Tabla4.1)<-c("Septiembre 2022")
 
 
 
-kbl(Tabla4.1, booktabs = T,format = "latex",position="h!",align="c",format.args=list(big.mark = '.', decimal.mark = ","),
+kbl(Tabla4.1, booktabs = T,format = "latex",position="h!",align="c",format.args=list(big.mark = '.', decimal.mark = ","),escape = FALSE,
 caption = "\\label{Tab23}Puntos Biológicos de referencia (PBRs) y probabilidades de estar bajo $BD_{RMS}$ y sobre $F_{RMS}$ y en sobreexplotación, colapsado o sobrepesca.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=8)
@@ -5836,9 +5834,7 @@ caption = "\\label{Tab23}Puntos Biológicos de referencia (PBRs) y probabilidade
 \pagebreak
 
 <!--- RESULTADOS DE PROYECCIÓN ASESORÍA DE SEPTIEMBRE (HITO 1) -->
-
-```{r estatusproyectado,warning=F, include=T, message=F, echo=F}
-
+```{r warning=F, include=T, message=F, echo=F}
 # PRIMER AÑO PROYECTADO
 #######################################################################################
 ### *Probabilidad de estar bajo BRMS* 
@@ -5863,46 +5859,7 @@ pd2<-pnorm(0.5,RpRps2[1],RpRps2std[1],lower.tail = TRUE,log.p = F)
 pd3<-pnorm(0.5,RpRps3[1],RpRps3std[1],lower.tail = TRUE,log.p = F)
 
 #######################################################################################
-probEstatus<-round(rbind("BDRMS (mil t)"=c(BRMS1)/1000,
-                   'BD2022 (mil t)'=round(c(bds1[1],
-                                              bds2[1],
-                                              bds3[1])/1000,0),
-                   'C2022 (mil t)'=round(c(cs1[1],
-                                             cs2[1],
-                                             cs3[1])/1000,0),
-                   'C1erS2022 ( mil t)'=round(c((cs1[1])*0.7,
-                                                  (cs2[1])*0.7,
-                                                  (cs3[1])*0.7)/1000,0),
-                   'C2022 (-descarte mil t)'=round(c(cs1[1]*0.96,
-                                                       cs2[1]*0.96,
-                                                       cs3[1]*0.96)/1000,0),
-                   'C1erS2022 (-descarte mil t)'=round(c((cs1[1]*0.96)*0.7,
-                                                           (cs2[1]*0.96)*0.7,
-                                                           (cs3[1]*0.96)*0.7)/1000,0),
-                   'BD2022/BDRMS'=round(c(RpRps1[1],
-                                              RpRps2[1],
-                                              RpRps3[1]),2),
-                   "*p(BD2022<BDRMS)*"=round(c(pa1,
-                                                   pa2,
-                                                   pa3),2),
-                  "*p(sobreexplotación)*"=round(c(pc1,
-                                                  pc2,
-                                                  pc3),2),
-                  "*p(agotado/colapsado)*"=round(c(pd1,
-                                                   pd2,
-                                                   pd3),2)),2)
-
-colnames(probEstatus)<-c("R1",'R2','R3')
-
-kbl(probEstatus, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
-caption = "Proyección primer año biológico asesoría de septiembre ") %>% 
-  kable_styling(latex_options = c("striped", "condensed"),
-                full_width = FALSE,font_size=8)
-
-#######################################################################################
-
 # SEGUNDO AÑO PROYECTADO
-
 #######################################################################################
 ### *Probabilidad de estar bajo BRMS* 
 #######################################################################################
@@ -5926,26 +5883,62 @@ pd22<-pnorm(0.5,RpRps2[2],RpRps2std[2],lower.tail = TRUE,log.p = F)
 pd32<-pnorm(0.5,RpRps3[2],RpRps3std[2],lower.tail = TRUE,log.p = F)
 
 #######################################################################################
-probEstatus2y<-round(rbind("BDRMS (mil t)"=c(BRMS1)/1000,
-                   'BD2023(mil t)'=round(c(bds1[2],bds2[2],bds3[2])/1000,0),
-                    'C2023(mil t)'=round(c(cs1[2],cs2[2],cs3[2])/1000,0),
-                   'C2doS2022 ( mil t)'=round(c((cs1[2])*0.3,(cs2[2])*0.3,(cs3[2])*0.3)/1000,0),
-                   'C2023 (-descarte mil t)'=round(c(cs1[2]*0.96,cs2[2]*0.96,cs3[2]*0.96)/1000,0),
-                   'C2doS2022 (-descarte mil t)'=round(c((cs1[2]*0.96)*0.3,(cs2[2]*0.96)*0.3,(cs3[2]*0.96)*0.3)/1000,0),
-                   'BD2023/BDRMS'=round(c(RpRps1[2],RpRps2[2],RpRps3[2]),2),
-                   "*p(BD2023\\<BDRMS)*"=round(c(pa12,pa22,pa32),2),
-                  "*p(sobreexplotación)*"=round(c(pc12,pc22,pc32),2),
-                  "*p(agotado/colapsado)*"=round(c(pd12,pd22,pd32),2)),2)
 
-colnames(probEstatus2y)<-c("R1",'R2','R3')
+```
 
+```{r estatusproyectado,warning=F, include=T, message=F, echo=F}
 
+probEstatus<-rbind("$R_{proy}$"=formatC(c(reps1a$Np[1],reps2a$Np[1],reps3a$Np[1],
+                                          reps1a$Np[1],reps2a$Np[1],reps3a$Np[1])/1000, decimal.mark = ","),
+                    "$F_{proy}=F_{RMS}$"=formatC(c(rep(FRMS1,6)), decimal.mark = ","),
+                    "$BD_{RMS}$"=formatC(c(rep(BRMS1,6))/1000, decimal.mark = ","),
+                    '$BD_{proy}$'=formatC(round(c(bds1[1],bds2[1],bds3[1],
+                                                          bds1[2],bds2[2],bds3[2])/1000,0), decimal.mark = ","),
+                    '$BD_{proy}/BD_{RMS}$'=formatC(round(c(RpRps1[1],RpRps2[1],RpRps3[1],
+                                                           RpRps1[2],RpRps2[2],RpRps3[2]),2), decimal.mark = ","),
+                   "$p(sobreexplotación)$"=formatC(round(c(pc1,pc2,pc3,
+                                                           pc12,pc22,pc32),2), decimal.mark = ","),
+                   "$p(agotado/colapsado)$"=formatC(round(c(pd1,pd2,pd3,
+                                                            pd12,pd22,pd32),2), decimal.mark = ","))
 
+colnames(probEstatus)<-rep(c("$R_{1991-2007}$",'$R_{2008-2012}$','$R_{2013-2021}$'),2)
 
-kbl(probEstatus2y, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
-caption = "Proyección segundo año biológico asesoría de septiembre") %>% 
+kbl(probEstatus, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
+caption = "\\label{Tab25s}Proyección de la biomasa desovante hacia el año biológico 2022/2023 y 2023/2024 considerando tres escenarios de reclutamientos y mortalidad por pesca igual al $F_{RMS}$. Probabilidad de estar bajo $BD_{RMS}$ y sobre $F_{RMS}$ y la probabilidad de sobre-explotación y colapso.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
-                full_width = FALSE,font_size=8)
+                full_width = FALSE,font_size=10)%>% 
+  add_header_above(c(" " = 1,
+                    "Escenarios de reclutamiento" = 3,
+                    "Escenarios de reclutamiento" = 3),line = F)%>% 
+  add_header_above(c(" " = 1,
+                    "Estatus 2022/2023" = 3,"Estatus 2023/2024" = 3),line = F)
+
+
+```
+
+
+```{r Capturaproyectado,warning=F, include=T, message=F, echo=F}
+
+Capturaproy<-rbind('Año biológico proyectada 2022/2023'=round(c(cs1[1],cs2[1],cs3[1])/1000,0),
+                   'Primer Semestre 2023'=round(c(cs1[1]*0.7,cs2[1]*0.7,cs3[1]*0.7)/1000,0),
+                   'Año biológico proyectada 2023/2024'=round(c(cs1[2],cs2[2],cs3[2])/1000,0),
+                   'Segundo Semestre 2023'=round(c(cs1[2]*0.3,cs2[2]*0.3,cs3[2]*0.3)/1000,0),
+                   'Año calendario 2023'=round(c((cs1[1]*0.7)+(cs1[2]*0.3),
+                                                         (cs2[1]*0.7)+(cs2[2]*0.3),
+                                                         (cs3[1]*0.7)+(cs3[2]*0.3))/1000,0))
+
+colnames(Capturaproy)<-c("$R_{1991-2007}$",'$R_{2008-2012}$','$R_{2013-2021}$')
+
+
+
+
+kbl(Capturaproy, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
+caption = "\\label{Tab26s}Proyección de la captura estimada para los años biológicos 2022/2023 y 2023/2024 considerando una mortalidad por pesca igual al $F_{RMS}$, con sus respectivos escenarios de reclutamientos. El cálculo de la Captura para el año calendario 2023 se obtiene como el promedio ponderado según la estacionalidad semestral de la pesquería que a la fecha se asume 70\\% para el primer semestre y 30\\% para el segundo semestre.") %>% 
+  kable_styling(latex_options = c("striped", "condensed"),
+                full_width = FALSE,font_size=10)%>% 
+  add_header_above(c("Captura" = 1,
+                    "Escenarios de reclutamiento" = 3),line = F)
+
 
 ```
 
@@ -5964,7 +5957,7 @@ row.names(tCBA)<-c('mean','sd',percentiles)
 kbl(round(tCBA,0), booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,format.args=list(big.mark = '.'),
 caption = "CBA 2023 asesoría de septiembre") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
-                full_width = FALSE,font_size=8)%>% 
+                full_width = FALSE,font_size=10)%>% 
   add_header_above(c(" " = 1,
                     "Escenarios de reclutamiento" = 3),line = F)%>% 
   add_header_above(c(" " = 1,
@@ -5983,7 +5976,7 @@ row.names(tCBAd)<-c('mean','sd',percentiles)
 kbl(round(tCBAd,0), booktabs = T,format = "latex",position="h!",escape = FALSE,align="c",format.args=list(big.mark = '.'),
 caption = "CBA 2023 con descuento del descarte asesoría de septiembre") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
-                full_width = FALSE,font_size=8)%>% 
+                full_width = FALSE,font_size=10)%>% 
   add_header_above(c(" " = 1,
                     "Escenarios de reclutamiento" = 3),line = F)%>% 
   add_header_above(c(" " = 1,
@@ -6007,7 +6000,7 @@ row.names(buffer2)<-percentiles
 kbl(buffer2, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,format.args=list(decimal.mark = ','),
 caption = "Buffer asesoría de septiembre") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
-                full_width = FALSE,font_size=8)%>% 
+                full_width = FALSE,font_size=10)%>% 
   add_header_above(c(" " = 1,
                     "Escenarios de reclutamiento" = 3),line = F)%>% 
   add_header_above(c(" " = 1,
