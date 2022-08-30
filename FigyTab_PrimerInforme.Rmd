@@ -5826,7 +5826,9 @@ colnames(Tabla4.1)<-c("Septiembre 2022")
 kbl(Tabla4.1, booktabs = T,format = "latex",position="h!",align="c",format.args=list(big.mark = '.', decimal.mark = ","),escape = FALSE,
 caption = "\\label{Tab23}Puntos Biológicos de referencia (PBRs) y probabilidades de estar bajo $BD_{RMS}$ y sobre $F_{RMS}$ y en sobreexplotación, colapsado o sobrepesca.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
-                full_width = FALSE,font_size=8)
+                full_width = FALSE,font_size=8)%>% 
+  add_header_above(c(" " = 1,
+                    "Valores de Asesoría" = 1),line = F)
 
 
 ```
