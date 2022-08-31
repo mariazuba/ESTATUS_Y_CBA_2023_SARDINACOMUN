@@ -860,169 +860,6 @@ removefileadmb(dir.1,"MAE722")
 
 <!--- FUNCIONES PARA ACTUALIZACION DE TAMAÑO DE MUESTRA -->
 
-```{r TamañosMuestra, eval=FALSE, echo=FALSE, warning=FALSE, include=T}
-setwd(dir.1)
-
-
-#------------------------------------------------
-dat.file   = "MAE922.dat"
-data.0        <- lisread(paste(dir.1,dat.file, sep='/'));
-names(data.0) <-  str_trim(names(data.0), side="right")
-data.1        <- data.0
-rep           <- reptoRlist("MAE922.rep")                                               
-std           <- read.table("MAE922.std",header=T,sep="",na="NA",fill=T) 
-
-# ============================================================================== #
-# I. INDICES DE ABUNDANCIA                                                       #
-# ============================================================================== #
-years  <- data.1$Ind[,1]                                                              
-nyears <- data.1$nanos                                                                
-age    <- seq(0,4,1)                    
-nage   <- data.1$nedades                                                            
-Amax   <- data.1$nedades        
-Age    <- seq(0,4,1) 
-    
-
-x  <-c(years,rev(years))
-x1 <-c(years[1],years[nyears]+1,nyears+1/2) #xaxp
-x2 <-c(years[1]-1,years[nyears]+1) #xlim
-
-#============================================================#
-# II. COMPOSICI?N EDAD DE LAS CAPTURAS                       #
-#============================================================#
-#age <-dat$"#Edades"                                         
-age  <-seq(0,4,1)                                            
-nage<-length(age)                                            
-#Proporci?n observada                                        
-pobsF<-rep$pf_obs                                              
-pobsR<-rep$pobs_RECLAS                                       
-pobsP<-rep$pobs_PELACES                                      
-#Proporci?n predicha                                         
-ppredF<-rep$pf_pred                                          
-ppredR<-rep$ppred_RECLAS                                     
-ppredP<-rep$ppred_PELACES                                    
-resfl <-matrix(ncol=nage,nrow=nyears)                         
-for(i in 1:nyears){                                          
-	for(j in 1:nage){                                          
-		resfl[,j]<-pobsF[,j]-ppredF[,j]}}                        
-#Proporciones                                                
-pF   <- c(pobsF,ppredF); pF[pF==0]  <-NA                     
-pR   <- c(pobsR,ppredR); pR[pR==0]  <-NA                     
-pP   <- c(pobsP,ppredP); pP[pP==0]  <-NA                     
-#arreglos                                                    
-edad <- rep(gl((length(age)),length(years),label=age),2)     
-años <- rep(years,length(age)*2)                             
-ind  <- c(rep("capt_obs",length(years)*length(age)),         
-	rep("capt_est",length(years)*length(age)))        
-pro  <- data.frame(años,edad,ind,pF,pR,pP)    
-# ==========================================================================
-
-#=================================================================#
-# M?TODO de Francis
-#=================================================================#
-Nf1 <-60
-Nr1 <-34
-Np1 <-6
-#-------------------------------------------#
-#FLOTA
-fanos<-years
-fobs <-pobsF
-fpre <-ppredF 
-#RECLAS
-ranos<-years
-robs <-pobsR[rowSums(pobsR)>0,]
-rpre <-ppredR[rowSums(pobsR)>0,]
-#PELACES
-panos<-years
-pobs <-pobsP[rowSums(pobsP)>0,]
-ppre <-ppredP[rowSums(pobsP)>0,] 
-
-Of  <- rep(0,length(fanos))
-Ef  <- rep(0,length(fanos))
-vf  <- rep(0,length(fanos))
-vNf <- rep(0,length(fanos))
-
-Or  <- rep(0,length(robs[,1]))
-Er  <- rep(0,length(robs[,1]))
-vr  <- rep(0,length(robs[,1]))
-vNr <- rep(0,length(robs[,1]))
-
-Op  <- rep(0,length(pobs[,1]))
-Ep  <- rep(0,length(pobs[,1]))
-vp  <- rep(0,length(pobs[,1]))
-vNp <- rep(0,length(pobs[,1]))
-#-------------------------------------------#
-for(i in 1:length(fanos)){
-	Of[i]  <- sum(fobs[i,]*age)
-	Ef[i]  <- sum(fpre[i,]*age)
-	vf[i]  <- sum(fpre[i,]*age^2)-Ef[i]^2
-	vNf[i] <- vf[i]/Nf1}
-
-for(i in 1:length(robs[,1])){
-	Or[i]  <- sum(robs[i,]*age)
-	Er[i]  <- sum(rpre[i,]*age)
-	vr[i]  <- sum(rpre[i,]*age^2)-Er[i]^2
-	vNr[i] <- vr[i]/Nr1}
-
-for(i in 1:length(pobs[,1])){
-	Op[i]  <- sum(pobs[i,]*age)
-	Ep[i]  <- sum(ppre[i,]*age)
-	vp[i]  <- sum(ppre[i,]*age^2)-Ep[i]^2
-	vNp[i] <- vp[i]/Np1}
-#--------------------------------------------#
-wf  <- 1/var((Of-Ef)/sqrt(vNf)) 
-wr  <- 1/var((Or-Er)/sqrt(vNr)) 
-wp  <- 1/var((Op-Ep)/sqrt(vNp))
-
-Nf2 <- Nf1*wf                   # NM FLOTA
-Nr2 <- Nr1*wr                   # NM RECLAS
-Np2 <- Np1*wp                   # NM PELACES
-#-----------------------------------------------------------------#
-NM_Fran <- data.frame(nmF=c(Nf1,Nf2),nmR=c(Nr1,Nr2),nmP=c(Np1,Np2));NM_Fran
-#-----------------------------------------------------------------#
-
-#=================================================================#
-# M?todo de Ianelli 2002
-#=================================================================#
-Ofl <-ppredF[rowSums(pobsF)>0,]*(1-ppredF[rowSums(pobsF)>0,])
-Efl <-(pobsF[rowSums(pobsF)>0,]-ppredF[rowSums(pobsF)>0,])^2
-wfl <-rep(0,length(Ofl[,1]))
-for(i in 1:length(Ofl[,1])){
-	wfl[i] <-sum(Ofl[i,])/sum(Efl[i,])}
-
-nmf_ari <-mean(wfl)                      # MEDIA ARITMETICA
-nmf_geo <-exp(sum(log(wfl))/length(wfl)) # MEDIA GEOM?TRICA
-nmf_arm <-1/mean(1/wfl)                  # MEDIA ARM?NICA
-
-#------------------------------------------------------------
-Ore <-ppredR[rowSums(pobsR)>0,]*(1-ppredR[rowSums(pobsR)>0,])
-Ere <-(pobsR[rowSums(pobsR)>0,]-ppredR[rowSums(pobsR)>0,])^2
-wre <-rep(0,length(Ore[,1]))
-for(i in 1:length(Ore[,1])){	
-	wre[i] <-sum(Ore[i,])/sum(Ere[i,])}
-nmr_ari <-mean(wre)                      # MEDIA ARITMETICA
-nmr_geo <-exp(sum(log(wre))/length(wre)) # MEDIA GEOM?TRICA
-nmr_arm <-1/mean(1/wre)                  # MEDIA ARM?NICA
-#------------------------------------------------------------
-Ope <-ppredP[rowSums(pobsP)>0,]*(1-ppredP[rowSums(pobsP)>0,])
-Epe <-(pobsP[rowSums(pobsP)>0,]-ppredP[rowSums(pobsP)>0,])^2
-wpe <-rep(0,length(Ope[,1]))
-for(i in 1:length(Ope[,1])){
-	wpe[i] <-sum(Ope[i,])/sum(Epe[i,])}
-
-nmp_ari <-mean(wpe)                      # MEDIA ARITMETICA
-nmp_geo <-exp(sum(log(wpe))/length(wpe)) # MEDIA GEOM?TRICA
-nmp_arm <-1/mean(1/wpe)                  # MEDIA ARM?NICA
-#------------------------------------------------------------
-#------------------------------------------------------------
-NM_Ian <- data.frame(nmF=c(nmf_ari,nmf_geo,nmf_arm),
-                     nmR=c(nmr_ari,nmr_geo,nmr_arm),
-                     nmP=c(nmp_ari,nmp_geo,nmp_arm))
-kable(NM_Ian)
-#------------------------------------------------------------
-
-```
-
 
 
 
@@ -1035,40 +872,63 @@ asesoria_1<-"Septiembre 2022"
 
 El presente informe contiene el estatus del año biológico 2021/22 y de la Captura Biológicamente Aceptable (CBA) del año calendario 2023 para el stock de sardina común en la Unidad de Pesquería Centro-Sur (UPCS) de Chile, Región de Valparaíso a Región de Los Lagos. El estudio es actualizado con la información disponible a junio de 2022: (1) Estadísticas de desembarques SERNAPESCA desde 1990/91 hasta 2021/22; (2) El porcentaje de descarte proveniente del Programa de Descarte de IFOP corresponde al período 2015-2021; (3) Información de captura a la edad y pesos individuales a la edad provenientes del "Programa de Seguimiento de las Principales Pesquerías Nacionales (Pesquerías Pelágicas)" desde 1990/91 hasta 2021/22; (4) Series de biomasas acústicas y composiciones de edad de verano (años 2000 a 2022) y otoño (años 2003 a 2022) provenientes del programa de cruceros IFOP "Evaluación hidroacústica de los stocks de anchoveta y sardina común entre las Regiones de Valparaíso y Los Lagos".; (5) publicaciones científicas y técnicas relacionadas con los parámetros del ciclo de vida (mortalidad natural y madurez).
 
-El modelo de evaluación de stock de sardina común se basa en el análisis estadístico de la dinámica de estructuras de edad anual y pesos medios a la edad estimados del muestreo de tallas de los desembarques (período 1990 - junio 2022) y de los cruceros acústicos de verano (RECLAS, desde 2001 - 2022) y otoño (PELACES, período desde 2007 hasta 2022), de los índices de biomasa de los cruceros acústicos (biomasa de reclutas en verano, período desde 2000 hasta 2022 y biomasa vulnerable en otoño, desde 2003 al 2022 y los desembarques totales (período 1990 - junio 2022), estos últimos convertidos a temporada de pesca considerando la estacionalidad de la pesquería. Las fuentes de información utilizados en la evaluación de sardina común se resumen en la \textbf{Figura \ref{Fig19}}. 
+La información obtenida de los cruceros acústicos indican que durante los años 2015 al 2019, las biomasas acústicas de verano se mantuvieron en niveles en torno a los **2** millones de toneladas, lo cual se ve reflejado también en una estabilidad en las capturas totales en torno a las **360** mil toneladas. Por otro lado, las biomasas acústicas estimadas por el crucero de otoño reflejan el efecto de la remoción ejercidas por la pesca y causas naturales, con biomasas en general menores a las estimadas en el crucero de verano, en torno a **1,2** millones de toneladas promedio entre el 2015 al 2019 (\textbf{Tabla \ref{t1}} y \textbf{Figura \ref{Fig20}}). No obstante, para el año 2020 la biomasa estimada por el crucero acústico de verano se redujo a un millón de toneladas (**54%** menor al 2019), la biomasa del crucero de otoño disminuye un 39% respecto al 2019 y las capturas totales del año 2019/20 se redujeron un **10%** respecto al año previo. El desembarque 2020 estuvo en torno a las **258** mil toneladas, equivalente a un **80%** de la CBA 2020 recomendada por el CCT-PP (321.307 toneladas). 
 
-## Descripción de los datos
+La biomasa total estimada por el crucero de enero 2021 retorno a los niveles observados entre el 2015 al 2019 (**2,36** millones de t), incrementando un **125%** respecto a lo estimado para el año 2020 (\textbf{Tabla \ref{t1}} y \textbf{Figura \ref{Fig20}}). 
 
-Una de las principales características del stock de sardina común es el comportamiento estacional de las capturas, donde cerca del 70% de la captura total anual se obtiene al primer semestre de cada año, con máximos entre marzo y abril. Esta estacionalidad es altamente influenciada por el pulso de reclutamiento de enero, observándose una fuerte relación entre la biomasa estimada por el crucero de enero y los desembarques. Al respecto, se observa que durante los años 2015 al 2019, las biomasas acústicas de verano se mantuvieron en niveles en torno a los 2 millones de toneladas, lo cual se ve reflejado también en una estabilidad en las capturas totales en torno a las 360 mil toneladas. Por otro lado, las biomasas acústicas estimadas por el crucero de otoño reflejan el efecto de la remoción ejercidas por la pesca y causas naturales, con biomasas en general menores a las estimadas en el crucero de verano, en torno a 1,2 millones de toneladas promedio entre el 2015 al 2019 (\textbf{Tabla \ref{t1}} y \textbf{Figura \ref{Fig20}}). No obstante, para el año 2020 la biomasa estimada por el crucero acústico de verano se redujo a un millón de toneladas (54% menor al 2019), la biomasa del crucero de otoño disminuye un 39% respecto al 2019 y las capturas totales del año 2019/20 se redujeron un 10% respecto al año previo. El desembarque 2020 estuvo en torno a las 258 mil toneladas, equivalente a un 80% de la CBA 2020 recomendada por el CCT-PP (321.307 toneladas). La biomasa total estimada por el crucero de enero 2021 retorno a los niveles observados entre el 2015 al 2019 (2,36 millones de t), incrementando un 125% respecto a lo estimado para el año 2020 (\textbf{Tabla \ref{t1}} y \textbf{Figura \ref{Fig20}}). En el crucero de otoño, se estimó una biomasa de 1,1 millón de t, lo que equivale a un incremento del 26,8% respecto del año anterior. En relación con la captura total 2020/21 se registró un aumento del 38% respecto del año biológico 2019/20 (\textbf{Tabla \ref{t1}}). Para el año 2022, el crucero de enero registró un aumento del 35 % de la biomasa respecto al año previo, el crucero de otoño se mantuvo en torno al millón de toneladas y los niveles de capturas se redujeron un 44% respecto al año previo.
+En el crucero de otoño, se estimó una biomasa de **1,1** millón de t, lo que equivale a un incremento del **26,8%** respecto del año anterior.
 
-La pesquería de sardina común está sustentada principalmente por la abundancia del grupo de edad 0, con una proporción en torno al 60-70% de la captura en número de la flota. La captura en número a la edad se caracteriza por presentar una alta variabilidad interanual, siendo los años 2007, 2013, 2016, 2019 y 2020 los años con menor proporción de reclutas. Los pesos medios del grupo de edad 0 se encuentra en torno a los 8 grs. Se observa una estabilización de los pesos medios a partir del 2013 para todos los grupos de edad (\textbf{Figuras \ref{Fig22}}). En relación de la composición de edad de los cruceros de verano se observa que el grupo de edad 0 representa el 77% de la captura en número. Por otro lado, en el caso del crucero de otoño, el grupo de edad 0 representa el 67% de la captura en número (\textbf{Figuras \ref{Fig24}}). 
+En relación con la captura total 2020/21 se registró un aumento del **38%** respecto del año biológico 2019/20 (\textbf{Tabla \ref{t1}}). Para el año 2022, el crucero de enero registró un aumento del **35 %** de la biomasa respecto al año previo, el crucero de otoño se mantuvo en torno al millón de toneladas y los niveles de capturas se redujeron un **44%** respecto al año previo.
 
-Los resultados del crucero de verano 2019 y 2020 presentan una disminución en los niveles de abundancia de la fracción recluta, el estimado de biomasa total del crucero de verano 2019 estuvo sostenido por la fracción adulta (edad 1+) principalmente.  Esta disminución se observó al actualizar la composición de edad de la flota 2018/19 y 2019/20 y del crucero de otoño 2019 y 2020. Por lo tanto, la disminución de la biomasa total 2020 estaría fuertemente relacionada a la reducción del número de individuos de los grupos de edad 0 y 1 principalmente.
+La pesquería de sardina común está sustentada principalmente por la abundancia del grupo de edad 0, con una proporción en torno al 60-70% de la captura en número de la flota. La captura en número a la edad se caracteriza por presentar una alta variabilidad interanual, siendo los años 2007, 2013, 2016, 2019 y 2020 los años con menor proporción de reclutas. Los pesos medios del grupo de edad 0 se encuentra en torno a los 8 grs. 
 
-Los resultados del crucero de verano 2021 mostraron un incremento significativo en los niveles de abundancia de la fracción recluta (94% individuos de edad 0), a diferencia de los dos años previos, la biomasa total del crucero de verano 2021 estuvo sostenido principalmente por la fracción recluta (edad 0), observandose una baja presencia de individuos adultos (edad 1+). Esta importante participación de la fracción recluta continúa en el crucero de otoño, con un 83% de individuos de edad 0 y una baja presencia de ejemplares adultos (edad 1+). Para el año 2022, el crucero de verano registró una disminución en la abundancia de la fracción recluta (46% individuos de edad 0), a diferencia de lo observado el año 2021. La biomasa total estimada por el crucero es sostenida por la fracción recluta y adulta (edad 1, principalmente). El crucero de otoño 2022 y flota 2021/2022 también evidencian una reducción del grupo de edad 0 (70% crucero de otoño y 16% flota de individuos de edad 0).
+Se observa una estabilización de los pesos medios a partir del 2013 para todos los grupos de edad (\textbf{Figuras \ref{Fig22}}). En relación de la composición de edad de los cruceros de verano se observa que el grupo de edad 0 representa el **77%** de la captura en número. Por otro lado, en el caso del crucero de otoño, el grupo de edad 0 representa el **67%** de la captura en número (\textbf{Figuras \ref{Fig24}}). 
+
+Los resultados del crucero de verano 2019 y 2020 presentan una disminución en los niveles de abundancia de la fracción recluta, el estimado de biomasa total del crucero de verano 2019 estuvo sostenido por la fracción adulta (edad 1+) principalmente.  
+
+Esta disminución se observó al actualizar la composición de edad de la flota 2018/19 y 2019/20 y del crucero de otoño 2019 y 2020. Por lo tanto, la disminución de la biomasa total 2020 estaría fuertemente relacionada a la reducción del número de individuos de los grupos de edad 0 y 1 principalmente.
+
+Los resultados del crucero de verano 2021 mostraron un incremento significativo en los niveles de abundancia de la fracción recluta (**94%** individuos de edad 0), a diferencia de los dos años previos, la biomasa total del crucero de verano 2021 estuvo sostenido principalmente por la fracción recluta (edad 0), observandose una baja presencia de individuos adultos (edad 1+). 
+
+Esta importante participación de la fracción recluta continúa en el crucero de otoño, con un 83% de individuos de edad 0 y una baja presencia de ejemplares adultos (edad 1+).
+
+Para el año 2022, el crucero de verano registró una disminución en la abundancia de la fracción recluta (**46%** individuos de edad 0), a diferencia de lo observado el año 2021. La biomasa total estimada por el crucero es sostenida por la fracción recluta y adulta (edad 1, principalmente). 
+
+El crucero de otoño 2022 y flota 2021/2022 también evidencian una reducción del grupo de edad 0 (**70%** crucero de otoño y **16%** flota de individuos de edad 0).
 
 
 
 ## Ajuste del modelo a los datos
 
-Los índices de abundancia de los cruceros acústicos de verano y otoño contienen un importante nivel de variabilidad que se resume en la amplitud de los intervalos de confianza supuestos con coeficiente de variación cv=0,3. El modelo reproduce la tendencia general de la variabilidad en los niveles de biomasa que han presentado las estimaciones de los cruceros, siendo los valores más altos los que se escapan del ajuste, lo cual es consistente con la distribución de probabilidades empleada log-normal que considera sesgo positivo en su distribución. La \textbf{Figura \ref{Fig26}} muestra que a partir del 2014 el modelo ajusta muy bien la señal de los cruceros acústicos de verano y otoño. Para el año 2022 el modelo no logra capturar el incremento que se observa al incorporar  la  biomasa del crucero de verano 2022. No obstante es consistente con la señal que entrega el crucero de otoño y desembarques del último año.
+Los índices de abundancia de los cruceros acústicos de verano y otoño contienen un importante nivel de variabilidad que se resume en la amplitud de los intervalos de confianza supuestos con coeficiente de variación cv=0,3. 
 
-El suavizador tipo oess de los residuales del modelo sugieren tendencias,  principalmente la serie de cruceros de verano y otoño, quienes tienen mayor variabilidad y lejanía relativa respecto de la línea esperada en el qqplot (\textbf{Figura \ref{Fig27}}). Los datos de captura (desembarques) se asumen insesgados y precisos con un CV de residuos de 0,01 lo cual se refleja en un buen ajuste del modelo a los datos de entrada.
+El modelo reproduce la tendencia general de la variabilidad en los niveles de biomasa que han presentado las estimaciones de los cruceros, siendo los valores más altos los que se escapan del ajuste, lo cual es consistente con la distribución de probabilidades empleada log-normal que considera sesgo positivo en su distribución. 
 
-El ajuste del modelo a la información de composición de edades en general presenta un buen desempeño, particularmente en representar de mejor forma la composición de edades de los cruceros de verano (\textbf{Figuras \ref{Fig28}}, \textbf{\ref{Fig29}} y \textbf{\ref{Fig30}}). El supuesto de invariabilidad anual de los patrones de explotación como medida de parsimonia, genera algunos desajustes en las composiciones de edades de las capturas, principalmente al inicio de la serie histórica y grupo de edad 0. El comportamiento de los residuales de las composiciones de edades de los cruceros sugiere ciertos patrones que se reflejan principalmente en una tendencia a la subestimación de los grupos de edad 0 en los cruceros de verano y otoño (\textbf{Figura \ref{Fig31}}).
+La \textbf{Figura \ref{Fig26}} muestra que a partir del 2014 el modelo ajusta muy bien la señal de los cruceros acústicos de verano y otoño. Para el año 2022 el modelo no logra capturar el incremento que se observa al incorporar  la  biomasa del crucero de verano 2022. No obstante es consistente con la señal que entrega el crucero de otoño y desembarques del último año.
+
+El suavizador tipo oess de los residuales del modelo sugieren tendencias,  principalmente la serie de cruceros de verano y otoño, quienes tienen mayor variabilidad y lejanía relativa respecto de la línea esperada en el qqplot (\textbf{Figura \ref{Fig27}}). 
+
+Los datos de captura (desembarques) se asumen insesgados y precisos con un CV de residuos de 0,01 lo cual se refleja en un buen ajuste del modelo a los datos de entrada.
+
+El ajuste del modelo a la información de composición de edades en general presenta un buen desempeño, particularmente en representar de mejor forma la composición de edades de los cruceros de verano (\textbf{Figuras \ref{Fig28}}, \textbf{\ref{Fig29}} y \textbf{\ref{Fig30}}). 
+
+
+El supuesto de invariabilidad anual de los patrones de explotación como medida de parsimonia, genera algunos desajustes en las composiciones de edades de las capturas, principalmente al inicio de la serie histórica y grupo de edad 0. 
+
+El comportamiento de los residuales de las composiciones de edades de los cruceros sugiere ciertos patrones que se reflejan principalmente en una tendencia a la subestimación de los grupos de edad 0 en los cruceros de verano y otoño (\textbf{Figura \ref{Fig31}}).
 
 
 
 ## Comparación con asesorías previas
 
 
-Se comparan los resultados de los principales indicadores de estatus del modelo base actual (`r asesoria_1`), con versiones anteriores para evaluar la consistencia de la evaluación presente (\textbf{Figura \ref{Fig32}}). Al respecto, el análisis no muestra diferencias significativas entre asesorías en términos de reclutamientos y biomasa desovante. Las diferencias observadas en términos de la mortalidad por pesca tiene relación con el supuesto de captura utilizado en las asesorías de marzo, que es corregido en la asesoría de julio y septiembre. La actualización de datos de la actual asesoría genera un reescalamiento de la serie en torno al 7% de la mortalidad por pesca (disminuye respecto de la asesoría previa) y un 8% de la biomasa desovante (incrementa respecto de la asesoría previa).
+Se comparan los resultados de los principales indicadores de estatus del modelo base actual (`r asesoria_1`), con versiones anteriores para evaluar la consistencia de la evaluación presente (\textbf{Figura \ref{Fig32}}). Al respecto, el análisis no muestra diferencias significativas entre asesorías en términos de reclutamientos y biomasa desovante. Las diferencias observadas en términos de la mortalidad por pesca tiene relación con el supuesto de captura utilizado en las asesorías de marzo, que es corregido en la asesoría de julio y septiembre. La actualización de datos de la actual asesoría genera un reescalamiento de la serie en torno al **7%** de la mortalidad por pesca (disminuye respecto de la asesoría previa) y un 8% de la biomasa desovante (incrementa respecto de la asesoría previa).
 
 
 
 ## Análisis retrospectivo
 
-En la \textbf{Figura \ref{Fig33}} se muestra el patrón retrospectivo estándar y relativo de los reclutas, biomasa desovante y de la mortalidad por pesca de sardina común para el caso base de `r asesoria_1`. El análisis retrospectivo del modelo de evaluación muestra que en términos de rho (promedio de anomalías retrospectivas) la reducción de información genera un patrón de subestimación de los reclutas y de la biomasa desovante (rho = -0,19 y rho = -0,01, respectivamente), con una sobreestimación de la mortalidad por pesca (rho = +0,14). En general, los últimos años de las series pueden variar sustancialmente entre las sucesivas actualizaciones, mientras que hacia los primeros años tienden a converger a valores estables. La varianza estadística de las variables utilizadas para medidas de manejo tiende a aumentar en los últimos años de la serie, por lo tanto, son considerados estimaciones menos confiables.
+En la \textbf{Figura \ref{Fig33}} se muestra el patrón retrospectivo estándar y relativo de los reclutas, biomasa desovante y de la mortalidad por pesca de sardina común para el caso base de `r asesoria_1`. El análisis retrospectivo del modelo de evaluación muestra que en términos de rho (promedio de anomalías retrospectivas) la reducción de información genera un patrón de subestimación de los reclutas y de la biomasa desovante (**rho = -0,19** y **rho = -0,01**, respectivamente), con una sobreestimación de la mortalidad por pesca (**rho = +0,14**). En general, los últimos años de las series pueden variar sustancialmente entre las sucesivas actualizaciones, mientras que hacia los primeros años tienden a converger a valores estables. La varianza estadística de las variables utilizadas para medidas de manejo tiende a aumentar en los últimos años de la serie, por lo tanto, son considerados estimaciones menos confiables.
 
 
 
@@ -1082,44 +942,94 @@ La \textbf{Figura \ref{Fig34}} muestra el perfil de verosimilitud realizado para
 
 #### Reclutamientos:
 
-Las tendencias de los reclutamientos han mostrado importantes fluctuaciones interanuales y en su historia conocida se aprecian tres períodos relevantes, a) Reclutamiento promedio del período 1991-2007 con los niveles más bajos de reclutamientos (117 mil millones de peces), b) Reclutamiento promedio del período 2008-2012 con los más altos niveles de reclutamiento (427 mil millones de peces) y c) Reclutamiento promedio del período 2013-2022 en torno a 187 mil millones de peces. Se destaca una recuperación importante de la clase anual 2021 respecto de los bajos niveles estimados en los 2 años precedentes. En relación a los tres períodos relevantes, el reclutamiento 2022 es un 12% mayor al Reclutamiento bajo (período 1991-2007), un 76% menor al Reclutamiento alto (período 2008-2012) y un 45% menor al Reclutamiento medio (2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}).  El reclutamiento 2022 disminuye un 42% respecto a lo estimado en la asesoría previa al incorporar información del crucero de otoño (biomasa acústica y composición de edad) y flota (desembarques, composición de edad y pesos medios).
+Las tendencias de los reclutamientos han mostrado importantes fluctuaciones interanuales y en su historia conocida se aprecian tres períodos relevantes, 
+a) Reclutamiento promedio del período 1991-2007 con los niveles más bajos de reclutamientos (**117** mil millones de peces),
+b) Reclutamiento promedio del período 2008-2012 con los más altos niveles de reclutamiento (**427** mil millones de peces) y 
+c) Reclutamiento promedio del período 2013-2022 en torno a **187** mil millones de peces. 
+
+Se destaca una recuperación importante de la clase anual 2021 respecto de los bajos niveles estimados en los 2 años precedentes. 
+
+En relación a los tres períodos relevantes, el reclutamiento 2022 es un **12%** mayor al Reclutamiento bajo (período 1991-2007), un **76%** menor al Reclutamiento alto (período 2008-2012) y un **45%** menor al Reclutamiento medio (2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}).  
+
+El reclutamiento 2022 disminuye un **42%** respecto a lo estimado en la asesoría previa al incorporar información del crucero de otoño (biomasa acústica y composición de edad) y flota (desembarques, composición de edad y pesos medios).
 
 
 #### Biomasa total y desovante:
 
-La biomasa total de este recurso, es sustentada esencialmente en los grupos de edad 0 y 1 año. En general, los grupos de edad 2+ no revisten mayor contribución en la producción tanto a nivel de desove como de biomasa disponible a la flota. La tendencia de la biomasa total muestra un importante crecimiento a partir del año 2008 que genera un cambio de nivel que se mantiene hasta el 2018. Sin embargo, presenta una alta variabilidad producto de las fluctuaciones del reclutamiento. El promedio de la biomasa total para el período de mayor productividad de sardina común entre los años 2008 y 2012 es de 2,88 millones de toneladas. Para el año 2022 se estimó una biomasa total actualizada de 2 millones de toneladas, un 29% menor al promedio del período de mayor productividad y un 14% mayor al promedio histórico de la serie (promedio 1991-2022 = 1,77 millones de t.) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). Por otro lado, la biomasa desovante promedio de la serie histórica se encuentra en torno a 806 mil toneladas, mientras que el promedio de los ultimos 10 años  (período 2013-2022) de la serie es de 1,10 millones de toneladas. Al respecto, la biomasa desovante esperada para el año biológico 2021/2022 es un 46% mayor al promedio histórico y un 7% menor al promedio de los últimos 10 años (período 2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). La biomasa desovante al Máximo Rendimiento Sostenido (BD~RMS~) está en torno a las 859 mil toneladas, de esta forma la BD~2021/2022~ esperada está un 37% sobre BD~RMS~ (\textbf{Tabla \ref{Tab22}} y \textbf{\ref{Tab21}} y \textbf{Figura \ref{Fig35}}). La biomasa desovante está sustentada principalente por la fracción adulta, correspondiente a individuos de edad 1+, la cual disminuyó su abundancia producto de la disminución del reclutamiento de dos años previos consecutivos 2019 y 2020 junto a la disminución de la biomasa adulta (1+ años) el 2020, provocando que la biomasa desovante del año biológico 2020/2021 disminuyera significativamente respecto a años previos. No obstante, los altos reclutamientos registrados durante el 2021, junto a la disminución de las capturas permitirían retornar a  niveles de biomasa desovante sobre la biomasa objetivo para el año actual (2021/2022).
+La biomasa total de este recurso, es sustentada esencialmente en los grupos de edad 0 y 1 año. En general, los grupos de edad 2+ no revisten mayor contribución en la producción tanto a nivel de desove como de biomasa disponible a la flota. La tendencia de la biomasa total muestra un importante crecimiento a partir del año 2008 que genera un cambio de nivel que se mantiene hasta el 2018. Sin embargo, presenta una alta variabilidad producto de las fluctuaciones del reclutamiento. 
+
+El promedio de la biomasa total para el período de mayor productividad de sardina común entre los años 2008 y 2012 es de **2,88** millones de toneladas. Para el año 2022 se estimó una biomasa total actualizada de **2** millones de toneladas, un **29%** menor al promedio del período de mayor productividad y un **14%** mayor al promedio histórico de la serie (promedio 1991-2022 = **1,77** millones de t.) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). 
+
+Por otro lado, la biomasa desovante promedio de la serie histórica se encuentra en torno a **806** mil toneladas, mientras que el promedio de los ultimos 10 años  (período 2013-2022) de la serie es de **1,10** millones de toneladas. Al respecto, la biomasa desovante esperada para el año biológico 2021/2022 es un **46%** mayor al promedio histórico y un **7%** menor al promedio de los últimos 10 años (período 2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). 
+
+La biomasa desovante al Máximo Rendimiento Sostenido ($BD_{RMS}$) está en torno a las **859** mil toneladas, de esta forma la $BD_{2021/2022}$ esperada está un **37%** sobre $BD_{RMS}$ (\textbf{Tabla \ref{Tab22}} y \textbf{\ref{Tab21}} y \textbf{Figura \ref{Fig35}}). 
+
+La biomasa desovante está sustentada principalente por la fracción adulta, correspondiente a individuos de edad 1+, la cual disminuyó su abundancia producto de la disminución del reclutamiento de dos años previos consecutivos 2019 y 2020 junto a la disminución de la biomasa adulta (1+ años) el 2020, provocando que la biomasa desovante del año biológico 2020/2021 disminuyera significativamente respecto a años previos. No obstante, los altos reclutamientos registrados durante el 2021, junto a la disminución de las capturas permitirían retornar a  niveles de biomasa desovante sobre la biomasa objetivo para el año actual (2021/2022).
 
 #### Mortalidad por pesca:
 
-La mortalidad por pesca (Ft) ha sido más bien baja, en general menor a la mortalidad natural (M=1,0 año^-1^), excepto para el año 2004 cuando los niveles de biomasa eran bajos. Esto se ve reflejado en las capturas, que, en promedio, han seguido las fluctuaciones en biomasa con tasas de explotación moderadas (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). A partir del año 2005, la mortalidad por pesca ha seguido una tendencia al descenso, acentuada desde el año 2013 bajo el valor de F~RMS~ producto de la aplicación de F60%. Para el año 2021/2022 la mortalidad por pesca se redujo en un 55% respecto al año previo (año 2021) y un 57% respecto al supuesto de captura de la asesoría previa (marzo 2022) en torno al RMS.
+La mortalidad por pesca (Ft) ha sido más bien baja, en general menor a la mortalidad natural (M=1,0 año^-1^), excepto para el año 2004 cuando los niveles de biomasa eran bajos. Esto se ve reflejado en las capturas, que, en promedio, han seguido las fluctuaciones en biomasa con tasas de explotación moderadas (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). 
+
+A partir del año 2005, la mortalidad por pesca ha seguido una tendencia al descenso, acentuada desde el año 2013 bajo el valor de $F_{RMS}$ producto de la aplicación de F60%. Para el año 2021/2022 la mortalidad por pesca se redujo en un **55%** respecto al año previo (año 2021) y un **57%** respecto al supuesto de captura de la asesoría previa (**marzo 2022**) en torno al RMS.
 
 
 #### Selectividades:
 
-Por su parte, la selectividad de la flota indica que el recurso alcanza su completo reclutamiento a la pesquería a la edad de 1 año cuando su retención es del 100% aprox., mientras que los individuos de edad 0  son vulnerados un 70%. De igual forma, la información del crucero acústico de verano y otoño indican que todos los individuos son vulnerables en un 100% por el arte de pesca empleado (arrastre de media-agua y cubre-copo) y cubiertos por el diseño de muestreo (\textbf{Figura \ref{Fig36}}).
-En esta actualización, la selectividad del crucero de otoño cambia respecto a la asesoría previa, registrando un mayor porcentaje de individuos de edad 0, con un 80% en la asesoría previa (marzo 2022) a un 100% de vulnerabilidad (julio 2022).  
+Por su parte, la selectividad de la flota indica que el recurso alcanza su completo reclutamiento a la pesquería a la edad de 1 año cuando su retención es del **100%** aprox., mientras que los individuos de edad 0  son vulnerados un **70%**. De igual forma, la información del crucero acústico de verano y otoño indican que todos los individuos son vulnerables en un 100% por el arte de pesca empleado (arrastre de media-agua y cubre-copo) y cubiertos por el diseño de muestreo (\textbf{Figura \ref{Fig36}}).
+
+
+En esta actualización, la selectividad del crucero de otoño cambia respecto a la asesoría previa, registrando un mayor porcentaje de individuos de edad 0, con un 80% en la asesoría previa (**marzo 2022**) a un **100%** de vulnerabilidad (**julio 2022**).  
+
 
 ### Puntos Biológicos de Referencia (PBRs)
 
-En la \textbf{Tabla \ref{Tab21}} se muestran los valores calculados en la asesoría de septiembre 2021, marzo 2022 y julio 2022 de BD~0~, BD~RMS~, BD~LIM~ y F~RMS~, recomendados por el Comité Científico Técnicos de Pelágicos Pequeños (Informe Técnico CCT-PP N°01/2015) de acuerdo con la metodología discutida durante el segundo taller (Abril, 2014) y tercer taller (Agosto, 2014) de PBRs [@Paya2014]. El valor mediano de la mortalidad por pesca experimentado históricamente ($F_{mh}$) por el stock de sardina común centro-sur cercano a $F_{RMS}$ ($F_{57\%BDPR}$) un porcentaje bajo considerando los altos niveles de mortalidad por pesca que ha experimentado el stock (bajo el valor de mortalidad natural, M=1,0 año^-1^) (\textbf{Figura \ref{Fig37}}). Esto podría explicarse por la ubicación de la curva de selectividad respecto a la madurez, donde la selectividad se encuentra a la izquierda de la curva de madurez, producto de que la pesquería presenta una alta selección de juveniles, de manera que la selectividad de la flota comienza antes de la madurez (\textbf{Figura \ref{Fig38}}). Esta condición produciría valores de F60% más moderados, que aumentaría si la selectividad fuese igual a la madurez.
+En la \textbf{Tabla \ref{Tab21}} se muestran los valores calculados de $BD_{0}$, $BD_{RMS}$, $BD_{LIM}$ y $F_{RMS}$, recomendados por el Comité Científico Técnicos de Pelágicos Pequeños (Informe Técnico CCT-PP N°01/2015) de acuerdo con la metodología discutida durante el segundo taller (Abril, 2014) y tercer taller (Agosto, 2014) de PBRs [@Paya2014]. El valor mediano de la mortalidad por pesca experimentado históricamente ($F_{mh}$) por el stock de sardina común centro-sur cercano a $F_{RMS}$ ($F_{57\%BDPR}$) un porcentaje bajo considerando los altos niveles de mortalidad por pesca que ha experimentado el stock (bajo el valor de mortalidad natural, M=1,0 año^-1^) (\textbf{Figura \ref{Fig37}}). Esto podría explicarse por la ubicación de la curva de selectividad respecto a la madurez, donde la selectividad se encuentra a la izquierda de la curva de madurez, producto de que la pesquería presenta una alta selección de juveniles, de manera que la selectividad de la flota comienza antes de la madurez (\textbf{Figura \ref{Fig38}}). Esta condición produciría valores de F60% más moderados, que aumentaría si la selectividad fuese igual a la madurez.
 
 
 
 ### Estado de explotación
 
-La \textbf{Figura \ref{Fig39}} muestra que en el inicio de la serie histórica la biomasa indicaría una caída BD\<BD~RMS~ entre los años 1994 y 1995 producto probablemente de fallas sucesivas en los reclutamientos. El estado de la pesquería de sardina común durante los años 1998 y 2006 estuvo marcado por condiciones ambientales "El Niño" 1997-1998, provocando la caída hacia niveles inferiores de la biomasa desovante límite (BD~LIM~) bajo el cual una pesquería califica de agotada o colapsada. A partir del 2007 comienza un período favorable para la condición de sardina común, ingresando a un proceso de expansión poblacional que permite el año 2009 desplazarse hacia un nivel de biomasa desovante superior al BD~RMS~.  En la evaluación actual (julio 2022) la BD~2021/2022~ esperada está un 37% sobre BD~RMS~ (\textbf{Figura \ref{Fig39}}). La biomasa desovante está sustentada principalente por la fracción adulta, correspondiente a individuos de edad 1+, la cual disminuyó su abundancia producto de la disminución del reclutamiento de dos años previos consecutivos 2019 y 2020 junto a la disminución de la biomasa adulta (1+ años) el 2020, provocando que la biomasa desovante del año biológico 2020/2021 disminuyera significativamente respecto a años previos. No obstante, los altos reclutamientos registrados durante el 2021 permitirían retornar a  niveles de biomasa desovante sobre la biomasa objetivo para el año actual (2021/2022).  En términos de la mortalidad por pesca (Ft año^-1^), ésta se había mantenido por sobre el nivel objetivo de referencia F~RMS~ en prácticamente toda la serie histórica analizada, producto de la alta selección de juveniles capturados antes de que estos maduren (\textbf{Figura \ref{Fig39}}). La alta selectividad de juveniles conlleva a un valor de F~RMS~ (F60%BDPR) más moderado que una selectividad cercana o por sobre la ojiva de madurez. A partir del año 2013 los niveles de Ft se han mantenido bajo el nivel de referencia generado posiblemente por las caídas de los reclutamientos en algunos años y las bajas CBAs recomendadas luego de la implementación de los PBRs. Con respecto a la razón entre F~2021/22~ y F~RMS~ es de 0,42, en la asesoría previa (marzo 2022) se asumió un valor en torno a F~RMS~  para el año actual, a la espera de actualizar el valor de captura 2021/2022 en esta asesoría (julio 2022). Al respecto, se registraron capturas por debajo del RMS y por lo tanto, la mortalidad por pesca estimada con información actualizada es un 58% menor al supuesto utilizado en la asesoría previa (\textbf{Figura \ref{Fig39}}). 
+La \textbf{Figura \ref{Fig39}} muestra que en el inicio de la serie histórica la biomasa indicaría una caída $BD<BD_{RMS}$ entre los años 1994 y 1995 producto probablemente de fallas sucesivas en los reclutamientos. El estado de la pesquería de sardina común durante los años 1998 y 2006 estuvo marcado por condiciones ambientales "El Niño" 1997-1998, provocando la caída hacia niveles inferiores de la biomasa desovante límite ($BD_{LIM}$) bajo el cual una pesquería califica de agotada o colapsada. A partir del 2007 comienza un período favorable para la condición de sardina común, ingresando a un proceso de expansión poblacional que permite el año 2009 desplazarse hacia un nivel de biomasa desovante superior al $BD_{RMS}$.  
 
-La condición estimada con información preliminar para el año 2021/2022 indica que la sardina común se encuentra al límite de la subexplotación (37% sobre BD~RMS~ y 58% bajo F~RMS~), con un 2% de probabilidad de sobreexplotación y 0% de probabilidad de sobrepesca (\textbf{Tabla \ref{Tab22}}  y \textbf{Figura \ref{Fig40}}).
+
+La $BD_{2021/2022}$ esperada está un 37% sobre $BD_{RMS}$ (\textbf{Figura \ref{Fig39}}). 
+
+La biomasa desovante está sustentada principalente por la fracción adulta, correspondiente a individuos de edad 1+, la cual disminuyó su abundancia producto de la disminución del reclutamiento de dos años previos consecutivos 2019 y 2020 junto a la disminución de la biomasa adulta (1+ años) el 2020, provocando que la biomasa desovante del año biológico 2020/2021 disminuyera significativamente respecto a años previos. 
+
+No obstante, los altos reclutamientos registrados durante el 2021 permitirían retornar a  niveles de biomasa desovante sobre la biomasa objetivo para el año actual (2021/2022).  
+
+En términos de la mortalidad por pesca (Ft año^-1^), ésta se había mantenido por sobre el nivel objetivo de referencia $F_{RMS}$ en prácticamente toda la serie histórica analizada, producto de la alta selección de juveniles capturados antes de que estos maduren (\textbf{Figura \ref{Fig39}}). 
+
+La alta selectividad de juveniles conlleva a un valor de $F_{RMS}$ ($F60\%BDPR$) más moderado que una selectividad cercana o por sobre la ojiva de madurez. A partir del año 2013 los niveles de Ft se han mantenido bajo el nivel de referencia generado posiblemente por las caídas de los reclutamientos en algunos años y las bajas CBAs recomendadas luego de la implementación de los PBRs. Con respecto a la razón entre $F_{2021/22}$ y $F_{RMS}$ es de **0,42**, en la asesoría previa (marzo 2022) se asumió un valor en torno a $F_{RMS}$  para el año actual, a la espera de actualizar el valor de captura 2021/2022 en esta asesoría (julio 2022). 
+
+Al respecto, se registraron capturas por debajo del RMS y por lo tanto, la mortalidad por pesca estimada con información actualizada es un **58%** menor al supuesto utilizado en la asesoría previa (\textbf{Figura \ref{Fig39}}). 
+
+La condición estimada con información preliminar para el año 2021/2022 indica que la sardina común se encuentra al límite de la subexplotación (**37%** sobre $BD_{RMS}$ y **58%** bajo $F_{RMS}$), con un **2%** de probabilidad de sobreexplotación y **0%** de probabilidad de sobrepesca (\textbf{Tabla \ref{Tab22}}  y \textbf{Figura \ref{Fig40}}).
 
 ### Proyección del stock años biológicos 2021/2022 y 2022/2023 
 
-La  proyección de la población se realizó 2 años biológicos hacia el futuro (julio 2021-junio 2022 y julio 2022-junio 2023) en base a tres escenarios de reclutamiento: a) un escenario desfavorable que consiste en el reclutamiento promedio del período 1991-2007 (114 mil millones de ind.), b) un escenario favorable que corresponde al promedio de los reclutamientos del período 2008 - 2012 (409 mil millones de ind.) y un escenario que representa el período reciente entre el 2013-2021 (180 mil millones de ind.) (\textbf{Figura \ref{Fig44as}}), con una mortalidad por pesca en torno al $F_{RMS}$ y pesos medios igual al promedio de los últimos 5 años. 
+La  proyección de la población se realizó 2 años biológicos hacia el futuro (julio 2021-junio 2022 y julio 2022-junio 2023) en base a tres escenarios de reclutamiento: 
 
-Las \textbf{Figuras \ref{Fig44as}} y \textbf{Tabla \ref{Tab25s}} indican que independiente del escenario de reclutamiento, en términos de biomasa desovante proyectada al 2021/2022 (755 mil t) se observa un incremento del 53% respecto al año previo 2020/2021 (492 mil t), de este modo la probabilidad de sobreexplotación disminuye a un 46% para el año biológico 2021/2022. Mientras que la biomasa desovante proyectada hacia el 2022/2023 depende del reclutamiento proyectado hacia el 2022 y 2023, la probabilidad de sobreexplotación puede disminuir a un 29% si los reclutamientos se encuentran en torno al promedio de los años recientes 2013-2021. Mientras que la probabilidad puede aumentar a un 90% si los reclutamientos son bajos (1991-2007) (\textbf{Tabla \ref{Tab25s}} y \textbf{Figura \ref{Fig44bs}}).
+a) un escenario desfavorable que consiste en el reclutamiento promedio del período 1991-2007 (**114** mil millones de ind.), 
+b) un escenario favorable que corresponde al promedio de los reclutamientos del período 2008 - 2012 (**409** mil millones de ind.) y 
+un escenario que representa el período reciente entre el 2013-2021 (**180** mil millones de ind.)
 
-La \textbf{Tabla \ref{Tab26s}} muestra la  captura proyectada para los años biológicos 2021/2022 y 2022/2023 considerando una mortalidad por pesca igual al $F_{RMS}$, con sus respectivos escenarios de reclutamientos. El cálculo de la Captura al RMS ($C_{RMS}$) para el año calendario 2022 se obtiene como el promedio ponderado según la estacionalidad semestral de la pesquería que a la fecha se asume 70% para el primer semestre y 30% para el segundo semestre para el hito 1 del ciclo de manejo. De este modo, la captura al RMS para el año biológico 2021/2022  puede variar según el escenario de reclutamiento entre 302 mil t a 638 mil t. Si el 70% de la captura 2021/2022 se realiza durante el primer semestre 2022, la captura puede variar entre 221 mil t a 408 mil t, dependiendo del reclutamiento 2022. 
+(\textbf{Figura \ref{Fig44as}}), con una mortalidad por pesca en torno al $F_{RMS}$ y pesos medios igual al promedio de los últimos 5 años. 
+
+
+Las \textbf{Figuras \ref{Fig44as}} y \textbf{Tabla \ref{Tab25s}} indican que independiente del escenario de reclutamiento, en términos de biomasa desovante proyectada al 2021/2022 (**755** mil t) se observa un incremento del **53%** respecto al año previo 2020/2021 (**492** mil t), de este modo la probabilidad de sobreexplotación disminuye a un **46%** para el año biológico 2021/2022. 
+
+Mientras que la biomasa desovante proyectada hacia el 2022/2023 depende del reclutamiento proyectado hacia el 2022 y 2023, la probabilidad de sobreexplotación puede disminuir a un **29%** si los reclutamientos se encuentran en torno al promedio de los años recientes 2013-2021. Mientras que la probabilidad puede aumentar a un **90%** si los reclutamientos son bajos (1991-2007) (\textbf{Tabla \ref{Tab25s}} y \textbf{Figura \ref{Fig44bs}}).
+
+La \textbf{Tabla \ref{Tab26s}} muestra la  captura proyectada para los años biológicos 2021/2022 y 2022/2023 considerando una mortalidad por pesca igual al $F_{RMS}$, con sus respectivos escenarios de reclutamientos. 
+
+El cálculo de la Captura al RMS ($C_{RMS}$) para el año calendario 2022 se obtiene como el promedio ponderado según la estacionalidad semestral de la pesquería que a la fecha se asume 70% para el primer semestre y 30% para el segundo semestre para el hito 1 del ciclo de manejo. De este modo, la captura al RMS para el año biológico 2021/2022  puede variar según el escenario de reclutamiento entre **302** mil t a **638** mil t. 
+
+Si el 70% de la captura 2021/2022 se realiza durante el primer semestre 2022, la captura puede variar entre **221** mil t a **408** mil t, dependiendo del reclutamiento 2022. 
  
-El aporte del reclutamiento en la estimación de captura 2021/2022 es de un 63% para un escenario de reclutamiento alto ($R_{2008-2012}$), de un 43% para un escenario de reclutamientos recientes ($R_{2013-2021}$) y de un 33% para un escenario de reclutamiento bajos ($R_{1991-2007}$) (\textbf{Figura \ref{Fig44cs}}). En el caso de la captura proyectada para el año 2022/2023, los escenarios de reclutamientos tienen un efecto en el grupo de edad 0 y 1, por lo tanto, es una estimación con mayor incertidumbre (\textbf{Figura \ref{Fig44cs}}). 
+El aporte del reclutamiento en la estimación de captura 2021/2022 es de un **63%** para un escenario de reclutamiento alto ($R_{2008-2012}$), de un **43%** para un escenario de reclutamientos recientes ($R_{2013-2021}$) y de un **33%** para un escenario de reclutamiento bajos ($R_{1991-2007}$) (\textbf{Figura \ref{Fig44cs}}). 
+
+En el caso de la captura proyectada para el año 2022/2023, los escenarios de reclutamientos tienen un efecto en el grupo de edad 0 y 1, por lo tanto, es una estimación con mayor incertidumbre (\textbf{Figura \ref{Fig44cs}}). 
 
 
 ### CBA 2022 Inicial 
@@ -3686,13 +3596,9 @@ kable(t(data.frame(C1eryearR1,C1eryearR2,C1eryearR3,C2doyearR1,C2doyearR2,C2doye
 
 ```
 
-
 \pagebreak
 
 <!--- # Primera revisión CBA  (Asesoría de marzo) -->
-
-
-
 
 ```{r proyeccion1eraRevision,warning=F, include=T, message=F,eval=F, echo=F}
 
@@ -3776,8 +3682,6 @@ bds0std  <- subset(stds1,name=="SSB")$std[nyears2]
 #######################################################################
 
 ```
-
-
 
 ```{r estatusproyectado_marzo,warning=F, include=T, message=F, echo=F,eval=F}
 
@@ -3870,7 +3774,6 @@ kable(probEstatus)
 
 
 ```
-
 
 <!--- # Figuras de proyección  (Asesoría de marzo) -->
 
@@ -4007,7 +3910,6 @@ for(i in 1:nes){
 
 ```
 
-
 ```{r Tabla_32a_marzo,eval=F, warning=F, include=T, message=F, echo=FALSE}
 source(paste(dir.fun,"Fn_Estatus_proy.R",sep=""))
 setwd(paste(dir.0,"/CBA_marzo/",sep=""))
@@ -4055,8 +3957,6 @@ ln_FSE     <- subset(std2,name=="log_Ft")$std                                 # 
 Fyr        <- exp(subset(std2,name=="log_Ft")$value)
 
 ```
-
-
 
 ```{r Fig45a_marzo, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 
@@ -4124,7 +4024,6 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 #ProbEstatusproy_sept("MAE0920",nesc,name,pF,nyears=30)
 
 ```
-
 
 ```{r Fig45b_marzo, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 escR<-c(rep("Reclprom 1991-2007",1), 
@@ -4280,7 +4179,6 @@ for(i in 1:nes){
 
 ```
 
-
 ```{r CBAinicial_marzoDescarte, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
@@ -4304,14 +4202,12 @@ for(i in 1:nes){
 
 ```
 
-
 ```{r Tabla29a_CBAinicial_marzo,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzo<-cbind(CBAp_marzo,CBApstd_marzo,CBA_marzo)
 colnames(tCBA_marzo)<-c("mean","std",c("10%","20%","30%","40%","50%"))
 row.names(tCBA_marzo)<-c("1991-2007","2008-2012","2013-2022")
 kable(t(round(tCBA_marzo,0)))
 ```
-
 
 ```{r Tabla29a_CBAinicial_marzoDescarte,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD<-cbind(CBAp_marzoD,CBApstd_marzoD,CBA_marzoD)
@@ -4320,7 +4216,6 @@ row.names(tCBA_marzoD)<-c("1991-2007","2008-2012","2013-2022")
 kable(t(round(tCBA_marzoD,0)))
 ```
 
-
 ```{r Tabla30_resguardo_marzo, eval=F,echo=FALSE, warning=F, include=T, message=F}
 for(i in 1:nes){for(j in 1:nq){	
 buffer[i,j]<-round(1-CBA_marzo[i,j]/CBA_marzo[i,5],2)}}
@@ -4328,7 +4223,6 @@ colnames(buffer)<-c("10%","20%","30%","40%","50%")
 row.names(buffer)<-c("1991-2007","2008-2012","2013-2021")
 kable(t(buffer))
 ```
-
 
 ```{r Tabla31b_diferenciasdescarte_marzo, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
@@ -4347,10 +4241,7 @@ kable(t(tablaincrementos))
 
 ```
 
-
-
 <!--- # CBA - desembarque (Asesoría de marzo) -->
-
 
 ```{r CBAinicial_marzo-desembarque2doSem, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
@@ -4376,7 +4267,6 @@ for(i in 1:nes){
 	CBA_marzoD2S[i,j]<-qnorm(q[j],CBAp_marzoD2S[i],CBApstd_marzoD2S[i])}}
 
 ```
-
 
 
 ```{r CBAinicial_marzoDescarte-desembarque2doSem, eval=F, echo=FALSE, warning=F, include=T, message=F}
@@ -4405,7 +4295,6 @@ for(i in 1:nes){
 ```
 
 
-
 ```{r Tabla29a_CBA_marzo-Desembarque2doSem,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD2S<-cbind(CBAp_marzoD2S,CBApstd_marzoD2S,CBA_marzoD2S)
 colnames(tCBA_marzoD2S)<-c("mean","std",c("10%","20%","30%","40%","50%"))
@@ -4413,15 +4302,12 @@ row.names(tCBA_marzoD2S)<-c("1991-2007","2008-2012","2013-2022")
 kable(t(round(tCBA_marzoD2S,0)))
 ```
 
-
 ```{r Tabla29a_CBA_marzoDescarte-Desembarque2doSem,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD2Sd<-cbind(CBAp_marzoD2Sd,CBApstd_marzoD2Sd,CBA_marzoD2Sd)
 colnames(tCBA_marzoD2Sd)<-c("mean","std",c("10%","20%","30%","40%","50%"))
 row.names(tCBA_marzoD2Sd)<-c("1991-2007","2008-2012","2013-2022")
 kable(t(round(tCBA_marzoD2Sd,0)))
 ```
-
-
 
 ```{r Tabla30_resguardo_marzo-Desembarque2doSem, eval=F,echo=FALSE, warning=F, include=T, message=F}
 for(i in 1:nes){for(j in 1:nq){	
@@ -4449,11 +4335,7 @@ kable(t(tablaincrementosD2S))
 
 ```
 
-
-
-
 <!--- # CBA - desembarque - Remanente (Asesoría de marzo) -->
-
 
 ```{r CBA_marzo-desembarque2doSem-Remanente, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
@@ -4483,9 +4365,6 @@ for(i in 1:nes){
 
 ```
 
-
-
-
 ```{r Tabla29a_CBA_marzo-desembarque2doSem-Remanente,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD2SR<-cbind(CBAp_marzoD2SR,
                       CBApstd_marzoD2SR,
@@ -4495,7 +4374,6 @@ colnames(tCBA_marzoD2SR)<-c("mean","std",c("10%","20%","30%","40%","50%"))
 row.names(tCBA_marzoD2SR)<-c("1991-2007","2008-2012","2013-2022")
 kable(t(round(tCBA_marzoD2SR,0)))
 ```
-
 
 ```{r CBA_marzoDescarte-desembarque2doSem-Remanente, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
@@ -4524,7 +4402,6 @@ for(i in 1:nes){
 
 ```
 
-
 ```{r Tabla29a_CBA_marzoDescarte-desembarque2doSem-Remanente,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD2SdR<-cbind(CBAp_marzoD2SdR,
                        CBApstd_marzoD2SdR,
@@ -4534,7 +4411,6 @@ row.names(tCBA_marzoD2SdR)<-c("1991-2007","2008-2012","2013-2022")
 kable(t(round(tCBA_marzoD2SdR,0)))
 ```
 
-
 ```{r Tabla30_resguardo_marzo-Desembarque2doSem-Remanente, eval=F,echo=FALSE, warning=F, include=T, message=F}
 for(i in 1:nes){for(j in 1:nq){	
 bufferD2SR[i,j]<-round(1-CBA_marzoD2SR[i,j]/CBA_marzoD2SR[i,5],2)}}
@@ -4542,7 +4418,6 @@ colnames(bufferD2SR)<-c("10%","20%","30%","40%","50%")
 row.names(bufferD2SR)<-c("1991-2007","2008-2012","2013-2021")
 kable(t(bufferD2SR))
 ```
-
 
 ```{r Tabla31b_diferenciasdescarte_marzo-Desembarque2doSem-Remanente, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
@@ -4561,10 +4436,7 @@ kable(t(tablaincrementosD2SR))
 
 ```
 
-
-
 <!--- # Figuras de CBA_RMS -->
-
 
 ```{r Fig27_CBAmarzo,warning=F, include=T, message=F,eval=F, echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
 
@@ -4719,8 +4591,6 @@ kable(t(data.frame(C1eryearR1act2,C1eryearR12,C1eryearR22,C1eryearR32)))
 
 <!--- # SEGUNDA REVISION CBA (Asesoría de JULIO) -->
 
-
-
 ```{r proyeccion2daRevision,warning=F, include=T, message=F,eval=F, echo=F}
 
 dira<-paste(dir.0,"/CBA_julio/",sep="")
@@ -4803,9 +4673,6 @@ bds0std  <- subset(stds1,name=="SSB")$std[nyears3]
 #######################################################################
 
 ```
-
-
-
 
 ```{r estatusproyectado_julio,warning=F, include=T, message=F, echo=F,eval=F}
 
@@ -4899,10 +4766,6 @@ kable(probEstatus)
 
 
 ```
-
-
-
-
 
 <!--- # Figuras de proyección  (Asesoría de julio) -->
 
@@ -5040,7 +4903,6 @@ for(i in 1:nes){
 
 ```
 
-
 ```{r Tabla_32a_julio,eval=F, warning=F, include=T, message=F, echo=FALSE}
 source(paste(dir.fun,"Fn_Estatus_proy.R",sep=""))
 setwd(paste(dir.0,"/CBA_julio/",sep=""))
@@ -5155,7 +5017,6 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 #ProbEstatusproy_sept("MAE0920",nesc,name,pF,nyears=30)
 
 ```
-
 
 ```{r Fig45b_julio, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 escR<-c(rep("Reclprom 1991-2007",1), 
@@ -5422,10 +5283,7 @@ kable(t(tablaincrementos_julio_marzo))
 ```
 
 
-
 \pagebreak
-
-
 
 <!--- # Figuras de CBA_RMS -->
 
@@ -5782,27 +5640,47 @@ write.csv(VarPobl2b, file="Tablas/tasasExplotacion.csv")
 <!--- RESULTADOS DE CALCULO DE PBRS PARA LA  ASESORÍA DE SEPTIEMBRE (HITO 1) -->
 
 ```{r Tabla_18_PBRs_septiembre, echo=F,eval=T,warning=FALSE,include=T,message=F}
-Tabla3.1<-rbind( "BDpromedio"=c(round(Bmed1/10^3,0)),
-                 "Fmh"=c(round(Fmedian1,2)), 
-                 "%BDPR_Fmh"=c(pSPR_Fmh1*100), 
-                 "%BDPR_F~RMS~"=c(60),
-                 "%BD_Fmh"=c(pB_Fmh1*100),
-                 "%BD_F~RMS~"=c(55),
-                 "BDo"=c(round(Bo1/10^3,0)),
-                 "BD55%"=c(round(BRMS1/10^3,0)),
-                 "BD27.5%"=c(round(BLIM1/10^3,0)))
 
-colnames(Tabla3.1)<-c("septiembre 2022")
+etapas<-c("Paso 1", "Paso 1", "Paso 2","Paso 2","Paso 3", "Paso 3", "Paso 4", "Paso 5", "Paso 6")
+
+pbrs<-c("$BD_{promedio}$",
+        "$F_{mh}$",
+        "$\\%BDPR_{F_{mh}}$",
+        "$\\%BDPR_{F_{RMS}}$",
+        "$\\%BD_{F_{mh}}$",
+        "$\\%BD_{F_{RMS}}$",
+        "$BD_{0}$",
+        "$BD_{55\\%}$",
+        "$BD_{27,5\\%}$")
+
+calculo<-c("Promedio de la serie histórica entre 1991-2022",
+           "Mediana de la serie histórica entre 1991-2022",
+           rep("Cálculo de la curva de biomasa por recluta (BDPR)",2),
+           "$\\%BDPR_{F_{mh}}-5\\%$",
+           "$\\%BDPR_{F_{RMS}}-5\\%$",
+           "$BD_{0}=BD_{promedio}/\\%BD_{F_{mh}}$",
+           "$BD_{RMS}=BD_{0}*\\%BD_{F_{RMS}}$",
+           "$BD_{LIM}=BD_{0}*\\%BD_{F_{LIM}}$")
 
 
-kbl(Tabla3.1, booktabs = T,format = "latex",position="h!",align="c",format.args=list(big.mark = '.'),
-caption = "\\label{Tab18}Procedimiento de cálculo de los puntos biológicos de referencia de biomasa (miles t) estimados en la evaluación de stock de septiembre 2022 para sardina común de las regiones de Valparaíso a Los Lagos, calculados siguiendo los pasos descritos en la metodología de este informe.") %>% 
+Valores<-c(round(Bmed1/10^3,0),
+                 formatC(round(Fmedian1,2), decimal.mark = ","), 
+                 formatC(pSPR_Fmh1*100, decimal.mark = ","), 
+                 formatC(60, decimal.mark = ","),
+                 formatC(pB_Fmh1*100, decimal.mark = ","),
+                 formatC(55, decimal.mark = ","),
+                 round(Bo1/10^3,0),
+                 round(BRMS1/10^3,0),
+                 round(BLIM1/10^3,0))
+
+tablapbrs<-data.frame("Etapas"=etapas,"Cálculo"=calculo,"Aproximación"=pbrs,"Valores"=Valores)
+
+
+kbl(tablapbrs, booktabs = T,format = "latex",position="h!",align="cllc",escape = FALSE,
+caption = "\\label{Tab21}Procedimiento de cálculo de los puntos biológicos de referencia de biomasa (miles de t) estimados en la evaluación de stock de septiembre 2022 para sardina común de las regiones de Valparaíso a Los Lagos, calculados siguiendo los pasos descritos en la metodología de este informe.") %>%
+  collapse_rows(columns = 1:2,latex_hline = "major", valign = "middle")%>% 
   kable_styling(latex_options = c("striped", "condensed"),
-                full_width = FALSE,font_size=8)
-
-#write.csv(Tabla3.1, file="Tablas/PBRsporasesoria.csv")
-
-#Fmedian3
+                full_width = FALSE,font_size=10)
 
 ```
 
@@ -5810,32 +5688,38 @@ caption = "\\label{Tab18}Procedimiento de cálculo de los puntos biológicos de 
 
 ```{r Tabla23_probEstatus_sept, echo=F,eval=T,warning=FALSE,include=T,message=F}
 Tabla4.1<-rbind("Año biológico"=c("2021/22"),
-                "$F_{RMS}$"=c(round(FRMS1,2)),
+                "$F_{RMS}$"=formatC(c(round(FRMS1,2)), decimal.mark = ","),
                 "$BD_{RMS}$"=c(round(BRMS1/10^3,0)),
                 "$BD_{LIM}$"=c(round(BLIM1/10^3,0)),
-                "$p(BD_{last}<BD_{RMS})$"=round(c(pa_sept),2),
-                "$p(F_{last}>F_{RMS})$"=round(c(pb_sept),2),
-                "$p(sobre-explotación)$"=round(c(pc_sept),2),
-                "$p(agotado/colapsado)$"=round(c(pd_sept),2),
-                "$p(sobrepesca)$"=round(c(pe_sept),2))
+                "$p(BD_{2021/22}<BD_{RMS})^1$"=formatC(round(c(pa_sept),2), decimal.mark = ","),
+                "$p(F_{2021/22}>F_{RMS})^2$"=formatC(round(c(pb_sept),2), decimal.mark = ","),
+                "$p(sobre-explotación)^3$"=formatC(round(c(pc_sept),2), decimal.mark = ","),
+                "$p(agotado/colapsado)^4$"=formatC(round(c(pd_sept),2), decimal.mark = ","),
+                "$p(sobrepesca)^5$"=formatC(round(c(pe_sept),2), decimal.mark = ","))
 
-colnames(Tabla4.1)<-c("Septiembre 2022")
+colnames(Tabla4.1)<-c("Valores")
 
+footnote<-c("Probabilidad que $BD$ del año más reciente sea menor a $BD_{RMS}$ según el diagrama de fase",
+            "Probabilidad que $F$ del año más reciente sea mayor a $F_{RMS}$ según el diagrama de fase",
+            "Probabilidad de estar en sobreexplotación = $p(0,5<BD_{last}/BD_{RMS}<0,9)$",
+            "Probabilidad de estar en colapso =$p(BD_{last}/BD_{RMS}<0,5)$",
+            "Probabilidad de estar en sobrepesca = $p(F_{last}/F_{RMS}>1,1)$")
 
-
-kbl(Tabla4.1, booktabs = T,format = "latex",position="h!",align="c",format.args=list(big.mark = '.', decimal.mark = ","),escape = FALSE,
+kbl(Tabla4.1, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
 caption = "\\label{Tab23}Puntos Biológicos de referencia (PBRs) y probabilidades de estar bajo $BD_{RMS}$ y sobre $F_{RMS}$ y en sobreexplotación, colapsado o sobrepesca.") %>% 
-  kable_styling(latex_options = c("striped", "condensed"),
-                full_width = FALSE,font_size=8)%>% 
-  add_header_above(c(" " = 1,
-                    "Valores de Asesoría" = 1),line = F)
+  kable_styling(latex_options = c("striped"),
+                full_width = FALSE,font_size=10) %>%
+footnote(number = footnote,threeparttable = T,escape = FALSE,fixed_small_size = TRUE) %>%
+column_spec(1, width = "30em")
 
 
 ```
 
+
 \pagebreak
 
 <!--- RESULTADOS DE PROYECCIÓN ASESORÍA DE SEPTIEMBRE (HITO 1) -->
+
 ```{r warning=F, include=T, message=F, echo=F}
 # PRIMER AÑO PROYECTADO
 #######################################################################################
@@ -5898,12 +5782,15 @@ probEstatus<-rbind("$R_{proy}$"=formatC(c(reps1a$Np[1],reps2a$Np[1],reps3a$Np[1]
                                                           bds1[2],bds2[2],bds3[2])/1000,0), decimal.mark = ","),
                     '$BD_{proy}/BD_{RMS}$'=formatC(round(c(RpRps1[1],RpRps2[1],RpRps3[1],
                                                            RpRps1[2],RpRps2[2],RpRps3[2]),2), decimal.mark = ","),
-                   "$p(sobreexplotación)$"=formatC(round(c(pc1,pc2,pc3,
+                   "$p(sobreexplotación)^1$"=formatC(round(c(pc1,pc2,pc3,
                                                            pc12,pc22,pc32),2), decimal.mark = ","),
-                   "$p(agotado/colapsado)$"=formatC(round(c(pd1,pd2,pd3,
+                   "$p(agotado/colapsado)^2$"=formatC(round(c(pd1,pd2,pd3,
                                                             pd12,pd22,pd32),2), decimal.mark = ","))
 
 colnames(probEstatus)<-rep(c("$R_{1991-2007}$",'$R_{2008-2012}$','$R_{2013-2021}$'),2)
+
+footnote2<-c("Probabilidad de estar en sobreexplotación = $p(0,5<BD_{last}/BD_{RMS}<0,9)$",
+             "Probabilidad de estar en colapso =$p(BD_{last}/BD_{RMS}<0,5)$")
 
 kbl(probEstatus, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
 caption = "\\label{Tab25s}Proyección de la biomasa desovante hacia el año biológico 2022/2023 y 2023/2024 considerando tres escenarios de reclutamientos y mortalidad por pesca igual al $F_{RMS}$. Probabilidad de estar bajo $BD_{RMS}$ y sobre $F_{RMS}$ y la probabilidad de sobre-explotación y colapso.") %>% 
@@ -5913,7 +5800,8 @@ caption = "\\label{Tab25s}Proyección de la biomasa desovante hacia el año biol
                     "Escenarios de reclutamiento" = 3,
                     "Escenarios de reclutamiento" = 3),line = F)%>% 
   add_header_above(c(" " = 1,
-                    "Estatus 2022/2023" = 3,"Estatus 2023/2024" = 3),line = F)
+                    "Estatus 2022/2023" = 3,"Estatus 2023/2024" = 3),line = F)%>%
+footnote(number = footnote2,threeparttable = T,escape = FALSE,fixed_small_size = TRUE)
 
 
 ```
@@ -5940,8 +5828,6 @@ caption = "\\label{Tab26s}Proyección de la captura estimada para los años biol
                 full_width = FALSE,font_size=10)%>% 
   add_header_above(c("Captura" = 1,
                     "Escenarios de reclutamiento" = 3),line = F)
-
-
 ```
 
 \pagebreak
@@ -5957,7 +5843,7 @@ colnames(tCBA)<-escrec
 row.names(tCBA)<-c('mean','sd',percentiles)
 
 kbl(round(tCBA,0), booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,format.args=list(big.mark = '.'),
-caption = "CBA 2023 asesoría de septiembre") %>% 
+caption = "CBA inicial año calendario 2023 de sardina común calculada bajo $F_{RMS}$ con sus respectivos percentiles de captura entre 10\\% y 50\\% y tres escenarios de reclutamientos.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=10)%>% 
   add_header_above(c(" " = 1,
@@ -5976,7 +5862,7 @@ colnames(tCBAd)<-escrec
 row.names(tCBAd)<-c('mean','sd',percentiles)
 
 kbl(round(tCBAd,0), booktabs = T,format = "latex",position="h!",escape = FALSE,align="c",format.args=list(big.mark = '.'),
-caption = "CBA 2023 con descuento del descarte asesoría de septiembre") %>% 
+caption = "CBA inicial año calendario 2023 considerando el descuento del 4\\% de descarte.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=10)%>% 
   add_header_above(c(" " = 1,
@@ -6000,7 +5886,7 @@ row.names(buffer2)<-percentiles
 
 
 kbl(buffer2, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,format.args=list(decimal.mark = ','),
-caption = "Buffer asesoría de septiembre") %>% 
+caption = "Nivel de resguardo de cada percentil de Captura al RMS") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=10)%>% 
   add_header_above(c(" " = 1,
