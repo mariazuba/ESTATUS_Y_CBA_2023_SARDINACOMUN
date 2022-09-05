@@ -1,5 +1,9 @@
 ---
-title: "Figuras y Tablas para  Informe de Estatus y CBA de sardina común Centro sur "
+title: "PRIMER INFORME"
+subtitle: "Estatus y Posibilidades de Explotación Biológicamente Sustentables de Sardina común,  Región de Valparaíso a la Región de Los Lagos, año 2023"
+author: María José Zúñiga
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+abstract: Este reporte contiene los resultados de los objetivos 1, 2 y 3 del Primer informe de Estatus y CBA 2023.
 output: 
     pdf_document:
       toc: FALSE
@@ -42,7 +46,7 @@ header-includes:
 - \fancyhead[LO,LE]{ }
 - \fancyhead[RO,RE]{ }
 - \renewcommand{\headrulewidth}{0.5pt}
-- \fancyfoot[C]{\cincopuntos \thepage \\ \vspace{-0.2cm} ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ \\ \vspace{-0.2cm} \cincopuntos CONVENIO DE DESEMPEÑO 2023 IFOP/SUBSECRETARÍA DE ECONOMíA Y EMT \\ \vspace{-0.1cm} INFORME. SARDINA COMÚN, REGIÓN DE VALPARAÍSO A LA REGIÓN DE LOS LAGOS}
+- \fancyfoot[C]{\cincopuntos \thepage \\ \vspace{-0.2cm} ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ \\ \vspace{-0.2cm} \cincopuntos CONVENIO DE DESEMPEÑO 2022 IFOP/SUBSECRETARÍA DE ECONOMíA Y EMT \\ \vspace{-0.1cm} PRIMER INFORME. SARDINA COMÚN, REGIÓN DE VALPARAÍSO A LA REGIÓN DE LOS LAGOS, 2023}
 
 
 bibliography: Referencias_noviembre2021.bib
@@ -85,11 +89,11 @@ ant <-reptoRlist(paste(dir.0,"/DatosEntrada.dat",sep=""))  # datos utilizados pa
 ```{r CORRE MODELO BASE SEPTIEMBRE, eval=FALSE, echo=FALSE, warning=FALSE, include=F}
 setwd(dir.1)
 
-#system("~/admb-12.2/admb MAE922")
-#system("./MAE922")
+system("~/admb-12.2/admb MAE922")
+system("./MAE922")
 
-system("/ADMB/admb MAE922")
-system("MAE922")
+#system("/ADMB/admb MAE922")
+#system("MAE922")
 
 source(paste(dir.fun,"removefile.R",sep=""))
 removefileadmb(dir.1,"MAE922") 
@@ -189,17 +193,19 @@ desc_actualizado<-c(rep(1,10),rep(1.04,17),1.07,1.05,1.04,1.04,1.04)
 CapturaDescartada<- -(1-desc_actualizado)*desembarque
 CapturaTotal<-desembarque+CapturaDescartada
 
-porcDesc_actualizado<-c(rep("0%",10),rep("4%",17),"7%","5%","4%","4%",'4%')
+porcDesc_actualizado<-c(rep("0\\%",10),rep("4\\%",17),"7\\%","5\\%","4\\%","4\\%",'4\\%')
 
-dataDes_y_descar<-data.frame("Año biológico"=bioyear,
-                 "Desembarques t."=round(desembarque,0),
-                 "Porcentaje descarte" =porcDesc_actualizado,
-                 "Captura descartada t."=round(CapturaDescartada,0),
-                 "Captura total t."=round(CapturaTotal,0))
+dataDes_y_descar<-data.frame("Año"=bioyear,
+                 "Desembarques"=round(desembarque,0),
+                 "Pdescarte" =porcDesc_actualizado,
+                 "Capturadesc"=round(CapturaDescartada,0),
+                 "Capturatotal"=round(CapturaTotal,0))
 
 
 
 ```
+
+
 
 
 ```{r Tab17_varpobl, echo=F,warning=FALSE,include=T}
@@ -244,464 +250,97 @@ Ft3std   <- c(subset(std3,name=="log_Ft")$std)
 ```
 
 
-<!-- Puntos biológicos de referencia -->
+```{r Dat_Retrospectivo, echo=F, message=FALSE, warning=FALSE, include=T,eval=T}
+dir<-paste(dir.0,"/Retrospectivo_sept",sep="")
+setwd(dir)
+admb<-"MAE922"
 
-```{r Data_PBR_biologico_sept, echo=F}
-#PBR año biologico
-Amax        <- dat1$nedades 
-Fmort 	    <- seq(0,3.5,0.02)           
-nf          <- length(Fmort) 
-R0 		      <- 1  
-#datos de entrada 
-Dat<-list()
-Dat$M		    <- dat1$par[5]             
-Dat$Tspw	  <- dat1$Dt[3]              
-Dat$Mad	    <- dat1$madurezsexual        
-Dat$Wmed	  <- colMeans(dat1$Wmed)      
-Dat$Wini	  <- colMeans(dat1$Wini) 
-Dat$Sel     <- rep1$Sel_flota[1,] 
+years       <-rep1$years
+nyears      <-length(years)
+retros      <-seq(1,5)
+nretros     <-length(retros)
+year_retros <-as.factor(years[(nyears-(nretros-1)):nyears])
+                      
+retroR      <- matrix(0,nrow=nyears,ncol=nretros+1)
+retroBD     <- matrix(0,nrow=nyears,ncol=nretros+1)
+retroF      <- matrix(0,nrow=nyears,ncol=nretros+1)
 
-Rmed1        <- mean(Rt1,na.rm = T)           
-Bmed1        <- mean(BD1,na.rm = T)         
-Fmedian1     <- exp(median(Ft1,na.rm = T))
-
-Bobj        <-c(.85,.80,.60,.55,.52,.50,.45,.40,.30,.325,0.425)
-Fobj      	<- optim(par=rep(0.,11),fn=SPRFpbr,method='BFGS')
-
-SPR1 		    <- SPRFmort(Rmed1,c(0,Fobj$par,Fmedian1,rep1$Ftot[25]),Amax,Dat) 
-pSPR_Fmh1    <- as.numeric(SPR1[13,4])                     # Paso 2: Cálculo de la curva SPR
-pB_Fmh1      <- pSPR_Fmh1-0.05                             # Paso 3: Aproximación obtención de %BD(Fmh)
-SPRcurv1 		<- SPRFmort(R0,Fmort,Amax,Dat) 
-```
+for(i in 1:length(retros)){
+  rep<- reptoRlist(paste(admb,i,".rep",sep=""))
+  retroR[,i+1]  <- c(rep$Reclutas,rep(NA,i-1))
+  retroBD[,i+1] <- c(rep$SSB,rep(NA,i-1))
+  retroF[,i+1]  <- c(rep$Ftot,rep(NA,i-1)) }
 
 
+# retrospectivo relativo (cálculo)
+    mohn.r       <- rep(NA, nretros)
+    rel.diff.r   <- matrix(NA, nrow=nyears, ncol=(nretros))
+    mohn.ssb     <- rep(NA, nretros)
+    rel.diff.ssb <- matrix(NA, nrow=nyears, ncol=(nretros))
+    mohn.f       <- rep(NA, nretros)
+    rel.diff.f   <- matrix(NA, nrow=nyears, ncol=(nretros))
 
+    for(j in 1:nretros){
+      rel.diff.r[,j]   <- (retroR[,(j+1)]-retroR[,2])/retroR[,2]
+      mohn.r[j]        <- rel.diff.r[(nyears-j),j]
+      rel.diff.ssb[,j] <- (retroBD[,(j+1)]-retroBD[,2])/retroBD[,2]
+      mohn.ssb[j]      <- rel.diff.ssb[(nyears-j),j]
+      rel.diff.f[,j]   <- (retroF[,(j+1)]-retroF[,2])/retroF[,2]
+      mohn.f[j]        <- rel.diff.f[(nyears-j),j]}
+    
+    ave.mohn.r    <- mean(mohn.r)
+    ave.mohn.ssb  <- mean(mohn.ssb)
+    ave.mohn.f    <- mean(mohn.f)
+    
+ # Arreglo datos
 
-```{r Data_PBR_biologico_marzo, echo=F}
-#PBR año biologico
-Amax        <- dat2$nedades 
-Fmort 	    <- seq(0,3.5,0.02)           
-nf          <- length(Fmort) 
-R0 		      <- 1  
-#datos de entrada 
-Dat<-list()
-Dat$M		    <- dat2$par[5]             
-Dat$Tspw	  <- dat2$Dt[3]              
-Dat$Mad	    <- dat2$madurezsexual        
-Dat$Wmed	  <- colMeans(dat2$Wmed)      
-Dat$Wini	  <- colMeans(dat2$Wini) 
-Dat$Sel     <- rep2$Sel_flota[1,] 
+#Para retrospectivo tradicional
+Rt_retro<- data.frame(x=years, 
+                      y1=retroR[,2],
+                      y2=retroR[,3],
+                      y3=retroR[,4],
+                      y4=retroR[,5],
+                      y5=retroR[,6],
+                      lower = (Rt1 -1.96*Rt1std), 
+                      upper = (Rt1 +1.96*Rt1std))
+BD_retro<- data.frame(x=years, 
+                      y1=retroBD[,2],
+                      y2=retroBD[,3],
+                      y3=retroBD[,4],
+                      y4=retroBD[,5],
+                      y5=retroBD[,6],
+                      lower = (BD1 -1.96*BD1std), 
+                      upper = (BD1 +1.96*BD1std))
+Ft_retro<- data.frame(x=years, 
+                      y1=retroF[,2],
+                      y2=retroF[,3],
+                      y3=retroF[,4],
+                      y4=retroF[,5],
+                      y5=retroF[,6], 
+                      lower = exp(Ft1 -1.96*Ft1std), 
+                      upper = exp(Ft1 +1.96*Ft1std))
 
-Rmed2        <- mean(Rt2)           
-Bmed2        <- mean(BD2)         
-Fmedian2     <- exp(median(Ft2))
-
-Bobj        <-c(.85,.80,.60,.55,.52,.50,.45,.40,.30,.325,0.425)
-Fobj      	<- optim(par=rep(0.,11),fn=SPRFpbr,method='BFGS')
-
-SPR2 		    <- SPRFmort(Rmed2,c(0,Fobj$par,Fmedian2,rep2$Ftot[25]),Amax,Dat) 
-pSPR_Fmh2    <- as.numeric(SPR2[13,4])                     # Paso 2: Cálculo de la curva SPR
-pB_Fmh2      <- pSPR_Fmh2-0.05                             # Paso 3: Aproximación obtención de %BD(Fmh)
-SPRcurv2 		<- SPRFmort(R0,Fmort,Amax,Dat) 
-```
-
-
-
-
-```{r Data_PBR_biologico_julio, echo=F}
-#PBR año biologico
-Amax        <- dat3$nedades 
-Fmort 	    <- seq(0,3.5,0.02)           
-nf          <- length(Fmort) 
-R0 		      <- 1  
-#datos de entrada 
-Dat<-list()
-Dat$M		    <- dat3$par[5]             
-Dat$Tspw	  <- dat3$Dt[3]              
-Dat$Mad	    <- dat3$madurezsexual        
-Dat$Wmed	  <- colMeans(dat3$Wmed)      
-Dat$Wini	  <- colMeans(dat3$Wini) 
-Dat$Sel     <- rep3$Sel_flota[1,] 
-
-Rmed3        <- mean(Rt3)           
-Bmed3        <- mean(BD3)         
-Fmedian3     <- exp(median(Ft3))
-
-Bobj        <-c(.85,.80,.60,.55,.52,.50,.45,.40,.30,.325,0.425)
-Fobj      	<- optim(par=rep(0.,11),fn=SPRFpbr,method='BFGS')
-
-SPR3 		    <- SPRFmort(Rmed3,c(0,Fobj$par,Fmedian3,rep3$Ftot[25]),Amax,Dat) 
-pSPR_Fmh3    <- as.numeric(SPR3[13,4])                     # Paso 2: Cálculo de la curva SPR
-pB_Fmh3      <- pSPR_Fmh3-0.05                             # Paso 3: Aproximación obtención de %BD(Fmh)
-SPRcurv3 		<- SPRFmort(R0,Fmort,Amax,Dat) 
-```
-
-
-```{r pbrs septiembre, echo=F}
-# ASESORÍA DE SEPTIEMBRE
-Bo1           <- rep1$SSBpbr[1]                         # Paso 4: Obtenci?n de Bo
-BRMS1         <- rep1$SSBpbr[3]                         # Paso 5: Obtenci?n de Brms = 60%SPRo = 55%Bo
-FRMS1         <- rep1$Fs[2]
-BLIM1         <- Bo1*0.275                              # Paso 6: Obtenci?n de Blim = 20%Bo 
-FLIM1         <- rep1$Fs[3]                             # Paso 6: Obtenci?n de Flim = 30%SPRo
-SpB1          <- BD1                                  # BD serie hist?rica de evaluaci?n de stock 
-SpBSE1        <- BD1std                               # desviaci?n estandar BD
-ln_Fyr1       <- Ft1                                    # logaritmo de Ft
-ln_FSE1       <- Ft1std                                 # logaritmo de la desviaci?n standar de Ft
-```
-
-
-
-
-```{r pbrs marzo, echo=F}
-# ASESORÍA DE SEPTIEMBRE
-Bo2           <- rep2$SSBpbr[1]                         # Paso 4: Obtenci?n de Bo
-BRMS2         <- rep2$SSBpbr[3]                         # Paso 5: Obtenci?n de Brms = 60%SPRo = 55%Bo
-FRMS2         <- rep2$Fs[2]
-BLIM2         <- Bo2*0.275                              # Paso 6: Obtenci?n de Blim = 20%Bo 
-FLIM2         <- rep2$Fs[3]                             # Paso 6: Obtenci?n de Flim = 30%SPRo
-SpB2          <- BD2                                  # BD serie hist?rica de evaluaci?n de stock 
-SpBSE2        <- BD2std                               # desviaci?n estandar BD
-ln_Fyr2       <- Ft2                                    # logaritmo de Ft
-ln_FSE2       <- Ft2std                                 # logaritmo de la desviaci?n standar de Ft
-```
-
-\pagebreak
-
-
-```{r pbrs julio, echo=F}
-# ASESORÍA DE SEPTIEMBRE
-Bo3           <- rep3$SSBpbr[1]                         # Paso 4: Obtenci?n de Bo
-BRMS3         <- rep3$SSBpbr[3]                         # Paso 5: Obtenci?n de Brms = 60%SPRo = 55%Bo
-FRMS3         <- rep3$Fs[2]
-BLIM3         <- Bo3*0.275                              # Paso 6: Obtenci?n de Blim = 20%Bo 
-FLIM3         <- rep3$Fs[3]                             # Paso 6: Obtenci?n de Flim = 30%SPRo
-SpB3          <- BD3                                  # BD serie hist?rica de evaluaci?n de stock 
-SpBSE3        <- BD3std                               # desviaci?n estandar BD
-ln_Fyr3       <- Ft3                                    # logaritmo de Ft
-ln_FSE3       <- Ft3std                                 # logaritmo de la desviaci?n standar de Ft
-```
-
-
-
-```{r Estatus_sept, echo=F,message=FALSE, warning=FALSE, include=T}
-
-years1<-rep1$years
-nyears1<-length(years1)
-#para serie histórica
-Rpr1     <- c(subset(std1,name=="RPRequ3")$value); 
-Rpr1std  <- c(subset(std1,name=="RPRequ3")$std)
-Frpr1    <- c(subset(std1,name=="Frpr")$value); 
-Frpr1std <- c(subset(std1,name=="Frpr")$std)
-
-EstatusSep<- data.frame(x=years1, 
-                        Rpr1=Rpr1,
-                        Frpr1=Frpr1,
-                        lowerRpr1  = (Rpr1 - 1.96*Rpr1std ), 
-                        upperRpr1  = (Rpr1 +1.96*Rpr1std ),
-                        lowerFrpr1 = (Frpr1 -1.96*Frpr1std), 
-                        upperFrpr1 = (Frpr1 +1.96*Frpr1std))
-
-#Para densidad de probabilidad
-rprSEPT     <-subset(std1,name=="RPRequ3")$value[nyears1]
-rprSEPTstd  <-subset(std1,name=="RPRequ3")$std[nyears1]
-FrprSEPT    <-subset(std1,name=="Frpr")$value[nyears1]
-FrprSEPTstd <-subset(std1,name=="Frpr")$std[nyears1]
-
-# biomasa desovante vs BDrms
-xbs1 <-rnorm(1000, mean = rprSEPT, sd = rprSEPTstd)
-xbs  <-seq(min(xbs1),max(xbs1),0.005)
-ybs  <-dnorm(xbs, mean = rprSEPT, sd =rprSEPTstd)
-icbs <-qnorm(c(0.05,0.95,0.5),rprSEPT,rprSEPTstd)
-
-# mortalidad por pesca vs Frms
-xfs1 <- rnorm(1000, mean = FrprSEPT, sd = FrprSEPTstd)
-xfs  <-seq(min(xfs1),max(xfs1),0.005)
-yfs  <-dnorm(xfs, mean = FrprSEPT, sd =FrprSEPTstd)
-icfs <-qnorm(c(0.05,0.95,0.5),FrprSEPT,FrprSEPTstd)
-
-#distribución probabilidad
-xxbs      <- c(xbs[xbs>=icbs[1]&xbs<=icbs[2]],
-               rev(xbs[xbs>=icbs[1]&xbs<=icbs[2]]))
-
-yybs      <- c(ybs[xbs>=icbs[1]&xbs<=icbs[2]],
-               rep(0,length(ybs[xbs>=icbs[1]&xbs<=icbs[2]])))
-
-xxfs      <- c(xfs[xfs>=icfs[1]&xfs<=icfs[2]],
-               rev(xfs[xfs>=icfs[1]&xfs<=icfs[2]]))
-
-yyfs      <- c(yfs[xfs>=icfs[1]&xfs<=icfs[2]],
-               rep(0,length(yfs[xfs>=icfs[1]&xfs<=icfs[2]])))
-
-densb_bs  <- data.frame(x=xxbs, y=yybs , t=rep('a', length(xxbs)), r=seq(1,length(xxbs),1))
-densb_fs  <- data.frame(x=xxfs, y=yyfs , t=rep('a', length(xxfs)), r=seq(1,length(xxfs),1))
-
-### *Probabilidad de estar bajo BRMS*
-#Asesoría Septiembre #P(BD<BDrms) 
-pa_sept<-pnorm(0.9,rprSEPT,rprSEPTstd,lower.tail = TRUE,log.p = F)
-### *Probabilidad de estar bajo FRMS*
-#Asesoría Septiembre #P(F>Frms)
-pb_sept<-1-pnorm(1.1,FrprSEPT,FrprSEPTstd,lower.tail = TRUE,log.p = F)
-### *Probabilidad de estar en zona de sobreexplotacion*
-#Asesoría Septiembre #P(BD<BDrms) 
-pc_sept<-pnorm(0.9,rprSEPT,rprSEPTstd,lower.tail = TRUE,log.p = F)-pnorm(0.5,rprSEPT,rprSEPTstd,lower.tail = TRUE,log.p = F)
-### *Probabilidad de estar en zona de colapso*
-#Asesoría Septiembre #P(BD<BDrms) 
-pd_sept<-pnorm(0.5,rprSEPT,rprSEPTstd,lower.tail = TRUE,log.p = F)
-### *Probailidad de sobrepesca*
-#Asesoría Septiembre #P(F>Frms)
-pe_sept<-1-pnorm(1.1,FrprSEPT,FrprSEPTstd,lower.tail = TRUE,log.p = F)
-```
-
-
-
-<!-- Estatus -->
-
-```{r Estatus_marzo, echo=F,message=FALSE, warning=FALSE, include=T}
-
-years2<-rep2$years
-nyears2<-length(years2)
-
-#para serie histórica indicadores del estatus
-Rpr2     <- subset(std2,name=="RPRequ3")$value; 
-Rpr2std  <- subset(std2,name=="RPRequ3")$std
-Frpr2    <- subset(std2,name=="Frpr")$value; 
-Frpr2std <- subset(std2,name=="Frpr")$std
-
-EstatusMar<- data.frame(x=years2, 
-                        Rpr2=Rpr2,
-                        Frpr2=Frpr2,
-         lowerRpr2  = (Rpr2 - 1.96*Rpr2std ),
-         upperRpr2   = (Rpr2 +1.96*Rpr2std ),
-         lowerFrpr2 = (Frpr2 -1.96*Frpr2std), 
-         upperFrpr2 = (Frpr2+1.96*Frpr2std))
-
-#Para densidad de probabilidad
-rprMARZO     <-subset(std2,name=="RPRequ3")$value[nyears2]
-rprMARZOstd  <-subset(std2,name=="RPRequ3")$std[nyears2]
-FrprMARZO    <-subset(std2,name=="Frpr")$value[nyears2]
-FrprMARZOstd <-subset(std2,name=="Frpr")$std[nyears2]
-# biomasa desovante vs BDrms - densidad de probabilidad
-xbm1 <-rnorm(1000, mean = rprMARZO, sd = rprMARZOstd)
-xbm  <-seq(min(xbm1),max(xbm1),0.005)
-ybm  <-dnorm(xbm, mean = rprMARZO, sd =rprMARZOstd)
-icbm <-qnorm(c(0.05,0.95,0.5),rprMARZO,rprMARZOstd)
-# mortalidad por pesca vs Frms - densidad de probabilidad
-xfm1 <- rnorm(1000, mean = FrprMARZO, sd = FrprMARZOstd)
-xfm  <-seq(min(xfm1),max(xfm1),0.005)
-yfm  <-dnorm(xfm, mean = FrprMARZO, sd =FrprMARZOstd)
-icfm <-qnorm(c(0.05,0.95,0.5),FrprMARZO,FrprMARZOstd)
-#distribución probabilidad
-xxbm      <- c(xbm[xbm>=icbm[1]&xbm<=icbm[2]],
-               rev(xbm[xbm>=icbm[1]&xbm<=icbm[2]]))
-
-yybm      <- c(ybm[xbm>=icbm[1]&xbm<=icbm[2]],
-               rep(0,length(ybm[xbm>=icbm[1]&xbm<=icbm[2]])))
-
-xxfm      <- c(xfm[xfm>=icfm[1]&xfm<=icfm[2]],
-               rev(xfm[xfm>=icfm[1]&xfm<=icfm[2]]))
-
-yyfm      <- c(yfm[xfm>=icfm[1]&xfm<=icfm[2]],
-               rep(0,length(yfm[xfm>=icfm[1]&xfm<=icfm[2]])))
-
-densb_bm  <- data.frame(x=xxbm, y=yybm , t=rep('a', length(xxbm)), r=seq(1,length(xxbm),1))
-densb_fm  <- data.frame(x=xxfm, y=yyfm , t=rep('a', length(xxfm)), r=seq(1,length(xxfm),1))
-
-### *Probabilidad de estar bajo BRMS*
-#Asesoría marzo #P(BD<BDrms) 
-pa_mar<-pnorm(0.9,rprMARZO,rprMARZOstd,lower.tail = TRUE,log.p = F)
-### *Probabilidad de estar bajo FRMS*
-#Asesoría marzo #P(F>Frms)
-pb_mar<-1-pnorm(1.1,FrprMARZO,FrprMARZOstd,lower.tail = TRUE,log.p = F)
-### *Probabilidad de estar en zona de sobreexplotacion*
-#Asesoría marzo #P(BD<BDrms) 
-
-pc_mar<-pnorm(0.9,rprMARZO,rprMARZOstd,lower.tail = TRUE,log.p = F)-pnorm(0.5,rprMARZO,rprMARZOstd,lower.tail = TRUE,log.p = F)
-
-### *Probabilidad de estar en zona de colapso*
-#Asesoría marzo #P(BD<BDrms) 
-pd_mar<-pnorm(0.5,rprMARZO,rprMARZOstd,lower.tail = TRUE,log.p = F)
-
-### *Probailidad de sobrepesca*
-#Asesoría marzo #P(F>Frms)
-pe_mar<-1-pnorm(1.1,FrprMARZO,FrprMARZOstd,lower.tail = TRUE,log.p = F)
+#Para restrospectivo relativo
+Rt_retroRel<- data.frame(x=years, 
+                         y1=rel.diff.r[,1],
+                         y2=rel.diff.r[,2],
+                         y3=rel.diff.r[,3],
+                         y4=rel.diff.r[,4],
+                         y5=rel.diff.r[,5])
+BD_retroRel<- data.frame(x=years, 
+                         y1=rel.diff.ssb[,1],
+                         y2=rel.diff.ssb[,2],
+                         y3=rel.diff.ssb[,3],
+                         y4=rel.diff.ssb[,4],
+                         y5=rel.diff.ssb[,5])
+Ft_retroRel<- data.frame(x=years, 
+                         y1=rel.diff.f[,1],
+                         y2=rel.diff.f[,2],
+                         y3=rel.diff.f[,3],
+                         y4=rel.diff.f[,4],
+                         y5=rel.diff.f[,5])
 
 ```
-
-
-<!--- Este estatus se calcula en la asesoría de julio -->
-```{r Estatus_julio, echo=F,message=FALSE, warning=FALSE, include=T}
-
-years3  <-rep3$years
-nyears3 <-length(years3)
-
-#para serie histórica indicadores del estatus
-Rpr3     <- subset(std3,name=="RPRequ3")$value; 
-Rpr3std  <- subset(std3,name=="RPRequ3")$std
-Frpr3    <- subset(std3,name=="Frpr")$value; 
-Frpr3std <- subset(std3,name=="Frpr")$std
-
-EstatusJul<- data.frame(x=years3,
-                        Rpr3=Rpr3,
-                        Frpr3=Frpr3,
-                  lowerRpr3   = (Rpr3  -1.96*Rpr3std ), 
-                  upperRpr3   = (Rpr3 +1.96*Rpr3std ),
-                  lowerFrpr3  = (Frpr3 -1.96*Frpr3std), 
-                  upperFrpr3  = (Frpr3 +1.96*Frpr3std))
-
-#Para densidad de probabilidad
-rprJULIO     <-subset(std3,name=="RPRequ3")$value[nyears3]
-rprJULIOstd  <-subset(std3,name=="RPRequ3")$std[nyears3]
-FrprJULIO    <-subset(std3,name=="Frpr")$value[nyears3]
-FrprJULIOstd <-subset(std3,name=="Frpr")$std[nyears3]
-# biomasa desovante vs BDrms - densidad de probabilidad
-xbj1 <-rnorm(1000, mean = rprJULIO, sd = rprJULIOstd)
-xbj  <-seq(min(xbj1),max(xbj1),0.005)
-ybj  <-dnorm(xbj, mean = rprJULIO, sd =rprJULIOstd)
-icbj <-qnorm(c(0.05,0.95,0.5),rprJULIO,rprJULIOstd)
-# mortalidad por pesca vs Frms - densidad de probabilidad
-xfj1 <- rnorm(1000, mean = FrprJULIO, sd = FrprJULIOstd)
-xfj  <-seq(min(xfj1),max(xfj1),0.005)
-yfj  <-dnorm(xfj, mean = FrprJULIO, sd =FrprJULIOstd)
-icfj <-qnorm(c(0.05,0.95,0.5),FrprJULIO,FrprJULIOstd)
-#distribución probabilidad
-xxbj      <- c(xbj[xbj>=icbj[1]&xbj<=icbj[2]],rev(xbj[xbj>=icbj[1]&xbj<=icbj[2]]))
-yybj      <- c(ybj[xbj>=icbj[1]&xbj<=icbj[2]],rep(0,length(ybj[xbj>=icbj[1]&xbj<=icbj[2]])))
-xxfj      <- c(xfj[xfj>=icfj[1]&xfj<=icfj[2]],rev(xfj[xfj>=icfj[1]&xfj<=icfj[2]]))
-yyfj      <- c(yfj[xfj>=icfj[1]&xfj<=icfj[2]],rep(0,length(yfj[xfj>=icfj[1]&xfj<=icfj[2]])))
-
-densb_bj  <- data.frame(x=xxbj, y=yybj , t=rep('a', length(xxbj)), r=seq(1,length(xxbj),1))
-densb_fj  <- data.frame(x=xxfj, y=yyfj , t=rep('a', length(xxfj)), r=seq(1,length(xxfj),1))
-
-### *Probabilidad de estar bajo BRMS*
-#Asesoría julio #P(BD<BDrms) 
-pa_jul<-pnorm(0.9,rprJULIO,rprJULIOstd,lower.tail = TRUE,log.p = F)
-### *Probabilidad de estar bajo FRMS*
-#Asesoría julio#P(F>Frms)
-pb_jul<-1-pnorm(1.1,FrprJULIO,FrprJULIOstd,lower.tail = TRUE,log.p = F)
-### *Probabilidad de estar en zona de sobreexplotacion*
-#Asesoría julio #P(BD<BDrms) 
-pc_jul<-pnorm(0.9,rprJULIO,rprJULIOstd,lower.tail = TRUE,log.p = F)-pnorm(0.5,rprJULIO,rprJULIOstd,lower.tail = TRUE,log.p = F)
-### *Probabilidad de estar en zona de colapso*
-#Asesoría julio #P(BD<BDrms) 
-pd_jul<-pnorm(0.5,rprJULIO,rprJULIOstd,lower.tail = TRUE,log.p = F)
-### *Probailidad de sobrepesca*
-#Asesoría julio #P(F>Frms)
-pe_jul<-1-pnorm(1.1,FrprJULIO,FrprJULIOstd,lower.tail = TRUE,log.p = F)
-
-```
-
-
-<!-- CBA Inicial (Asesoría de septiembre) -->
-
-
-```{r proyecciona,warning=F, include=T, message=F,eval=T, echo=F}
-
-dira<-paste(dir.0,"/CBA_sept/",sep="")
-setwd(dira)
-reps1a     <- reptoRlist("MAE92211.rep")  
-reps2a     <- reptoRlist("MAE92212.rep") 
-reps3a     <- reptoRlist("MAE92213.rep") 
-
-carpeta<-"/CBA_sept/"
-stds1     <- read.table(paste(dir.0,carpeta,"MAE92211.std", sep=''),header=T,sep="",na="NA",fill=T) 
-stds2     <- read.table(paste(dir.0,carpeta,"MAE92212.std", sep=''),header=T,sep="",na="NA",fill=T) 
-stds3     <- read.table(paste(dir.0,carpeta,"MAE92213.std", sep=''),header=T,sep="",na="NA",fill=T) 
-
-bds1     <- subset(stds1,name=="BD_p0")$value ; 
-bds1std  <- subset(stds1,name=="BD_p0")$std #reclutamiento medios
-bds2     <- subset(stds2,name=="BD_p0")$value ; 
-bds2std  <- subset(stds2,name=="BD_p0")$std #reclutamiento 2018
-bds3     <- subset(stds3,name=="BD_p0")$value ; 
-bds3std  <- subset(stds3,name=="BD_p0")$std #reclutamiento 2012
-
-RpRps1     <- subset(stds1,name=="RPR_p0")$value ; 
-RpRps1std  <- subset(stds1,name=="RPR_p0")$std #reclutamiento medios
-RpRps2     <- subset(stds2,name=="RPR_p0")$value ; 
-RpRps2std  <- subset(stds2,name=="RPR_p0")$std #reclutamiento 2018
-RpRps3     <- subset(stds3,name=="RPR_p0")$value ; 
-RpRps3std  <- subset(stds3,name=="RPR_p0")$std #reclutamiento 2012
-
-cs1     <- subset(stds1,name=="YTP_p0")$value ; 
-cs1std  <- subset(stds1,name=="YTP_p0")$std #reclutamiento medios
-cs2     <- subset(stds2,name=="YTP_p0")$value ; 
-cs2std  <- subset(stds2,name=="YTP_p0")$std #reclutamiento 2018
-cs3     <- subset(stds3,name=="YTP_p0")$value ; 
-cs3std  <- subset(stds3,name=="YTP_p0")$std #reclutamiento 2012
-
-
-```
-
-
-```{r Tabla32_CBA_septiembre, echo=FALSE, warning=F, include=T, message=F}
-dir.4<-paste(dir.0,"/CBA_sept/",sep="")
-
-EscRecl<-seq(1,3,1) #escenarios de reclutamiento basado en anÃ¡lisis de quiebres
-nes<-length(EscRecl)
-q       <- seq(0.1,0.5,0.1)  # niveles de riesgo (cuantiles)                            
-nq      <- length(q)                                                                    
-CBA     <- matrix(ncol=nq,nrow=nes)
-CBAp    <- matrix(ncol=1,nrow=1)
-CBApstd <- matrix(ncol=1,nrow=1)
-
-buffer   <- matrix(ncol=nq,nrow=nes)
-descarte <- matrix(ncol=nq,nrow=nes)
-
-for(i in 1:nes){
-	std     <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
-	CBAp[i]    <-subset(std,name=="CBA_c0")$value[1]
-	CBApstd[i] <-subset(std,name=="CBA_c0")$std[1]
-	for(j in 1:nq){	CBA[i,j]<-qnorm(q[j],CBAp[i],CBApstd[i])}}
-
-```
-
-
-```{r CBAinicial_sept, eval=T, echo=FALSE, warning=F, include=T, message=F}
-
-dir.4<-paste(dir.0,"/CBA_sept/",sep="")
-
-EscRecl<-seq(1,3,1) #escenarios de reclutamiento basado en anÃ¡lisis de quiebres
-nes<-length(EscRecl)
-q       <- seq(0.1,0.5,0.1)  # niveles de riesgo (cuantiles)                            
-nq      <- length(q)                                                                    
-CBA_sept     <- matrix(ncol=nq,nrow=nes)
-CBAp_sept    <- matrix(ncol=1,nrow=1)
-CBApstd_sept <- matrix(ncol=1,nrow=1)
-
-buffer   <- matrix(ncol=nq,nrow=nes)
-descarte <- matrix(ncol=nq,nrow=nes)
-
-for(i in 1:nes){
-	std     <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
-	CBAp_sept[i]    <-subset(std,name=="CBA_c0")$value[1]
-	CBApstd_sept[i] <-subset(std,name=="CBA_c0")$std[1]
-	for(j in 1:nq){	CBA_sept[i,j]<-qnorm(q[j],CBAp_sept[i],CBApstd_sept[i])}}
-
-```
-
-
-```{r CBAinicial-descarte_sept, eval=T, echo=FALSE, warning=F, include=T, message=F}
-
-dir.4<-paste(dir.0,"/CBA_sept/",sep="")
-
-EscRecl<-seq(1,3,1) #escenarios de reclutamiento basado en anÃ¡lisis de quiebres
-nes<-length(EscRecl)
-q       <- seq(0.1,0.5,0.1)  # niveles de riesgo (cuantiles)                            
-nq      <- length(q)                                                                    
-CBAd_sept     <- matrix(ncol=nq,nrow=nes)
-CBApd_sept    <- matrix(ncol=1,nrow=1)
-CBApdstd_sept <- matrix(ncol=1,nrow=1)
-
-for(i in 1:nes){
-	std     <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
-	CBApd_sept[i]    <-subset(std,name=="CBA_c0d")$value[1]
-	CBApdstd_sept[i] <-subset(std,name=="CBA_c0d")$std[1]
-	for(j in 1:nq){	CBAd_sept[i,j]<-qnorm(q[j],CBApd_sept[i],CBApdstd_sept[i])}}
-
-
-
-```
-
 
 
 <!--- FUNCIONES PARA ANÁLISIS RETROSPECTIVO DE CADA ASESORÍA -->
@@ -806,7 +445,7 @@ CBA(dir.0,
     opt_proy=2,     # Proyecta de un año para otro (CBA inicial, asesoría de septiembre)
     opt_wmed=3,     # peso promedio últimos 5 años de la serie
     opt_Str=1,      # estrategia F constante
-    system="windows")   # denpende si estoy en computador de windows o mac
+    system="mac")   # denpende si estoy en computador de windows o mac
 
 source(paste(dir.fun,"removefile.R",sep=""))
 dir.1<-paste(dir.0,"/CBA_sept",sep="")
@@ -869,7 +508,9 @@ asesoria_1<-"Septiembre 2022"
 
 ```
 
+# RESULTADOS
 
+## Datos actualizados
 El presente informe contiene el estatus del año biológico 2021/22 y de la Captura Biológicamente Aceptable (CBA) del año calendario 2023 para el stock de sardina común en la Unidad de Pesquería Centro-Sur (UPCS) de Chile, Región de Valparaíso a Región de Los Lagos. El estudio es actualizado con la información disponible a junio de 2022: (1) Estadísticas de desembarques SERNAPESCA desde 1990/91 hasta 2021/22; (2) El porcentaje de descarte proveniente del Programa de Descarte de IFOP corresponde al período 2015-2021; (3) Información de captura a la edad y pesos individuales a la edad provenientes del "Programa de Seguimiento de las Principales Pesquerías Nacionales (Pesquerías Pelágicas)" desde 1990/91 hasta 2021/22; (4) Series de biomasas acústicas y composiciones de edad de verano (años 2000 a 2022) y otoño (años 2003 a 2022) provenientes del programa de cruceros IFOP "Evaluación hidroacústica de los stocks de anchoveta y sardina común entre las Regiones de Valparaíso y Los Lagos".; (5) publicaciones científicas y técnicas relacionadas con los parámetros del ciclo de vida (mortalidad natural y madurez).
 
 La información obtenida de los cruceros acústicos indican que durante los años 2015 al 2019, las biomasas acústicas de verano se mantuvieron en niveles en torno a los **2** millones de toneladas, lo cual se ve reflejado también en una estabilidad en las capturas totales en torno a las **360** mil toneladas. Por otro lado, las biomasas acústicas estimadas por el crucero de otoño reflejan el efecto de la remoción ejercidas por la pesca y causas naturales, con biomasas en general menores a las estimadas en el crucero de verano, en torno a **1,2** millones de toneladas promedio entre el 2015 al 2019 (\textbf{Tabla \ref{t1}} y \textbf{Figura \ref{Fig20}}). No obstante, para el año 2020 la biomasa estimada por el crucero acústico de verano se redujo a un millón de toneladas (**54%** menor al 2019), la biomasa del crucero de otoño disminuye un 39% respecto al 2019 y las capturas totales del año 2019/20 se redujeron un **10%** respecto al año previo. El desembarque 2020 estuvo en torno a las **258** mil toneladas, equivalente a un **80%** de la CBA 2020 recomendada por el CCT-PP (321.307 toneladas). 
@@ -898,7 +539,7 @@ El crucero de otoño 2022 y flota 2021/2022 también evidencian una reducción d
 
 
 
-## Ajuste del modelo a los datos
+## Diagnóstico del modelo de evaluación de stock
 
 Los índices de abundancia de los cruceros acústicos de verano y otoño contienen un importante nivel de variabilidad que se resume en la amplitud de los intervalos de confianza supuestos con coeficiente de variación cv=0,3. 
 
@@ -918,128 +559,624 @@ El supuesto de invariabilidad anual de los patrones de explotación como medida 
 El comportamiento de los residuales de las composiciones de edades de los cruceros sugiere ciertos patrones que se reflejan principalmente en una tendencia a la subestimación de los grupos de edad 0 en los cruceros de verano y otoño (\textbf{Figura \ref{Fig31}}).
 
 
-
-## Comparación con asesorías previas
-
-
 Se comparan los resultados de los principales indicadores de estatus del modelo base actual (`r asesoria_1`), con versiones anteriores para evaluar la consistencia de la evaluación presente (\textbf{Figura \ref{Fig32}}). Al respecto, el análisis no muestra diferencias significativas entre asesorías en términos de reclutamientos y biomasa desovante. Las diferencias observadas en términos de la mortalidad por pesca tiene relación con el supuesto de captura utilizado en las asesorías de marzo, que es corregido en la asesoría de julio y septiembre. La actualización de datos de la actual asesoría genera un reescalamiento de la serie en torno al **7%** de la mortalidad por pesca (disminuye respecto de la asesoría previa) y un 8% de la biomasa desovante (incrementa respecto de la asesoría previa).
 
 
-
-## Análisis retrospectivo
-
-En la \textbf{Figura \ref{Fig33}} se muestra el patrón retrospectivo estándar y relativo de los reclutas, biomasa desovante y de la mortalidad por pesca de sardina común para el caso base de `r asesoria_1`. El análisis retrospectivo del modelo de evaluación muestra que en términos de rho (promedio de anomalías retrospectivas) la reducción de información genera un patrón de subestimación de los reclutas y de la biomasa desovante (**rho = -0,19** y **rho = -0,01**, respectivamente), con una sobreestimación de la mortalidad por pesca (**rho = +0,14**). En general, los últimos años de las series pueden variar sustancialmente entre las sucesivas actualizaciones, mientras que hacia los primeros años tienden a converger a valores estables. La varianza estadística de las variables utilizadas para medidas de manejo tiende a aumentar en los últimos años de la serie, por lo tanto, son considerados estimaciones menos confiables.
+En la \textbf{Figura \ref{Fig33}} se muestra el patrón retrospectivo estándar y relativo de los reclutas, biomasa desovante y de la mortalidad por pesca de sardina común para el caso base de `r asesoria_1`. El análisis retrospectivo del modelo de evaluación muestra que en términos de rho (promedio de anomalías retrospectivas) la reducción de información genera un patrón de subestimación de los reclutas y de la biomasa desovante ( rho = `r formatC(ave.mohn.r,decimal.mark = ",",digits = 2)` y rho = `r formatC(ave.mohn.ssb,decimal.mark = ",",digits = 2)` , respectivamente), con una sobreestimación de la mortalidad por pesca ( rho = `r formatC(ave.mohn.f,decimal.mark = ",",digits = 2)`). En general, los últimos años de las series pueden variar sustancialmente entre las sucesivas actualizaciones, mientras que hacia los primeros años tienden a converger a valores estables. La varianza estadística de las variables utilizadas para medidas de manejo tiende a aumentar en los últimos años de la serie, por lo tanto, son considerados estimaciones menos confiables.
 
 
-
-
-## Perfil de verosimilitud
 
 La \textbf{Figura \ref{Fig34}} muestra el perfil de verosimilitud realizado para la asesoría de `r asesoria_1` de cada fuente de dato cuyo mínimo representa la estimación máxima a posteriori del reclutamiento medio ($R_0$) para cada fuente de error del caso base. El perfil muestra que los datos cuyos perfiles estuvieron más próximos entre si y la diferencia del log verosimilitud respecto del mínimo se elevó por sobre el criterio estadístico $X^2=1,92$ fueron la biomasa acústica de verano (Bio_Reclas) y la proporción de edad del crucero de verano (C.Edad_Recl).  No obstante, la proporción de edad de la flota (C.Edad_Flota) estaría generando  un incremento en Ro, generando el reescalamiento de las series históricas (Ro_julio_2022 = 121, Ro_marzo_2022 = 118).
 
 
-### Indicadores del stock
-
-#### Reclutamientos:
-
-Las tendencias de los reclutamientos han mostrado importantes fluctuaciones interanuales y en su historia conocida se aprecian tres períodos relevantes, 
-a) Reclutamiento promedio del período 1991-2007 con los niveles más bajos de reclutamientos (**117** mil millones de peces),
-b) Reclutamiento promedio del período 2008-2012 con los más altos niveles de reclutamiento (**427** mil millones de peces) y 
-c) Reclutamiento promedio del período 2013-2022 en torno a **187** mil millones de peces. 
-
-Se destaca una recuperación importante de la clase anual 2021 respecto de los bajos niveles estimados en los 2 años precedentes. 
-
-En relación a los tres períodos relevantes, el reclutamiento 2022 es un **12%** mayor al Reclutamiento bajo (período 1991-2007), un **76%** menor al Reclutamiento alto (período 2008-2012) y un **45%** menor al Reclutamiento medio (2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}).  
-
-El reclutamiento 2022 disminuye un **42%** respecto a lo estimado en la asesoría previa al incorporar información del crucero de otoño (biomasa acústica y composición de edad) y flota (desembarques, composición de edad y pesos medios).
+## Indicadores del stock
 
 
-#### Biomasa total y desovante:
+```{r Tabla_20_promedios, echo=F,warning=FALSE,include=F,eval=T}
 
-La biomasa total de este recurso, es sustentada esencialmente en los grupos de edad 0 y 1 año. En general, los grupos de edad 2+ no revisten mayor contribución en la producción tanto a nivel de desove como de biomasa disponible a la flota. La tendencia de la biomasa total muestra un importante crecimiento a partir del año 2008 que genera un cambio de nivel que se mantiene hasta el 2018. Sin embargo, presenta una alta variabilidad producto de las fluctuaciones del reclutamiento. 
+# Reclutimientos 
+Rprom_1991_2007<-mean(Rt1[1:17])
+Rprom_2008_2012<-mean(Rt1[18:22])
+Rprom_2013_2022<-mean(Rt1[23:32])
+Rprom_2013_2021<-mean(Rt1[23:31])
+Rprom_historico<-mean(Rt1)
 
-El promedio de la biomasa total para el período de mayor productividad de sardina común entre los años 2008 y 2012 es de **2,88** millones de toneladas. Para el año 2022 se estimó una biomasa total actualizada de **2** millones de toneladas, un **29%** menor al promedio del período de mayor productividad y un **14%** mayor al promedio histórico de la serie (promedio 1991-2022 = **1,77** millones de t.) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). 
+#diferencia del Rúltimo año y los promedios de los tres períodos principales
+Rlast_1991_2007<-1-(Rt1[32]/Rprom_1991_2007)
+Rlast_2008_2012<-1-(Rt1[32]/Rprom_2008_2012)
+Rlast_2013_2022<-1-(Rt1[32]/Rprom_2013_2022)
+Rlast_2013_2021<-1-(Rt1[32]/Rprom_2013_2021)
+Rlast_historico<-1-(Rt1[32]/Rprom_historico)
 
-Por otro lado, la biomasa desovante promedio de la serie histórica se encuentra en torno a **806** mil toneladas, mientras que el promedio de los ultimos 10 años  (período 2013-2022) de la serie es de **1,10** millones de toneladas. Al respecto, la biomasa desovante esperada para el año biológico 2021/2022 es un **46%** mayor al promedio histórico y un **7%** menor al promedio de los últimos 10 años (período 2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). 
+# Biomasa total (BT) asesoría marzo 2021
+BTprom_1991_2007<-mean(BT1[1:17])
+BTprom_2008_2012<-mean(BT1[18:22])
+BTprom_2013_2022<-mean(BT1[23:32])
+BTprom_2013_2021<-mean(BT1[23:31])
+BTprom_historico<-mean(BT1)
 
-La biomasa desovante al Máximo Rendimiento Sostenido ($BD_{RMS}$) está en torno a las **859** mil toneladas, de esta forma la $BD_{2021/2022}$ esperada está un **37%** sobre $BD_{RMS}$ (\textbf{Tabla \ref{Tab22}} y \textbf{\ref{Tab21}} y \textbf{Figura \ref{Fig35}}). 
+#diferencia del BT último año y los promedios de los tres períodos principales
+BTlast_1991_2007<-1-(BT1[32]/BTprom_1991_2007)
+BTlast_2008_2012<-1-(BT1[32]/BTprom_2008_2012)
+BTlast_2013_2022<-1-(BT1[32]/BTprom_2013_2022)
+BTlast_2013_2021<-1-(BT1[32]/BTprom_2013_2021)
+BTlast_historico<-1-(BT1[32]/BTprom_historico)
 
-La biomasa desovante está sustentada principalente por la fracción adulta, correspondiente a individuos de edad 1+, la cual disminuyó su abundancia producto de la disminución del reclutamiento de dos años previos consecutivos 2019 y 2020 junto a la disminución de la biomasa adulta (1+ años) el 2020, provocando que la biomasa desovante del año biológico 2020/2021 disminuyera significativamente respecto a años previos. No obstante, los altos reclutamientos registrados durante el 2021, junto a la disminución de las capturas permitirían retornar a  niveles de biomasa desovante sobre la biomasa objetivo para el año actual (2021/2022).
+# Biomasa desovante (BD) asesoría marzo 2021
+BDprom_1991_2007<-mean(BD1[1:17])
+BDprom_2008_2012<-mean(BD1[18:22])
+BDprom_2013_2022<-mean(BD1[23:32])
+BDprom_2013_2021<-mean(BD1[23:31])
+BDprom_historico<-mean(BD1)
 
-#### Mortalidad por pesca:
-
-La mortalidad por pesca (Ft) ha sido más bien baja, en general menor a la mortalidad natural (M=1,0 año^-1^), excepto para el año 2004 cuando los niveles de biomasa eran bajos. Esto se ve reflejado en las capturas, que, en promedio, han seguido las fluctuaciones en biomasa con tasas de explotación moderadas (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). 
-
-A partir del año 2005, la mortalidad por pesca ha seguido una tendencia al descenso, acentuada desde el año 2013 bajo el valor de $F_{RMS}$ producto de la aplicación de F60%. Para el año 2021/2022 la mortalidad por pesca se redujo en un **55%** respecto al año previo (año 2021) y un **57%** respecto al supuesto de captura de la asesoría previa (**marzo 2022**) en torno al RMS.
-
-
-#### Selectividades:
-
-Por su parte, la selectividad de la flota indica que el recurso alcanza su completo reclutamiento a la pesquería a la edad de 1 año cuando su retención es del **100%** aprox., mientras que los individuos de edad 0  son vulnerados un **70%**. De igual forma, la información del crucero acústico de verano y otoño indican que todos los individuos son vulnerables en un 100% por el arte de pesca empleado (arrastre de media-agua y cubre-copo) y cubiertos por el diseño de muestreo (\textbf{Figura \ref{Fig36}}).
-
-
-En esta actualización, la selectividad del crucero de otoño cambia respecto a la asesoría previa, registrando un mayor porcentaje de individuos de edad 0, con un 80% en la asesoría previa (**marzo 2022**) a un **100%** de vulnerabilidad (**julio 2022**).  
+#diferencia del BD último año y los promedios de los tres períodos principales
+BDlast_1991_2007<-1-(BD1[32]/BDprom_1991_2007)
+BDlast_2008_2012<-1-(BD1[32]/BDprom_2008_2012)
+BDlast_2013_2022<-1-(BD1[32]/BDprom_2013_2022)
+BDlast_2013_2021<-1-(BD1[32]/BDprom_2013_2021)
+BDlast_historico<-1-(BD1[32]/BDprom_historico)
 
 
-### Puntos Biológicos de Referencia (PBRs)
+```
+
+<!-- Puntos biológicos de referencia -->
+```{r Data_PBR_biologico_sept, echo=F}
+#PBR año biologico
+Amax        <- dat1$nedades 
+Fmort 	    <- seq(0,3.5,0.02)           
+nf          <- length(Fmort) 
+R0 		      <- 1  
+#datos de entrada 
+Dat<-list()
+Dat$M		    <- dat1$par[5]             
+Dat$Tspw	  <- dat1$Dt[3]              
+Dat$Mad	    <- dat1$madurezsexual        
+Dat$Wmed	  <- colMeans(dat1$Wmed)      
+Dat$Wini	  <- colMeans(dat1$Wini) 
+Dat$Sel     <- rep1$Sel_flota[1,] 
+
+Rmed1        <- mean(Rt1,na.rm = T)           
+Bmed1        <- mean(BD1,na.rm = T)         
+Fmedian1     <- exp(median(Ft1,na.rm = T))
+
+Bobj        <-c(.85,.80,.60,.55,.52,.50,.45,.40,.30,.325,0.425)
+Fobj      	<- optim(par=rep(0.,11),fn=SPRFpbr,method='BFGS')
+
+SPR1 		    <- SPRFmort(Rmed1,c(0,Fobj$par,Fmedian1,rep1$Ftot[25]),Amax,Dat) 
+pSPR_Fmh1    <- as.numeric(SPR1[13,4])                     # Paso 2: Cálculo de la curva SPR
+pB_Fmh1      <- pSPR_Fmh1-0.05                             # Paso 3: Aproximación obtención de %BD(Fmh)
+SPRcurv1 		<- SPRFmort(R0,Fmort,Amax,Dat) 
+```
+
+```{r Data_PBR_biologico_marzo, echo=F}
+#PBR año biologico
+Amax        <- dat2$nedades 
+Fmort 	    <- seq(0,3.5,0.02)           
+nf          <- length(Fmort) 
+R0 		      <- 1  
+#datos de entrada 
+Dat<-list()
+Dat$M		    <- dat2$par[5]             
+Dat$Tspw	  <- dat2$Dt[3]              
+Dat$Mad	    <- dat2$madurezsexual        
+Dat$Wmed	  <- colMeans(dat2$Wmed)      
+Dat$Wini	  <- colMeans(dat2$Wini) 
+Dat$Sel     <- rep2$Sel_flota[1,] 
+
+Rmed2        <- mean(Rt2)           
+Bmed2        <- mean(BD2)         
+Fmedian2     <- exp(median(Ft2))
+
+Bobj        <-c(.85,.80,.60,.55,.52,.50,.45,.40,.30,.325,0.425)
+Fobj      	<- optim(par=rep(0.,11),fn=SPRFpbr,method='BFGS')
+
+SPR2 		    <- SPRFmort(Rmed2,c(0,Fobj$par,Fmedian2,rep2$Ftot[25]),Amax,Dat) 
+pSPR_Fmh2    <- as.numeric(SPR2[13,4])                     # Paso 2: Cálculo de la curva SPR
+pB_Fmh2      <- pSPR_Fmh2-0.05                             # Paso 3: Aproximación obtención de %BD(Fmh)
+SPRcurv2 		<- SPRFmort(R0,Fmort,Amax,Dat) 
+```
+
+```{r Data_PBR_biologico_julio, echo=F}
+#PBR año biologico
+Amax        <- dat3$nedades 
+Fmort 	    <- seq(0,3.5,0.02)           
+nf          <- length(Fmort) 
+R0 		      <- 1  
+#datos de entrada 
+Dat<-list()
+Dat$M		    <- dat3$par[5]             
+Dat$Tspw	  <- dat3$Dt[3]              
+Dat$Mad	    <- dat3$madurezsexual        
+Dat$Wmed	  <- colMeans(dat3$Wmed)      
+Dat$Wini	  <- colMeans(dat3$Wini) 
+Dat$Sel     <- rep3$Sel_flota[1,] 
+
+Rmed3        <- mean(Rt3)           
+Bmed3        <- mean(BD3)         
+Fmedian3     <- exp(median(Ft3))
+
+Bobj        <-c(.85,.80,.60,.55,.52,.50,.45,.40,.30,.325,0.425)
+Fobj      	<- optim(par=rep(0.,11),fn=SPRFpbr,method='BFGS')
+
+SPR3 		    <- SPRFmort(Rmed3,c(0,Fobj$par,Fmedian3,rep3$Ftot[25]),Amax,Dat) 
+pSPR_Fmh3    <- as.numeric(SPR3[13,4])                     # Paso 2: Cálculo de la curva SPR
+pB_Fmh3      <- pSPR_Fmh3-0.05                             # Paso 3: Aproximación obtención de %BD(Fmh)
+SPRcurv3 		<- SPRFmort(R0,Fmort,Amax,Dat) 
+```
+
+```{r pbrs septiembre, echo=F}
+# ASESORÍA DE SEPTIEMBRE
+Bo1           <- rep1$SSBpbr[1]                         # Paso 4: Obtenci?n de Bo
+BRMS1         <- rep1$SSBpbr[3]                         # Paso 5: Obtenci?n de Brms = 60%SPRo = 55%Bo
+FRMS1         <- rep1$Fs[2]
+BLIM1         <- Bo1*0.275                              # Paso 6: Obtenci?n de Blim = 20%Bo 
+FLIM1         <- rep1$Fs[3]                             # Paso 6: Obtenci?n de Flim = 30%SPRo
+SpB1          <- BD1                                  # BD serie hist?rica de evaluaci?n de stock 
+SpBSE1        <- BD1std                               # desviaci?n estandar BD
+ln_Fyr1       <- Ft1                                    # logaritmo de Ft
+ln_FSE1       <- Ft1std                                 # logaritmo de la desviaci?n standar de Ft
+```
+
+```{r pbrs marzo, echo=F}
+# ASESORÍA DE SEPTIEMBRE
+Bo2           <- rep2$SSBpbr[1]                         # Paso 4: Obtenci?n de Bo
+BRMS2         <- rep2$SSBpbr[3]                         # Paso 5: Obtenci?n de Brms = 60%SPRo = 55%Bo
+FRMS2         <- rep2$Fs[2]
+BLIM2         <- Bo2*0.275                              # Paso 6: Obtenci?n de Blim = 20%Bo 
+FLIM2         <- rep2$Fs[3]                             # Paso 6: Obtenci?n de Flim = 30%SPRo
+SpB2          <- BD2                                  # BD serie hist?rica de evaluaci?n de stock 
+SpBSE2        <- BD2std                               # desviaci?n estandar BD
+ln_Fyr2       <- Ft2                                    # logaritmo de Ft
+ln_FSE2       <- Ft2std                                 # logaritmo de la desviaci?n standar de Ft
+```
+
+```{r pbrs julio, echo=F}
+# ASESORÍA DE SEPTIEMBRE
+Bo3           <- rep3$SSBpbr[1]                         # Paso 4: Obtenci?n de Bo
+BRMS3         <- rep3$SSBpbr[3]                         # Paso 5: Obtenci?n de Brms = 60%SPRo = 55%Bo
+FRMS3         <- rep3$Fs[2]
+BLIM3         <- Bo3*0.275                              # Paso 6: Obtenci?n de Blim = 20%Bo 
+FLIM3         <- rep3$Fs[3]                             # Paso 6: Obtenci?n de Flim = 30%SPRo
+SpB3          <- BD3                                  # BD serie hist?rica de evaluaci?n de stock 
+SpBSE3        <- BD3std                               # desviaci?n estandar BD
+ln_Fyr3       <- Ft3                                    # logaritmo de Ft
+ln_FSE3       <- Ft3std                                 # logaritmo de la desviaci?n standar de Ft
+```
+
+
+```{r Estatus_sept, echo=F,message=FALSE, warning=FALSE, include=T}
+
+years1<-rep1$years
+nyears1<-length(years1)
+#para serie histórica
+Rpr1     <- c(subset(std1,name=="RPRequ3")$value); 
+Rpr1std  <- c(subset(std1,name=="RPRequ3")$std)
+Frpr1    <- c(subset(std1,name=="Frpr")$value); 
+Frpr1std <- c(subset(std1,name=="Frpr")$std)
+
+EstatusSep<- data.frame(x=years1, 
+                        Rpr1=Rpr1,
+                        Frpr1=Frpr1,
+                        lowerRpr1  = (Rpr1 - 1.96*Rpr1std ), 
+                        upperRpr1  = (Rpr1 +1.96*Rpr1std ),
+                        lowerFrpr1 = (Frpr1 -1.96*Frpr1std), 
+                        upperFrpr1 = (Frpr1 +1.96*Frpr1std))
+
+#Para densidad de probabilidad
+rprSEPT     <-subset(std1,name=="RPRequ3")$value[nyears1]
+rprSEPTstd  <-subset(std1,name=="RPRequ3")$std[nyears1]
+FrprSEPT    <-subset(std1,name=="Frpr")$value[nyears1]
+FrprSEPTstd <-subset(std1,name=="Frpr")$std[nyears1]
+
+# biomasa desovante vs BDrms
+xbs1 <-rnorm(1000, mean = rprSEPT, sd = rprSEPTstd)
+xbs  <-seq(min(xbs1),max(xbs1),0.005)
+ybs  <-dnorm(xbs, mean = rprSEPT, sd =rprSEPTstd)
+icbs <-qnorm(c(0.05,0.95,0.5),rprSEPT,rprSEPTstd)
+
+# mortalidad por pesca vs Frms
+xfs1 <- rnorm(1000, mean = FrprSEPT, sd = FrprSEPTstd)
+xfs  <-seq(min(xfs1),max(xfs1),0.005)
+yfs  <-dnorm(xfs, mean = FrprSEPT, sd =FrprSEPTstd)
+icfs <-qnorm(c(0.05,0.95,0.5),FrprSEPT,FrprSEPTstd)
+
+#distribución probabilidad
+xxbs      <- c(xbs[xbs>=icbs[1]&xbs<=icbs[2]],
+               rev(xbs[xbs>=icbs[1]&xbs<=icbs[2]]))
+
+yybs      <- c(ybs[xbs>=icbs[1]&xbs<=icbs[2]],
+               rep(0,length(ybs[xbs>=icbs[1]&xbs<=icbs[2]])))
+
+xxfs      <- c(xfs[xfs>=icfs[1]&xfs<=icfs[2]],
+               rev(xfs[xfs>=icfs[1]&xfs<=icfs[2]]))
+
+yyfs      <- c(yfs[xfs>=icfs[1]&xfs<=icfs[2]],
+               rep(0,length(yfs[xfs>=icfs[1]&xfs<=icfs[2]])))
+
+densb_bs  <- data.frame(x=xxbs, y=yybs , t=rep('a', length(xxbs)), r=seq(1,length(xxbs),1))
+densb_fs  <- data.frame(x=xxfs, y=yyfs , t=rep('a', length(xxfs)), r=seq(1,length(xxfs),1))
+
+### *Probabilidad de estar bajo BRMS* #Asesoría Septiembre #P(BD<BDrms) 
+pa_sept<-pnorm(0.9,rprSEPT,rprSEPTstd,lower.tail = TRUE,log.p = F)
+### *Probabilidad de estar bajo FRMS* #Asesoría Septiembre #P(F>Frms)
+pb_sept<-1-pnorm(1.1,FrprSEPT,FrprSEPTstd,lower.tail = TRUE,log.p = F)
+### *Probabilidad de estar en zona de sobreexplotacion* #Asesoría Septiembre #P(BD<BDrms) 
+pc_sept<-pnorm(0.9,rprSEPT,rprSEPTstd,lower.tail = TRUE,log.p = F)-pnorm(0.5,rprSEPT,rprSEPTstd,lower.tail = TRUE,log.p = F)
+### *Probabilidad de estar en zona de colapso* #Asesoría Septiembre #P(BD<BDrms) 
+pd_sept<-pnorm(0.5,rprSEPT,rprSEPTstd,lower.tail = TRUE,log.p = F)
+### *Probailidad de sobrepesca* #Asesoría Septiembre #P(F>Frms)
+pe_sept<-1-pnorm(1.1,FrprSEPT,FrprSEPTstd,lower.tail = TRUE,log.p = F)
+```
+
+
+
+<!-- Estatus -->
+
+```{r Estatus_marzo, echo=F,message=FALSE, warning=FALSE, include=T}
+
+years2<-rep2$years
+nyears2<-length(years2)
+
+#para serie histórica indicadores del estatus
+Rpr2     <- subset(std2,name=="RPRequ3")$value; 
+Rpr2std  <- subset(std2,name=="RPRequ3")$std
+Frpr2    <- subset(std2,name=="Frpr")$value; 
+Frpr2std <- subset(std2,name=="Frpr")$std
+
+EstatusMar<- data.frame(x=years2, 
+                        Rpr2=Rpr2,
+                        Frpr2=Frpr2,
+         lowerRpr2  = (Rpr2 - 1.96*Rpr2std ),
+         upperRpr2   = (Rpr2 +1.96*Rpr2std ),
+         lowerFrpr2 = (Frpr2 -1.96*Frpr2std), 
+         upperFrpr2 = (Frpr2+1.96*Frpr2std))
+
+#Para densidad de probabilidad
+rprMARZO     <-subset(std2,name=="RPRequ3")$value[nyears2]
+rprMARZOstd  <-subset(std2,name=="RPRequ3")$std[nyears2]
+FrprMARZO    <-subset(std2,name=="Frpr")$value[nyears2]
+FrprMARZOstd <-subset(std2,name=="Frpr")$std[nyears2]
+# biomasa desovante vs BDrms - densidad de probabilidad
+xbm1 <-rnorm(1000, mean = rprMARZO, sd = rprMARZOstd)
+xbm  <-seq(min(xbm1),max(xbm1),0.005)
+ybm  <-dnorm(xbm, mean = rprMARZO, sd =rprMARZOstd)
+icbm <-qnorm(c(0.05,0.95,0.5),rprMARZO,rprMARZOstd)
+# mortalidad por pesca vs Frms - densidad de probabilidad
+xfm1 <- rnorm(1000, mean = FrprMARZO, sd = FrprMARZOstd)
+xfm  <-seq(min(xfm1),max(xfm1),0.005)
+yfm  <-dnorm(xfm, mean = FrprMARZO, sd =FrprMARZOstd)
+icfm <-qnorm(c(0.05,0.95,0.5),FrprMARZO,FrprMARZOstd)
+#distribución probabilidad
+xxbm      <- c(xbm[xbm>=icbm[1]&xbm<=icbm[2]],
+               rev(xbm[xbm>=icbm[1]&xbm<=icbm[2]]))
+
+yybm      <- c(ybm[xbm>=icbm[1]&xbm<=icbm[2]],
+               rep(0,length(ybm[xbm>=icbm[1]&xbm<=icbm[2]])))
+
+xxfm      <- c(xfm[xfm>=icfm[1]&xfm<=icfm[2]],
+               rev(xfm[xfm>=icfm[1]&xfm<=icfm[2]]))
+
+yyfm      <- c(yfm[xfm>=icfm[1]&xfm<=icfm[2]],
+               rep(0,length(yfm[xfm>=icfm[1]&xfm<=icfm[2]])))
+
+densb_bm  <- data.frame(x=xxbm, y=yybm , t=rep('a', length(xxbm)), r=seq(1,length(xxbm),1))
+densb_fm  <- data.frame(x=xxfm, y=yyfm , t=rep('a', length(xxfm)), r=seq(1,length(xxfm),1))
+
+### *Probabilidad de estar bajo BRMS* #Asesoría marzo #P(BD<BDrms) 
+pa_mar<-pnorm(0.9,rprMARZO,rprMARZOstd,lower.tail = TRUE,log.p = F)
+### *Probabilidad de estar bajo FRMS* #Asesoría marzo #P(F>Frms)
+pb_mar<-1-pnorm(1.1,FrprMARZO,FrprMARZOstd,lower.tail = TRUE,log.p = F)
+### *Probabilidad de estar en zona de sobreexplotacion* #Asesoría marzo #P(BD<BDrms) 
+
+pc_mar<-pnorm(0.9,rprMARZO,rprMARZOstd,lower.tail = TRUE,log.p = F)-pnorm(0.5,rprMARZO,rprMARZOstd,lower.tail = TRUE,log.p = F)
+
+### *Probabilidad de estar en zona de colapso* #Asesoría marzo #P(BD<BDrms) 
+pd_mar<-pnorm(0.5,rprMARZO,rprMARZOstd,lower.tail = TRUE,log.p = F)
+
+### *Probailidad de sobrepesca* #Asesoría marzo #P(F>Frms)
+pe_mar<-1-pnorm(1.1,FrprMARZO,FrprMARZOstd,lower.tail = TRUE,log.p = F)
+
+```
+
+
+<!--- Este estatus se calcula en la asesoría de julio -->
+```{r Estatus_julio, echo=F,message=FALSE, warning=FALSE, include=T}
+years3  <-rep3$years
+nyears3 <-length(years3)
+#para serie histórica indicadores del estatus
+Rpr3     <- subset(std3,name=="RPRequ3")$value; 
+Rpr3std  <- subset(std3,name=="RPRequ3")$std
+Frpr3    <- subset(std3,name=="Frpr")$value; 
+Frpr3std <- subset(std3,name=="Frpr")$std
+
+EstatusJul<- data.frame(x=years3,
+                        Rpr3=Rpr3,
+                        Frpr3=Frpr3,
+                  lowerRpr3   = (Rpr3  -1.96*Rpr3std ), 
+                  upperRpr3   = (Rpr3 +1.96*Rpr3std ),
+                  lowerFrpr3  = (Frpr3 -1.96*Frpr3std), 
+                  upperFrpr3  = (Frpr3 +1.96*Frpr3std))
+
+#Para densidad de probabilidad
+rprJULIO     <-subset(std3,name=="RPRequ3")$value[nyears3]
+rprJULIOstd  <-subset(std3,name=="RPRequ3")$std[nyears3]
+FrprJULIO    <-subset(std3,name=="Frpr")$value[nyears3]
+FrprJULIOstd <-subset(std3,name=="Frpr")$std[nyears3]
+# biomasa desovante vs BDrms - densidad de probabilidad
+xbj1 <-rnorm(1000, mean = rprJULIO, sd = rprJULIOstd)
+xbj  <-seq(min(xbj1),max(xbj1),0.005)
+ybj  <-dnorm(xbj, mean = rprJULIO, sd =rprJULIOstd)
+icbj <-qnorm(c(0.05,0.95,0.5),rprJULIO,rprJULIOstd)
+# mortalidad por pesca vs Frms - densidad de probabilidad
+xfj1 <- rnorm(1000, mean = FrprJULIO, sd = FrprJULIOstd)
+xfj  <-seq(min(xfj1),max(xfj1),0.005)
+yfj  <-dnorm(xfj, mean = FrprJULIO, sd =FrprJULIOstd)
+icfj <-qnorm(c(0.05,0.95,0.5),FrprJULIO,FrprJULIOstd)
+#distribución probabilidad
+xxbj      <- c(xbj[xbj>=icbj[1]&xbj<=icbj[2]],rev(xbj[xbj>=icbj[1]&xbj<=icbj[2]]))
+yybj      <- c(ybj[xbj>=icbj[1]&xbj<=icbj[2]],rep(0,length(ybj[xbj>=icbj[1]&xbj<=icbj[2]])))
+xxfj      <- c(xfj[xfj>=icfj[1]&xfj<=icfj[2]],rev(xfj[xfj>=icfj[1]&xfj<=icfj[2]]))
+yyfj      <- c(yfj[xfj>=icfj[1]&xfj<=icfj[2]],rep(0,length(yfj[xfj>=icfj[1]&xfj<=icfj[2]])))
+
+densb_bj  <- data.frame(x=xxbj, y=yybj , t=rep('a', length(xxbj)), r=seq(1,length(xxbj),1))
+densb_fj  <- data.frame(x=xxfj, y=yyfj , t=rep('a', length(xxfj)), r=seq(1,length(xxfj),1))
+
+### *Probabilidad de estar bajo BRMS* #Asesoría julio #P(BD<BDrms) 
+pa_jul<-pnorm(0.9,rprJULIO,rprJULIOstd,lower.tail = TRUE,log.p = F)
+### *Probabilidad de estar bajo FRMS* #Asesoría julio#P(F>Frms)
+pb_jul<-1-pnorm(1.1,FrprJULIO,FrprJULIOstd,lower.tail = TRUE,log.p = F)
+### *Probabilidad de estar en zona de sobreexplotacion* #Asesoría julio #P(BD<BDrms) 
+pc_jul<-pnorm(0.9,rprJULIO,rprJULIOstd,lower.tail = TRUE,log.p = F)-pnorm(0.5,rprJULIO,rprJULIOstd,lower.tail = TRUE,log.p = F)
+### *Probabilidad de estar en zona de colapso* #Asesoría julio #P(BD<BDrms) 
+pd_jul<-pnorm(0.5,rprJULIO,rprJULIOstd,lower.tail = TRUE,log.p = F)
+### *Probailidad de sobrepesca* #Asesoría julio #P(F>Frms)
+pe_jul<-1-pnorm(1.1,FrprJULIO,FrprJULIOstd,lower.tail = TRUE,log.p = F)
+
+```
+
+
+Las tendencias de los reclutamientos han mostrado importantes fluctuaciones interanuales y en su historia conocida se aprecian tres períodos relevantes, a) Reclutamiento promedio del período 1991-2007 con los niveles más bajos de reclutamientos (`r formatC(Rprom_1991_2007/1000,decimal.mark = ",")`  mil millones de peces), b) Reclutamiento promedio del período 2008-2012 con los más altos niveles de reclutamiento (`r formatC(Rprom_2008_2012/1000,decimal.mark = ",")`  mil millones de peces) y c) Reclutamiento promedio del período 2013-2022 en torno a `r formatC(Rprom_2013_2022/1000,decimal.mark = ",")`  mil millones de peces. Se destaca una recuperación importante de la clase anual 2021 respecto de los bajos niveles estimados en los 2 años precedentes. En relación a los tres períodos relevantes, el reclutamiento 2022 es un `r formatC(round(Rlast_1991_2007*100,1),decimal.mark = ",")`%  mayor al Reclutamiento bajo (período 1991-2007), un `r formatC(round(Rlast_2008_2012*100,1),decimal.mark = ",")`%  menor al Reclutamiento alto (período 2008-2012) y un `r formatC(round(Rlast_2013_2022*100,1),decimal.mark = ",")` %  menor al Reclutamiento medio (2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}).  
+
+La biomasa total de este recurso, es sustentada esencialmente en los grupos de edad 0 y 1 año. En general, los grupos de edad 2+ no revisten mayor contribución en la producción tanto a nivel de desove como de biomasa disponible a la flota. La tendencia de la biomasa total muestra un importante crecimiento a partir del año 2008 que genera un cambio de nivel que se mantiene hasta el 2018. Sin embargo, presenta una alta variabilidad producto de las fluctuaciones del reclutamiento. El promedio de la biomasa total para el período de mayor productividad de sardina común entre los años 2008 y 2012 es de `r formatC(round(BTprom_2008_2012/1000000,2),decimal.mark = ",")` millones de toneladas. Para el año 2022 se estimó una biomasa total actualizada de `r formatC(round(BT1[32]/1000000,2),decimal.mark = ",")` millones de toneladas, un `r formatC(round(BTlast_2008_2012*100,1),decimal.mark = ",")`% menor al promedio del período de mayor productividad y un `r formatC(round(-BTlast_historico*100,1),decimal.mark = ",")`% mayor al promedio histórico de la serie (promedio 1991-2022 = `r formatC(round(BTprom_historico/1000000,2),decimal.mark = ",")` millones de t.) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). 
+
+Por otro lado, la biomasa desovante promedio de la serie histórica se encuentra en torno a `r formatC(round(BDprom_historico/1000,2),decimal.mark = ",")` mil toneladas, mientras que el promedio de los últimos 10 años  (período 2013-2022) de la serie es de `r formatC(round(BDprom_2013_2022/1000000,2),decimal.mark = ",")` millones de toneladas. Al respecto, la biomasa desovante esperada para el año biológico 2021/2022 es un `r formatC(round(-BDlast_historico*100,1),decimal.mark = ",")`% mayor al promedio histórico y un `r formatC(round(-BDlast_2013_2022*100,1),decimal.mark = ",")`% mayor al promedio de los últimos 10 años (período 2013-2022) (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). La biomasa desovante al Máximo Rendimiento Sostenido ($BD_{RMS}$) está en torno a las `r formatC(round(BRMS1/1000,2),decimal.mark = ",")` mil toneladas, de esta forma la $BD_{2021/2022}$ esperada está un `r formatC(round(-(1-rprSEPT)*100,1),decimal.mark = ",")`% sobre $BD_{RMS}$ (\textbf{Tabla \ref{Tab22}} y \textbf{\ref{Tab21}} y \textbf{Figura \ref{Fig35}}). La biomasa desovante está sustentada principalente por la fracción adulta, correspondiente a individuos de edad 1+, la cual disminuyó su abundancia producto de la disminución del reclutamiento de dos años previos consecutivos 2019 y 2020 junto a la disminución de la biomasa adulta (1+ años) el 2020, provocando que la biomasa desovante del año biológico 2020/2021 disminuyera significativamente respecto a años previos. No obstante, los altos reclutamientos registrados durante el 2021, junto a la disminución de las capturas permitirían retornar a  niveles de biomasa desovante sobre la biomasa objetivo para el año actual (2021/2022).
+
+La mortalidad por pesca (Ft) ha sido más bien baja, en general menor a la mortalidad natural (M=1,0 año^-1^), excepto para el año 2004 cuando los niveles de biomasa eran bajos. Esto se ve reflejado en las capturas, que, en promedio, han seguido las fluctuaciones en biomasa con tasas de explotación moderadas (\textbf{Tabla \ref{Tab20a}} y \textbf{Figura \ref{Fig35}}). A partir del año 2005, la mortalidad por pesca ha seguido una tendencia al descenso, acentuada desde el año 2013 bajo el valor de $F_{RMS}$ producto de la aplicación de F60%. Para el año 2021/2022 la mortalidad por pesca se redujo en un `r formatC(round((exp(Ft1[32])/exp(Ft1[31]))*100,1),decimal.mark = ",")`% respecto al año previo (año 2021).  Por su parte, la selectividad de la flota indica que el recurso alcanza su completo reclutamiento a la pesquería a la edad de 1 año cuando su retención es del `r formatC(round(rep1$Sel_flota[32,2]*100,1),decimal.mark = ",")`%, mientras que los individuos de edad 0  son vulnerados un `r formatC(round(rep1$Sel_flota[32,1]*100,1),decimal.mark = ",")`%. De igual forma, la información del crucero acústico de verano y otoño indican que todos los individuos son vulnerables en un `r formatC(round(rep1$Sel_reclas[32,1]*100,1),decimal.mark = ",")`% por el arte de pesca empleado (arrastre de media-agua y cubre-copo) y cubiertos por el diseño de muestreo (\textbf{Figura \ref{Fig36}}).
+
+
+
+## Puntos Biológicos de Referencia (PBRs) y Estatus
 
 En la \textbf{Tabla \ref{Tab21}} se muestran los valores calculados de $BD_{0}$, $BD_{RMS}$, $BD_{LIM}$ y $F_{RMS}$, recomendados por el Comité Científico Técnicos de Pelágicos Pequeños (Informe Técnico CCT-PP N°01/2015) de acuerdo con la metodología discutida durante el segundo taller (Abril, 2014) y tercer taller (Agosto, 2014) de PBRs [@Paya2014]. El valor mediano de la mortalidad por pesca experimentado históricamente ($F_{mh}$) por el stock de sardina común centro-sur cercano a $F_{RMS}$ ($F_{57\%BDPR}$) un porcentaje bajo considerando los altos niveles de mortalidad por pesca que ha experimentado el stock (bajo el valor de mortalidad natural, M=1,0 año^-1^) (\textbf{Figura \ref{Fig37}}). Esto podría explicarse por la ubicación de la curva de selectividad respecto a la madurez, donde la selectividad se encuentra a la izquierda de la curva de madurez, producto de que la pesquería presenta una alta selección de juveniles, de manera que la selectividad de la flota comienza antes de la madurez (\textbf{Figura \ref{Fig38}}). Esta condición produciría valores de F60% más moderados, que aumentaría si la selectividad fuese igual a la madurez.
-
-
-
-### Estado de explotación
 
 La \textbf{Figura \ref{Fig39}} muestra que en el inicio de la serie histórica la biomasa indicaría una caída $BD<BD_{RMS}$ entre los años 1994 y 1995 producto probablemente de fallas sucesivas en los reclutamientos. El estado de la pesquería de sardina común durante los años 1998 y 2006 estuvo marcado por condiciones ambientales "El Niño" 1997-1998, provocando la caída hacia niveles inferiores de la biomasa desovante límite ($BD_{LIM}$) bajo el cual una pesquería califica de agotada o colapsada. A partir del 2007 comienza un período favorable para la condición de sardina común, ingresando a un proceso de expansión poblacional que permite el año 2009 desplazarse hacia un nivel de biomasa desovante superior al $BD_{RMS}$.  
 
 
-La $BD_{2021/2022}$ esperada está un 37% sobre $BD_{RMS}$ (\textbf{Figura \ref{Fig39}}). 
-
-La biomasa desovante está sustentada principalente por la fracción adulta, correspondiente a individuos de edad 1+, la cual disminuyó su abundancia producto de la disminución del reclutamiento de dos años previos consecutivos 2019 y 2020 junto a la disminución de la biomasa adulta (1+ años) el 2020, provocando que la biomasa desovante del año biológico 2020/2021 disminuyera significativamente respecto a años previos. 
-
-No obstante, los altos reclutamientos registrados durante el 2021 permitirían retornar a  niveles de biomasa desovante sobre la biomasa objetivo para el año actual (2021/2022).  
-
-En términos de la mortalidad por pesca (Ft año^-1^), ésta se había mantenido por sobre el nivel objetivo de referencia $F_{RMS}$ en prácticamente toda la serie histórica analizada, producto de la alta selección de juveniles capturados antes de que estos maduren (\textbf{Figura \ref{Fig39}}). 
-
-La alta selectividad de juveniles conlleva a un valor de $F_{RMS}$ ($F60\%BDPR$) más moderado que una selectividad cercana o por sobre la ojiva de madurez. A partir del año 2013 los niveles de Ft se han mantenido bajo el nivel de referencia generado posiblemente por las caídas de los reclutamientos en algunos años y las bajas CBAs recomendadas luego de la implementación de los PBRs. Con respecto a la razón entre $F_{2021/22}$ y $F_{RMS}$ es de **0,42**, en la asesoría previa (marzo 2022) se asumió un valor en torno a $F_{RMS}$  para el año actual, a la espera de actualizar el valor de captura 2021/2022 en esta asesoría (julio 2022). 
-
-Al respecto, se registraron capturas por debajo del RMS y por lo tanto, la mortalidad por pesca estimada con información actualizada es un **58%** menor al supuesto utilizado en la asesoría previa (\textbf{Figura \ref{Fig39}}). 
-
-La condición estimada con información preliminar para el año 2021/2022 indica que la sardina común se encuentra al límite de la subexplotación (**37%** sobre $BD_{RMS}$ y **58%** bajo $F_{RMS}$), con un **2%** de probabilidad de sobreexplotación y **0%** de probabilidad de sobrepesca (\textbf{Tabla \ref{Tab22}}  y \textbf{Figura \ref{Fig40}}).
-
-### Proyección del stock años biológicos 2021/2022 y 2022/2023 
-
-La  proyección de la población se realizó 2 años biológicos hacia el futuro (julio 2021-junio 2022 y julio 2022-junio 2023) en base a tres escenarios de reclutamiento: 
-
-a) un escenario desfavorable que consiste en el reclutamiento promedio del período 1991-2007 (**114** mil millones de ind.), 
-b) un escenario favorable que corresponde al promedio de los reclutamientos del período 2008 - 2012 (**409** mil millones de ind.) y 
-un escenario que representa el período reciente entre el 2013-2021 (**180** mil millones de ind.)
-
-(\textbf{Figura \ref{Fig44as}}), con una mortalidad por pesca en torno al $F_{RMS}$ y pesos medios igual al promedio de los últimos 5 años. 
+La $BD_{2021/2022}$ esperada está un `r formatC(round(-(1-rprSEPT)*100,1),decimal.mark = ",")`% sobre $BD_{RMS}$ (\textbf{Figura \ref{Fig39}}). La biomasa desovante está sustentada principalente por la fracción adulta, correspondiente a individuos de edad 1+, la cual disminuyó su abundancia producto de la disminución del reclutamiento de dos años previos consecutivos 2019 y 2020 junto a la disminución de la biomasa adulta (1+ años) el 2020, provocando que la biomasa desovante del año biológico 2020/2021 disminuyera significativamente respecto a años previos. No obstante, los altos reclutamientos registrados durante el 2021 permitirían retornar a  niveles de biomasa desovante sobre la biomasa objetivo para el año actual (2021/2022).  En términos de la mortalidad por pesca (Ft año^-1^), ésta se había mantenido por sobre el nivel objetivo de referencia $F_{RMS}$ en prácticamente toda la serie histórica analizada, producto de la alta selección de juveniles capturados antes de que estos maduren (\textbf{Figura \ref{Fig39}}). 
 
 
-Las \textbf{Figuras \ref{Fig44as}} y \textbf{Tabla \ref{Tab25s}} indican que independiente del escenario de reclutamiento, en términos de biomasa desovante proyectada al 2021/2022 (**755** mil t) se observa un incremento del **53%** respecto al año previo 2020/2021 (**492** mil t), de este modo la probabilidad de sobreexplotación disminuye a un **46%** para el año biológico 2021/2022. 
 
-Mientras que la biomasa desovante proyectada hacia el 2022/2023 depende del reclutamiento proyectado hacia el 2022 y 2023, la probabilidad de sobreexplotación puede disminuir a un **29%** si los reclutamientos se encuentran en torno al promedio de los años recientes 2013-2021. Mientras que la probabilidad puede aumentar a un **90%** si los reclutamientos son bajos (1991-2007) (\textbf{Tabla \ref{Tab25s}} y \textbf{Figura \ref{Fig44bs}}).
-
-La \textbf{Tabla \ref{Tab26s}} muestra la  captura proyectada para los años biológicos 2021/2022 y 2022/2023 considerando una mortalidad por pesca igual al $F_{RMS}$, con sus respectivos escenarios de reclutamientos. 
-
-El cálculo de la Captura al RMS ($C_{RMS}$) para el año calendario 2022 se obtiene como el promedio ponderado según la estacionalidad semestral de la pesquería que a la fecha se asume 70% para el primer semestre y 30% para el segundo semestre para el hito 1 del ciclo de manejo. De este modo, la captura al RMS para el año biológico 2021/2022  puede variar según el escenario de reclutamiento entre **302** mil t a **638** mil t. 
-
-Si el 70% de la captura 2021/2022 se realiza durante el primer semestre 2022, la captura puede variar entre **221** mil t a **408** mil t, dependiendo del reclutamiento 2022. 
- 
-El aporte del reclutamiento en la estimación de captura 2021/2022 es de un **63%** para un escenario de reclutamiento alto ($R_{2008-2012}$), de un **43%** para un escenario de reclutamientos recientes ($R_{2013-2021}$) y de un **33%** para un escenario de reclutamiento bajos ($R_{1991-2007}$) (\textbf{Figura \ref{Fig44cs}}). 
-
-En el caso de la captura proyectada para el año 2022/2023, los escenarios de reclutamientos tienen un efecto en el grupo de edad 0 y 1, por lo tanto, es una estimación con mayor incertidumbre (\textbf{Figura \ref{Fig44cs}}). 
+La alta selectividad de juveniles conlleva a un valor de $F_{RMS}$ ($F60\%BDPR$) más moderado que una selectividad cercana o por sobre la ojiva de madurez. A partir del año 2013 los niveles de Ft se han mantenido bajo el nivel de referencia generado posiblemente por las caídas de los reclutamientos en algunos años y las bajas CBAs recomendadas luego de la implementación de los PBRs. Con respecto a la razón entre $F_{2021/22}$ y $F_{RMS}$ es de `r formatC(round(-(1-FrprSEPT)*100,1),decimal.mark = ",")`% **0,42**, en la asesoría previa (marzo 2022) se asumió un valor en torno a $F_{RMS}$  para el año actual, a la espera de actualizar el valor de captura 2021/2022 en esta asesoría (julio 2022) (\textbf{Figura \ref{Fig39}}).  La condición estimada con información preliminar para el año 2021/2022 indica que la sardina común se encuentra al límite de la subexplotación (`r formatC(round(-(1-rprSEPT)*100,1),decimal.mark = ",")`% sobre $BD_{RMS}$ y `r formatC(round((1-FrprSEPT)*100,1),decimal.mark = ",")`% bajo $F_{RMS}$), con un `r formatC(round(pc_sept*100,1),decimal.mark = ",")`% de probabilidad de sobreexplotación y `r formatC(round(pe_sept*100,1),decimal.mark = ",")`%  de probabilidad de sobrepesca (\textbf{Tabla \ref{Tab22}}  y \textbf{Figura \ref{Fig40}}).
 
 
-### CBA 2022 Inicial 
+## Proyección del stock años biológicos 2022/2023 y 2023/2024 
 
-El cálculo de la CBA inicial para el año calendario 2022 se obtiene como el promedio ponderado según la estacionalidad semestral de la pesquería que a la fecha se asume 70% para el primer semestre y 30% para el segundo semestre, bajo un criterio de explotación de F60%SPR, sujeto a percentiles de probabilidad entre el 10% y 50%. La \textbf{Tabla \ref{Tab27s}} y \textbf{Figura \ref{Fig44ds}} muestran los rangos de capturas para el año 2022 estimada bajo un escenario de $R_{1991-2007}$ podría situarse entre 225 mil t y 302 mil t; bajo un escenario de $R_{2008-2012}$ entre 510 mil t y 637 mil t y, bajo un escenario de $R_{2013-2021}$ entre 277 mil t y 378 mil t. Considerando el descuento del 4% de descarte 2022, los rangos de capturas para el año 2022 estimada bajo un escenario de $R_{1991-2007}$ podría situarse entre 215 mil t y 290 mil t; bajo un escenario de $R_{2008-2012}$ entre 489 mil t y 612 mil t y, bajo un escenario de $R_{2013-2021}$ entre 266 mil t y 363 mil t. Para evaluar el efecto que tiene la decisión de la CBA en base a los percentiles (10%-50%) que en general son menores a la captura al RMS (percentil del 50%), se calculó el resguardo a lo cual equivale cada percentil (\textbf{Tabla \ref{Tab28s}}). Esos niveles variaron entre un 5% para un percentil del 40% hasta un 26% para un percentil de probabilidad del 10%, considerando tres escenarios de reclutamiento.
+
+<!-- CBA Inicial (Asesoría de septiembre) -->
+
+```{r proyecciona,warning=F, include=T, message=F,eval=T, echo=F}
+
+dira<-paste(dir.0,"/CBA_sept/",sep="")
+setwd(dira)
+reps1a     <- reptoRlist("MAE92211.rep")  
+reps2a     <- reptoRlist("MAE92212.rep") 
+reps3a     <- reptoRlist("MAE92213.rep") 
+
+carpeta<-"/CBA_sept/"
+stds1     <- read.table(paste(dir.0,carpeta,"MAE92211.std", sep=''),header=T,sep="",na="NA",fill=T) 
+stds2     <- read.table(paste(dir.0,carpeta,"MAE92212.std", sep=''),header=T,sep="",na="NA",fill=T) 
+stds3     <- read.table(paste(dir.0,carpeta,"MAE92213.std", sep=''),header=T,sep="",na="NA",fill=T) 
+
+bds1     <- subset(stds1,name=="BD_p0")$value ; 
+bds1std  <- subset(stds1,name=="BD_p0")$std #reclutamiento medios
+bds2     <- subset(stds2,name=="BD_p0")$value ; 
+bds2std  <- subset(stds2,name=="BD_p0")$std #reclutamiento 2018
+bds3     <- subset(stds3,name=="BD_p0")$value ; 
+bds3std  <- subset(stds3,name=="BD_p0")$std #reclutamiento 2012
+
+RpRps1     <- subset(stds1,name=="RPR_p0")$value ; 
+RpRps1std  <- subset(stds1,name=="RPR_p0")$std #reclutamiento medios
+RpRps2     <- subset(stds2,name=="RPR_p0")$value ; 
+RpRps2std  <- subset(stds2,name=="RPR_p0")$std #reclutamiento 2018
+RpRps3     <- subset(stds3,name=="RPR_p0")$value ; 
+RpRps3std  <- subset(stds3,name=="RPR_p0")$std #reclutamiento 2012
+
+cs1     <- subset(stds1,name=="YTP_p0")$value ; 
+cs1std  <- subset(stds1,name=="YTP_p0")$std #reclutamiento medios
+cs2     <- subset(stds2,name=="YTP_p0")$value ; 
+cs2std  <- subset(stds2,name=="YTP_p0")$std #reclutamiento 2018
+cs3     <- subset(stds3,name=="YTP_p0")$value ; 
+cs3std  <- subset(stds3,name=="YTP_p0")$std #reclutamiento 2012
+
+
+#######################################################################
+# RECLUTAMIENTO ESTIMADO ULTIMO AÑO EVALUACIÓN (AÑO ACTUAL)
+RTs0s     <- subset(stds1,name=="Reclutas")$value[nyears1] ; 
+RTs0s_std  <- subset(stds1,name=="Reclutas")$std[nyears1] 
+
+#BIOMASA DESOVANTE ESTIMADA ULTIMO AÑO EVALUACIÓN
+bds0s     <- subset(stds1,name=="SSB")$value[nyears1] ; 
+bds0s_std  <- subset(stds1,name=="SSB")$std[nyears1] 
+#######################################################################
+
+
+# aporte del grupo de edad 0 (reclutamiento) año actual
+C1eryearR1act<-round(reps1a$YTP_r0W_actual[1]/sum(reps1a$YTP_r0W_actual),2)
+C1eryearR1act2<-round(reps1a$YTP_r0W_actual[2]/sum(reps1a$YTP_r0W_actual),2)
+
+# aporte del grupo de edad 0 (reclutamiento) 1er año proyectado
+C1eryearR1<-round(reps1a$YTP_p0W_proyectada[1,1]/sum(reps1a$YTP_p0W_proyectada[1,]),2)
+C1eryearR2<-round(reps2a$YTP_p0W_proyectada[1,1]/sum(reps2a$YTP_p0W_proyectada[1,]),2)
+C1eryearR3<-round(reps3a$YTP_p0W_proyectada[1,1]/sum(reps3a$YTP_p0W_proyectada[1,]),2)
+
+# aporte del grupo de edad 1 (reclutamiento) 1er año proyectado
+C1eryearR1a<-round(reps1a$YTP_p0W_proyectada[1,2]/sum(reps1a$YTP_p0W_proyectada[1,]),2)
+C1eryearR2a<-round(reps2a$YTP_p0W_proyectada[1,2]/sum(reps2a$YTP_p0W_proyectada[1,]),2)
+C1eryearR3a<-round(reps3a$YTP_p0W_proyectada[1,2]/sum(reps3a$YTP_p0W_proyectada[1,]),2)
+
+# aporte del grupo de edad 0 (reclutamiento) 2do año proyectado
+C1eryearR12<-round(reps1a$YTP_p0W_proyectada[2,1]/sum(reps1a$YTP_p0W_proyectada[2,]),2)
+C1eryearR22<-round(reps2a$YTP_p0W_proyectada[2,1]/sum(reps2a$YTP_p0W_proyectada[2,]),2)
+C1eryearR32<-round(reps3a$YTP_p0W_proyectada[2,1]/sum(reps3a$YTP_p0W_proyectada[2,]),2)
+
+# aporte del grupo de edad 1  2do año proyectado
+C1eryearR12a<-round(reps1a$YTP_p0W_proyectada[2,2]/sum(reps1a$YTP_p0W_proyectada[2,]),2)
+C1eryearR22a<-round(reps2a$YTP_p0W_proyectada[2,2]/sum(reps2a$YTP_p0W_proyectada[2,]),2)
+C1eryearR32a<-round(reps3a$YTP_p0W_proyectada[2,2]/sum(reps3a$YTP_p0W_proyectada[2,]),2)
+
+
+```
+
+
+```{r warning=F, include=T, message=F, echo=F}
+# PRIMER AÑO PROYECTADO
+#######################################################################################
+### *Probabilidad de estar bajo BRMS* 
+#######################################################################################
+pa1<-pnorm(0.9,RpRps1[1],RpRps1std[1],lower.tail = TRUE,log.p = F)
+pa2<-pnorm(0.9,RpRps2[1],RpRps2std[1],lower.tail = TRUE,log.p = F)
+pa3<-pnorm(0.9,RpRps3[1],RpRps3std[1],lower.tail = TRUE,log.p = F)
+#######################################################################################
+### *Probabilidad de estar en zona de sobreexplotacion*
+#######################################################################################
+pc1<-pnorm(0.9,RpRps1[1],RpRps1std[1],lower.tail = TRUE,log.p = F)-pnorm(0.5,
+               RpRps1[1],RpRps1std[1],lower.tail = TRUE,log.p = F)
+pc2<-pnorm(0.9,RpRps2[1],RpRps2std[1],lower.tail = TRUE,log.p = F)-pnorm(0.5,
+               RpRps2[1],RpRps2std[1],lower.tail = TRUE,log.p = F)
+pc3<-pnorm(0.9,RpRps3[1],RpRps3std[1],lower.tail = TRUE,log.p = F)-pnorm(0.5,
+               RpRps3[1],RpRps3std[1],lower.tail = TRUE,log.p = F)
+#######################################################################################
+### *Probabilidad de estar en zona de colapso*
+#######################################################################################
+pd1<-pnorm(0.5,RpRps1[1],RpRps1std[1],lower.tail = TRUE,log.p = F)
+pd2<-pnorm(0.5,RpRps2[1],RpRps2std[1],lower.tail = TRUE,log.p = F)
+pd3<-pnorm(0.5,RpRps3[1],RpRps3std[1],lower.tail = TRUE,log.p = F)
+
+#######################################################################################
+# SEGUNDO AÑO PROYECTADO
+#######################################################################################
+### *Probabilidad de estar bajo BRMS* 
+#######################################################################################
+pa12<-pnorm(0.9,RpRps1[2],RpRps1std[2],lower.tail = TRUE,log.p = F)
+pa22<-pnorm(0.9,RpRps2[2],RpRps2std[2],lower.tail = TRUE,log.p = F)
+pa32<-pnorm(0.9,RpRps3[2],RpRps3std[2],lower.tail = TRUE,log.p = F)
+#######################################################################################
+### *Probabilidad de estar en zona de sobreexplotacion*
+#######################################################################################
+pc12<-pnorm(0.9,RpRps1[2],RpRps1std[2],lower.tail = TRUE,log.p = F)-pnorm(0.5,
+                RpRps1[2],RpRps1std[2],lower.tail = TRUE,log.p = F)
+pc22<-pnorm(0.9,RpRps2[2],RpRps2std[2],lower.tail = TRUE,log.p = F)-pnorm(0.5,
+                RpRps2[2],RpRps2std[2],lower.tail = TRUE,log.p = F)
+pc32<-pnorm(0.9,RpRps3[2],RpRps3std[2],lower.tail = TRUE,log.p = F)-pnorm(0.5,
+                RpRps3[2],RpRps3std[2],lower.tail = TRUE,log.p = F)
+#######################################################################################
+### *Probabilidad de estar en zona de colapso*
+#######################################################################################
+pd12<-pnorm(0.5,RpRps1[2],RpRps1std[2],lower.tail = TRUE,log.p = F)
+pd22<-pnorm(0.5,RpRps2[2],RpRps2std[2],lower.tail = TRUE,log.p = F)
+pd32<-pnorm(0.5,RpRps3[2],RpRps3std[2],lower.tail = TRUE,log.p = F)
+
+#######################################################################################
+
+```
+
+La  proyección de la población se realizó 2 años biológicos hacia el futuro (julio 2022-junio 2023 y julio 2023-junio 2024) en base a tres escenarios de reclutamiento: a) un escenario desfavorable que consiste en el reclutamiento promedio del período 1991-2007 (`r formatC(round(reps1a$Np[1]/1000,1),decimal.mark = ",")` mil millones de ind.), 
+b) un escenario favorable que corresponde al promedio de los reclutamientos del período 2008 - 2012 (`r formatC(round(reps2a$Np[1]/1000,1),decimal.mark = ",")` mil millones de ind.) y un escenario que representa el período reciente entre el 2013-2022 (`r formatC(round(reps3a$Np[1]/1000,1),decimal.mark = ",")` mil millones de ind.) (\textbf{Figura \ref{Fig44as}}), con una mortalidad por pesca en torno al $F_{RMS}$ y pesos medios igual al promedio de los últimos 5 años.  Las \textbf{Figuras \ref{Fig44as}} y \textbf{Tabla \ref{Tab25s}} indican que independiente del escenario de reclutamiento, en términos de biomasa desovante proyectada al 2022/2023 (`r formatC(round(bds1[1]/1000,1),decimal.mark = ",")`  mil t) se observa una disminución del `r formatC(round((1-bds1[1]/bds0s)*100,1),decimal.mark = ",")`% respecto al año previo 2021/2022 (`r formatC(round(bds0s/1000000,2),decimal.mark = ",")` millones de t), de este modo la probabilidad de sobreexplotación aumenta a un `r formatC(round(pc1*100,1),decimal.mark = ",")`%  para el año biológico 2022/2023. Mientras que la biomasa desovante proyectada hacia el 2023/2024 depende del reclutamiento proyectado hacia el 2023 y 2024, la probabilidad de sobreexplotación puede aumentar a un `r formatC(round(pc32*100,1),decimal.mark = ",")`%  si los reclutamientos se encuentran en torno al promedio de los años recientes 2013-2022. Mientras que la probabilidad puede aumentar a un `r formatC(round(pc12*100,1),decimal.mark = ",")`% si los reclutamientos son bajos (1991-2007) (\textbf{Tabla \ref{Tab25s}} y \textbf{Figura \ref{Fig44bs}}). La \textbf{Tabla \ref{Tab26s}} muestra la  captura proyectada para los años biológicos 2022/2023 y 2023/2024 considerando una mortalidad por pesca igual al $F_{RMS}$, con sus respectivos escenarios de reclutamientos.  El cálculo de la Captura al RMS ($C_{RMS}$) para el año calendario 2023 se obtiene como el promedio ponderado según la estacionalidad semestral de la pesquería que a la fecha se asume 70% para el primer semestre y 30% para el segundo semestre para el hito 1 del ciclo de manejo. De este modo, la captura al RMS para el año biológico 2022/2023  puede variar según el escenario de reclutamiento entre `r formatC(round(cs1[1]/1000,0),decimal.mark = ",")` mil t a `r formatC(round(cs3[1]/1000,0),decimal.mark = ",")`  mil t. Si el 70% de la captura 2022/2023 se realiza durante el primer semestre 2023, la captura puede variar entre `r formatC(round(cs1[1]*0.7/1000,0),decimal.mark = ",")` mil t a `r formatC(round(cs3[1]*0.7/1000,0),decimal.mark = ",")` mil t, dependiendo del reclutamiento 2023.  El aporte del reclutamiento en la estimación de captura 2022/2023 es de un `r formatC(C1eryearR2*100,decimal.mark = ",")`% para un escenario de reclutamiento alto ($R_{2008-2012}$), de un `r formatC(C1eryearR3*100,decimal.mark = ",")`% para un escenario de reclutamientos recientes ($R_{2013-2022}$) y de un `r formatC(C1eryearR1*100,decimal.mark = ",")`% para un escenario de reclutamiento bajos ($R_{1991-2007}$) (\textbf{Figura \ref{Fig44cs}}). En el caso de la captura proyectada para el año 2023/2024, los escenarios de reclutamientos tienen un efecto en el grupo de edad 0 y 1, por lo tanto, es una estimación con mayor incertidumbre (\textbf{Figura \ref{Fig44cs}}). 
+
+
+## CBA 2023 Inicial 
+
+
+```{r Tabla32_CBA_septiembre, echo=FALSE, warning=F, include=T, message=F}
+dir.4<-paste(dir.0,"/CBA_sept/",sep="")
+
+EscRecl<-seq(1,3,1) #escenarios de reclutamiento basado en anÃ¡lisis de quiebres
+nes<-length(EscRecl)
+q       <- seq(0.1,0.5,0.1)  # niveles de riesgo (cuantiles)                            
+nq      <- length(q)                                                                    
+CBA     <- matrix(ncol=nq,nrow=nes)
+CBAp    <- matrix(ncol=1,nrow=1)
+CBApstd <- matrix(ncol=1,nrow=1)
+
+buffer   <- matrix(ncol=nq,nrow=nes)
+descarte <- matrix(ncol=nq,nrow=nes)
+
+for(i in 1:nes){
+	std     <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
+	CBAp[i]    <-subset(std,name=="CBA_c0")$value[1]
+	CBApstd[i] <-subset(std,name=="CBA_c0")$std[1]
+	for(j in 1:nq){	CBA[i,j]<-qnorm(q[j],CBAp[i],CBApstd[i])}}
+
+```
+
+
+```{r CBAinicial_sept, eval=T, echo=FALSE, warning=F, include=T, message=F}
+
+dir.4<-paste(dir.0,"/CBA_sept/",sep="")
+
+EscRecl<-seq(1,3,1) #escenarios de reclutamiento basado en anÃ¡lisis de quiebres
+nes<-length(EscRecl)
+q       <- seq(0.1,0.5,0.1)  # niveles de riesgo (cuantiles)                            
+nq      <- length(q)                                                                    
+CBA_sept     <- matrix(ncol=nq,nrow=nes)
+CBAp_sept    <- matrix(ncol=1,nrow=1)
+CBApstd_sept <- matrix(ncol=1,nrow=1)
+
+buffer   <- matrix(ncol=nq,nrow=nes)
+descarte <- matrix(ncol=nq,nrow=nes)
+
+for(i in 1:nes){
+	std     <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
+	CBAp_sept[i]    <-subset(std,name=="CBA_c0")$value[1]
+	CBApstd_sept[i] <-subset(std,name=="CBA_c0")$std[1]
+	for(j in 1:nq){	CBA_sept[i,j]<-qnorm(q[j],CBAp_sept[i],CBApstd_sept[i])}}
+
+```
+
+
+```{r CBAinicial-descarte_sept, eval=T, echo=FALSE, warning=F, include=T, message=F}
+
+dir.4<-paste(dir.0,"/CBA_sept/",sep="")
+
+EscRecl<-seq(1,3,1) #escenarios de reclutamiento basado en anÃ¡lisis de quiebres
+nes<-length(EscRecl)
+q       <- seq(0.1,0.5,0.1)  # niveles de riesgo (cuantiles)                            
+nq      <- length(q)                                                                    
+CBAd_sept     <- matrix(ncol=nq,nrow=nes)
+CBApd_sept    <- matrix(ncol=1,nrow=1)
+CBApdstd_sept <- matrix(ncol=1,nrow=1)
+
+for(i in 1:nes){
+	std              <- read.table(paste(dir.4,"MAE9221",i,".std",sep=""),header=T,sep="",na="NA",fill=T)  
+	CBApd_sept[i]    <-subset(std,name=="CBA_c0d")$value[1]
+	CBApdstd_sept[i] <-subset(std,name=="CBA_c0d")$std[1]
+	for(j in 1:nq){	CBAd_sept[i,j]<-qnorm(q[j],CBApd_sept[i],CBApdstd_sept[i])}}
+
+
+buffer<-matrix(ncol=5,nrow=3)
+
+for(i in 1:nes){for(j in 1:nq){	
+buffer[i,j]<-round(1-CBA_sept[i,j]/CBA_sept[i,5],2)}}
+
+```
+
+
+El cálculo de la CBA inicial para el año calendario 2023 se obtiene como el promedio ponderado según la estacionalidad semestral de la pesquería que a la fecha se asume 70% para el primer semestre y 30% para el segundo semestre, bajo un criterio de explotación de F60%SPR, sujeto a percentiles de probabilidad entre el 10% y 50%. Las \textbf{Tablas \ref{Tab27s} y \ref{Tab27s_b}} y \textbf{Figura \ref{Fig44ds}} muestran los rangos de capturas para el año 2023 estimada bajo un escenario de $R_{1991-2007}$ podría situarse entre `r formatC(round(CBA_sept[1,1]/1000,1),decimal.mark = ",")` mil t y `r formatC(round(CBA_sept[1,5]/1000,1),decimal.mark = ",")` mil t; bajo un escenario de $R_{2008-2012}$ entre `r formatC(round(CBA_sept[2,1]/1000,1),decimal.mark = ",")` mil t y `r formatC(round(CBA_sept[2,5]/1000,1),decimal.mark = ",")` mil t y, bajo un escenario de $R_{2013-2022}$ entre `r formatC(round(CBA_sept[3,1]/1000,1),decimal.mark = ",")` mil t y  `r formatC(round(CBA_sept[3,5]/1000,1),decimal.mark = ",")` mil t. Considerando el descuento del 4% de descarte 2023, los rangos de capturas para el año 2022 estimada bajo un escenario de $R_{1991-2007}$ podría situarse entre `r formatC(round(CBAd_sept[1,1]/1000,1),decimal.mark = ",")` mil t y `r formatC(round(CBAd_sept[1,5]/1000,1),decimal.mark = ",")` mil t; bajo un escenario de $R_{2008-2012}$ entre `r formatC(round(CBAd_sept[2,1]/1000,1),decimal.mark = ",")` mil t y `r formatC(round(CBAd_sept[2,5]/1000,1),decimal.mark = ",")` mil t y, bajo un escenario de $R_{2013-2022}$ entre `r formatC(round(CBAd_sept[3,1]/1000,1),decimal.mark = ",")` mil t y `r formatC(round(CBAd_sept[3,5]/1000,1),decimal.mark = ",")` mil t. Para evaluar el efecto que tiene la decisión de la CBA en base a los percentiles (10%-50%) que en general son menores a la captura al RMS (percentil del 50%), se calculó el resguardo a lo cual equivale cada percentil (\textbf{Tabla \ref{Tab28s}}). Esos niveles variaron en promedio entre un `r formatC(round(mean(buffer[,4])*100,1),decimal.mark = ",")`% para un percentil del 40% hasta un `r formatC(round(mean(buffer[,1])*100,1),decimal.mark = ",")`%  para un percentil de probabilidad del 10%, considerando tres escenarios de reclutamiento.
 
 
 \pagebreak
 
-# \Huge \textbf{FIGURAS} {-}
+# FIGURAS
 
 ```{r Fig19, warning=F, include=T, message=F, echo=F,fig.height=4.5,fig.width=8,fig.align="center",fig.path=dir.Fig,dev=fig, fig.cap="\\label{Fig19}Datos de entrada al modelo de evaluación de stock de sardina común"}
 
@@ -2002,8 +2139,6 @@ box()
 
 \pagebreak
 
-
-
 ```{r VariablesSept_std, echo=F,message=FALSE, warning=FALSE, include=T}
 
 years<-rep1$years
@@ -2033,7 +2168,6 @@ VarPob<- data.frame(x=years,
          upperFt1 = exp(Ft1 +1.96*Ft1std))
 
 ```
-
 
 ```{r VariablesMarzo_std, echo=F,message=FALSE, warning=FALSE, include=T}
 
@@ -2065,8 +2199,6 @@ VarPobMar<- data.frame(x=years,
 
 ```
 
-
-
 ```{r VariablesJulioo_std, echo=F,message=FALSE, warning=FALSE, include=T}
 
 years<-rep3$years
@@ -2096,7 +2228,6 @@ VarPobJul<- data.frame(x=years,
          upperFt3 = exp(Ft3 +1.96*Ft3std))
 
 ```
-
 
 ```{r Fig32_data, eval=T, warning=F, include=T, message=F, echo=F,fig.height=7,fig.width=4,fig.align="center",fig.path=dir.Fig,dev=fig}
 
@@ -2179,9 +2310,7 @@ x2 <-c(years[1]-1,years[nyears]+1) #xlim
   
 ```
 
-
 \pagebreak
-
 ```{r Fig32, echo=F, message=FALSE, warning=FALSE, include=T, fig.align="center", fig.height=7,fig.pos="h!", fig.width=7,fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig32}Comparación con asesorías anteriores del reclutamiento, biomasa desovante y mortalidad por pesca ($F año^{-1}$) de la sardina común. Los años en el eje x corresponden a año biológico."}
 
 year_retros <- c('2022_sept','2022_julio',"2022_marzo",'2021_sept',"2021_julio","2021_marzo","2020_sept","2020_julio","2020_marzo")
@@ -2248,105 +2377,7 @@ Rt/BD/Ft
 
 ```
 
-
 \pagebreak
-
-
-```{r Dat_Retrospectivo, echo=F, message=FALSE, warning=FALSE, include=T,eval=T}
-dir<-paste(dir.0,"/Retrospectivo_sept",sep="")
-setwd(dir)
-admb<-"MAE922"
-
-years       <-rep1$years
-nyears      <-length(years)
-retros      <-seq(1,5)
-nretros     <-length(retros)
-year_retros <-as.factor(years[(nyears-(nretros-1)):nyears])
-                      
-retroR      <- matrix(0,nrow=nyears,ncol=nretros+1)
-retroBD     <- matrix(0,nrow=nyears,ncol=nretros+1)
-retroF      <- matrix(0,nrow=nyears,ncol=nretros+1)
-
-for(i in 1:length(retros)){
-  rep<- reptoRlist(paste(admb,i,".rep",sep=""))
-  retroR[,i+1]  <- c(rep$Reclutas,rep(NA,i-1))
-  retroBD[,i+1] <- c(rep$SSB,rep(NA,i-1))
-  retroF[,i+1]  <- c(rep$Ftot,rep(NA,i-1)) }
-
-
-# retrospectivo relativo (cálculo)
-    mohn.r       <- rep(NA, nretros)
-    rel.diff.r   <- matrix(NA, nrow=nyears, ncol=(nretros))
-    mohn.ssb     <- rep(NA, nretros)
-    rel.diff.ssb <- matrix(NA, nrow=nyears, ncol=(nretros))
-    mohn.f       <- rep(NA, nretros)
-    rel.diff.f   <- matrix(NA, nrow=nyears, ncol=(nretros))
-
-    for(j in 1:nretros){
-      rel.diff.r[,j]   <- (retroR[,(j+1)]-retroR[,2])/retroR[,2]
-      mohn.r[j]        <- rel.diff.r[(nyears-j),j]
-      rel.diff.ssb[,j] <- (retroBD[,(j+1)]-retroBD[,2])/retroBD[,2]
-      mohn.ssb[j]      <- rel.diff.ssb[(nyears-j),j]
-      rel.diff.f[,j]   <- (retroF[,(j+1)]-retroF[,2])/retroF[,2]
-      mohn.f[j]        <- rel.diff.f[(nyears-j),j]}
-    
-    ave.mohn.r    <- mean(mohn.r)
-    ave.mohn.ssb  <- mean(mohn.ssb)
-    ave.mohn.f    <- mean(mohn.f)
-    
- # Arreglo datos
-
-#Para retrospectivo tradicional
-Rt_retro<- data.frame(x=years, 
-                      y1=retroR[,2],
-                      y2=retroR[,3],
-                      y3=retroR[,4],
-                      y4=retroR[,5],
-                      y5=retroR[,6],
-                      lower = (Rt1 -1.96*Rt1std), 
-                      upper = (Rt1 +1.96*Rt1std))
-BD_retro<- data.frame(x=years, 
-                      y1=retroBD[,2],
-                      y2=retroBD[,3],
-                      y3=retroBD[,4],
-                      y4=retroBD[,5],
-                      y5=retroBD[,6],
-                      lower = (BD1 -1.96*BD1std), 
-                      upper = (BD1 +1.96*BD1std))
-Ft_retro<- data.frame(x=years, 
-                      y1=retroF[,2],
-                      y2=retroF[,3],
-                      y3=retroF[,4],
-                      y4=retroF[,5],
-                      y5=retroF[,6], 
-                      lower = exp(Ft1 -1.96*Ft1std), 
-                      upper = exp(Ft1 +1.96*Ft1std))
-
-#Para restrospectivo relativo
-Rt_retroRel<- data.frame(x=years, 
-                         y1=rel.diff.r[,1],
-                         y2=rel.diff.r[,2],
-                         y3=rel.diff.r[,3],
-                         y4=rel.diff.r[,4],
-                         y5=rel.diff.r[,5])
-BD_retroRel<- data.frame(x=years, 
-                         y1=rel.diff.ssb[,1],
-                         y2=rel.diff.ssb[,2],
-                         y3=rel.diff.ssb[,3],
-                         y4=rel.diff.ssb[,4],
-                         y5=rel.diff.ssb[,5])
-Ft_retroRel<- data.frame(x=years, 
-                         y1=rel.diff.f[,1],
-                         y2=rel.diff.f[,2],
-                         y3=rel.diff.f[,3],
-                         y4=rel.diff.f[,4],
-                         y5=rel.diff.f[,5])
-
-```
-
-
-\pagebreak
-
 ```{r Fig33, echo=F, message=FALSE, warning=FALSE, include=T, fig.align="center", fig.height=10,fig.pos="h!", fig.width=10,fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig33}Patrón retrospectivo estándar (panel izquierdo) y relativo (panel derecho) de los reclutamientos, biomasa desovante y de la mortalidad por pesca de sardina común centro-sur para el modelo base actual. Los años en el eje x corresponden a año biológico."}
 
 #Retrospectivo tradicional
@@ -2445,11 +2476,7 @@ Rt/BD/Ft |Rtrel/BDrel/Ftrel
 
 ```
 
-
-
 \pagebreak
-
-
 ```{r Fig_Vesorimilitud_Sardcomun,warning=F, include=T, message=F,fig.pos="h!", echo=F,fig.height=4,fig.width=7,fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig34}Perfiles de verosimilitud donde la línea horizontal representa el nivel crítico para el test $X^2$."}
 
 dir<-paste(dir.0,"/Verosimilitud_sept",sep="")
@@ -2539,11 +2566,9 @@ fig1
 
 ```
 
-
 \pagebreak
 
 <!-- Variables poblacionales-->
-
 ```{r Variables_sept, echo=F,message=FALSE, warning=FALSE, include=T}
 
 years1<-rep1$years
@@ -2568,8 +2593,6 @@ VarPobSep<- data.frame(x=years1,
          lowerBD1 = (BD1 -1.96*BD1std), upperBD1 = (BD1+1.96*BD1std),
          lowerFt1 = exp(Ft1 -1.96*Ft1std), upperFt1 = exp(Ft1+1.96*Ft1std))
 ```
-
-
 
 ```{r Variables_marzo, echo=F,message=FALSE, warning=FALSE, include=T}
 
@@ -2600,7 +2623,6 @@ VarPobMar<- data.frame(x=years2,
          upperFt2 = exp(Ft2+1.96*Ft2std))
 ```
 
-
 ```{r Variables_julio, echo=F,message=FALSE, warning=FALSE, include=T}
 
 years3   <- rep3$years
@@ -2630,9 +2652,7 @@ VarPobJul<- data.frame(x=years3,
          upperFt3 = exp(Ft3 +1.96*Ft3std))
 ```
 
-
 \pagebreak
-
 ```{r Fig35, echo=FALSE, message=FALSE, warning=FALSE, include=T, fig.align="center", fig.height=6,fig.pos="h!", fig.width=8,fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig35}Estimaciones medias de los reclutamientos (R), biomasa total (BT), biomasa desovante (BD) y  mortalidad por pesca (F) y su respectivo Intervalo de Confianza (IC). Las línea segmentada corresponde al promedio y mediana de la serie respectiva. Los años en el eje x corresponden a año biológico."}
 
 
@@ -2725,9 +2745,6 @@ Rt/BT | (BD/Ft)
 ```
 
 \pagebreak
-
-
-
 ```{r Fig36,warning=F, include=T, message=F, echo=F,fig.height=3.5,fig.width=3.5,fig.pos="h!",fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig36}Patrón de explotación o selectividad de la flota y de los cruceros acústicos de sardina común de las Regiones de Valparaíso a Los Lagos."}
 
 sel_Flota<-rep1$Sel_flota[1,]
@@ -2754,8 +2771,6 @@ g1
 ```
 
 \pagebreak
-
-
 ```{r Fig37,warning=F, include=T, message=F, echo=F,fig.height=4.5,fig.width=9,fig.pos="h!",fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig37}Series de Biomasa desovante y mortalidad por pesca junto a los PBRs calculados a partir de la BD promedio y mediana de F ($F_{mh}$). Los años en el eje x corresponden a año biológico."}
 
 BD <- ggplot() + 
@@ -2783,7 +2798,7 @@ BD <- ggplot() +
 Ft <- ggplot() + 
     #geom_line(data=VarPobJul,aes(y=Ft3, x=x, colour = "julio 2022"),linetype="solid", size=0.5)+
     #geom_line(data=VarPobMar,aes(y=Ft2, x=x, colour = "marzo 2022"), linetype="dashed",size=0.5)+
-    geom_line(data=VarPobSep,aes(y=Ft1, x=x, colour = "sept 2022"), linetype="solid",size=0.5)+
+    geom_line(data=VarPobSep,aes(y=Ft1, x=x, colour = "septiembre 2022"), linetype="solid",size=0.5)+
     #geom_ribbon(data=VarPobJul,aes(ymin=lowerFt3, ymax=upperFt3, x=x, fill = "IC"), alpha = 0.2)+
     #geom_ribbon(data=VarPobMar,aes(ymin=lowerFt2, ymax=upperFt2, x=x, fill = "IC"), alpha = 0.2)+
     geom_ribbon(data=VarPobSep,aes(ymin=lowerFt1, ymax=upperFt1, x=x, fill = "IC"), alpha = 0.2)+
@@ -2804,9 +2819,6 @@ Ft <- ggplot() +
 BD + Ft
 
 ```
-
-
-
 
 ```{r Fig38,warning=F, include=T, message=F, echo=F,fig.height=3.5,fig.width=7.5,fig.pos="h!",fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig38}Madurez, selectividad (Panel izquierdo) y Curva de Biomasa por Recluta (\\%BDPR) (Panel derecho), utilizados en los cálculos de $F_{RMS}$."}
 
@@ -2841,22 +2853,18 @@ g2 <- ggplot () +
 g1 + g2
 ```
 
-
-
 \pagebreak
-
-
-```{r Fig39,warning=F, include=T, message=F, echo=F,fig.height=6.5,fig.width=8,fig.pos="h!",fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig39}a) Razón $BD/BD_{RMS}$, b) la distribución de probabilidad de $BD_{last}/BD_{RMS}$, c) razón $F/F_{RMS}$ y d) la distribución de probabilidad $F_{last}/F_{RMS}$. Los años en el eje x corresponden a año biológico."}
+```{r Fig39,warning=F, include=T, message=F, echo=F,fig.height=6.5,fig.width=8,fig.pos="h!",fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig39}a) Razón $BD/BD_{RMS}$, b) la distribución de probabilidad de $BD_{2021-22}/BD_{RMS}$, c) razón $F/F_{RMS}$ y d) la distribución de probabilidad $F_{2021-22}/F_{RMS}$. Los años en el eje x corresponden a año biológico."}
 
 BD_BDrms <- ggplot() + 
      #geom_line(data=EstatusJul,aes(y=Rpr3, x=x, colour = "julio 2022"), linetype="solid", size=0.5)+
      #geom_line(data=EstatusMar,aes(y=Rpr2, x=x, colour = "marzo 2022"), linetype="dashed",size=0.5)+
-     geom_line(data=EstatusSep,aes(y=Rpr1, x=x, colour = "sept 2022"), linetype="solid",size=0.5)+
+     geom_line(data=EstatusSep,aes(y=Rpr1, x=x, colour = "septiembre 2022"), linetype="solid",size=0.5)+
      #geom_ribbon(data=EstatusJul,aes(ymin=lowerRpr3, ymax=upperRpr3, x=x, fill = "IC"), alpha = 0.2)+
      #geom_ribbon(data=EstatusMar,aes(ymin=lowerRpr2, ymax=upperRpr2, x=x, fill = "IC"), alpha = 0.2)+
      geom_ribbon(data=EstatusSep,aes(ymin=lowerRpr1, ymax=upperRpr1, x=x, fill = "IC"), alpha = 0.2)+
      geom_hline(yintercept = c(1,0.5),colour=c('green3','red'))+
-     annotate("text", x=c(2012,2012), y=c(1,0.5)+0.06,
+     annotate("text", x=c(2002,2002), y=c(1,0.5)+0.06,
               label=c(expression("BD"[RMS]),expression("BD"[LIM]))) +
      labs(x = '', y = expression("BD/BD"[RMS]),colour='Asesorías',tag="a)")  +
      scale_x_continuous(breaks = seq(from = 1960, to = 2062, by = 3)) +
@@ -2874,12 +2882,12 @@ BD_BDrms <- ggplot() +
 F_Frms <- ggplot() + 
     #geom_line(data=EstatusJul,aes(y=Frpr3, x=x, colour = "julio 2022"), linetype="solid",size=0.5)+
     #geom_line(data=EstatusMar,aes(y=Frpr2, x=x, colour = "marzo 2022"), linetype="dashed",size=0.5)+
-    geom_line(data=EstatusSep,aes(y=Frpr1, x=x, colour = "sept 2022"), linetype="solid",size=0.5)+
+    geom_line(data=EstatusSep,aes(y=Frpr1, x=x, colour = "septiembre 2022"), linetype="solid",size=0.5)+
     #geom_ribbon(data=EstatusJul,aes(ymin=lowerFrpr3, ymax=upperFrpr3, x=x, fill = "IC"), alpha = 0.2)+
     #geom_ribbon(data=EstatusMar,aes(ymin=lowerFrpr2, ymax=upperFrpr2, x=x, fill = "IC"), alpha = 0.2)+
     geom_ribbon(data=EstatusSep,aes(ymin=lowerFrpr1, ymax=upperFrpr1, x=x, fill = "IC"), alpha = 0.2)+
      geom_hline(yintercept = 1,colour=c('green3')) +
-     annotate("text", x=2012, y=1+0.25,label=c(expression("F"[RMS]))) +
+     annotate("text", x=2017, y=1+0.25,label=c(expression("F"[RMS]))) +
     labs(x = '', y = expression("F/F"[RMS]),colour='Asesorías',tag="c)")  +
     scale_x_continuous(breaks = seq(from = 1960, to = 2062, by = 3)) +
      #scale_colour_manual("",values=c('blue','red','black'))+
@@ -2892,16 +2900,16 @@ F_Frms <- ggplot() +
      ggtitle('')+
      theme(plot.title = element_text(hjust = 0.5),legend.position="none")
 
-fig_desnb<- ggplot() + lims(y=c(0,4)) +
+fig_desnb<- ggplot() + lims(y=c(0,2.5)) +
      #geom_polygon(data=densb_bj,aes(x=x, y=y, group=t,alpha=0.9),fill="gray80")+
      #geom_polygon(data=densb_bm,aes(x=x, y=y, group=t,alpha=0.9),fill="gray70")+
      geom_polygon(data=densb_bs,aes(x=x, y=y, group=t,alpha=0.9),fill="gray55")+
      #geom_line(aes(xbj,ybj), size=0.3,color="blue",linetype="solid")+
      #geom_line(aes(xbm,ybm), size=0.3,color="red",linetype="dashed")+
      geom_line(aes(xbs,ybs), size=0.3,color="black",linetype="solid")+
-     annotate("text", x=c(1.2), y=c(3.9), colour = c("black"), size = 2.5,
+     annotate("text", x=c(1.3), y=c(2.4), colour = c("black"), size = 2.5,
               label=c(paste("IC95%_sept2022 = [",round(icbs[1],3),"-",round(icbs[2],3),"]",sep=" "))) +
-     labs(x = expression("BD"[last]*"/BD"[RMS]), y = 'Densidad de probabilidad',tag="b)")  +
+     labs(x = expression("BD"[2021-22]*"/BD"[RMS]), y = 'Densidad de probabilidad',tag="b)")  +
      theme_bw(base_size=10) +
      theme(plot.title = element_text(hjust = 0.5),legend.position="none")
 
@@ -2912,21 +2920,22 @@ fig_desnf<- ggplot() + lims(y=c(0,4.5))+
      #geom_line(aes(xfj,yfj), size=0.3,color="blue",linetype="solid")+
      #geom_line(aes(xfm,yfm), size=0.3,color="red",linetype="dashed")+
      geom_line(aes(xfs,yfs), size=0.3,color="black",linetype="solid")+
-     annotate("text", x=c(1.2), y=c(4.4), colour = c("black"), size = 2.5,
+     annotate("text", x=c(0.4), y=c(4.4), colour = c("black"), size = 2.5,
               label=c(paste("IC95%_sept2022  = [",round(icfs[1],3),"-",round(icfs[2],3),"]",sep=" "))) +
-     labs(x = expression("F"[last]*"/F"[RMS]), y = 'Densidad de probabilidad',tag="d)")  +
+     labs(x = expression("F"[2021-22]*"/F"[RMS]), y = 'Densidad de probabilidad',tag="d)")  +
      theme_bw(base_size=9) +
      theme(plot.title = element_text(hjust = 0.5),legend.position="none")
 
 
- {(BD_BDrms / F_Frms)   | (fig_desnb/fig_desnf)} +  plot_layout(ncol=2,widths=c(2,1))
+ {(BD_BDrms/F_Frms)|(fig_desnb/fig_desnf)} + plot_layout(ncol=2,widths=c(2,1))
  
 
 ```
 
 
+\pagebreak
 
-```{r Fig40, warning=F, include=T, message=F, echo=F,fig.height=4,fig.width=4,fig.pos="h!",fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig40}Diagrama de fases de explotación de la biomasa desovante respecto de la mortalidad por pesca de la asesoría de septiembre 2022. Los ejes están estandarizados a los valores que generan el RMS proxy. Cruz azul corresponde a los intervalos de confianza de la razón $BD/BD_{RMS}$ y $F/F_{RMS}$. El año con cruz continua corresponde a \textit{Estatus completo}"}
+```{r Fig40, warning=F, include=T, message=F, echo=F,fig.height=4,fig.width=4,fig.pos="h!",fig.align="center",fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig40}Diagrama de fases de explotación de la biomasa desovante respecto de la mortalidad por pesca de la asesoría de septiembre 2022. Los ejes están estandarizados a los valores que generan el RMS proxy. Cruz azul corresponde a los intervalos de confianza de la razón $BD/BD_{RMS}$ y $F/F_{RMS}$. El año con cruz continua corresponde a \\textit{Estatus completo}."}
 
 source(paste(dir.fun,"Fn_DiagramaFase2.R",sep=""))
 name1<-"Asesoría de Septiembre 2022"
@@ -2963,8 +2972,8 @@ text(c(SpB1[1]/BRMS1,
 
 ```
 
+\pagebreak
 <!--- Este estatus se cambia a eval=T para la asesoría de marzo -->
-
 ```{r Fig41, eval=F, warning=F, include=T, message=F, echo=F,fig.height=4,fig.width=4,fig.align="center",fig.path=dir.Fig,dev=fig}
 source(paste(dir.fun,"Fn_DiagramaFase2.R",sep=""))
 name2<-"Asesoría de Marzo 2022"
@@ -3001,9 +3010,7 @@ text(c(SpB2[1]/BRMS2,
 
 ```
 
-
 <!--- Este gráfico se utiliza para la sección de metodología, para hacer generarlo se debe cambia a eval=T -->
-
 ```{r statusMetodology, eval=F, warning=F, include=T, message=F, echo=F,fig.height=6,fig.width=6,fig.align="center",fig.path=dir.Fig,dev=fig}
 source(paste(dir.fun,"Fn_DiagramaFase2.R",sep=""))
 name2<-""
@@ -3035,8 +3042,6 @@ DiagramaFase2(name2,
 ```
 
 <!--- Este estatus se cambia a eval=T para la asesoría de julio -->
-
-
 ```{r Fig41b, eval=F, warning=F, include=T, message=F, echo=F,fig.height=4,fig.width=4,fig.align="center",fig.path=dir.Fig,dev=fig}
 source(paste(dir.fun,"Fn_DiagramaFase2.R",sep=""))
 name3<-"Asesoría de Julio 2022"
@@ -3068,16 +3073,11 @@ text(c(SpB3[1]/BRMS3,SpB3[nyears3]/BRMS3,SpB3[nyears3-1]/BRMS3),
 
 ```
 
-
-\pagebreak
-
-
-
-```{r Fig34a, warning=F, include=T, message=F,eval=T,fig.pos="h!", echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig,fig.cap="\\label{Fig44as}Proyección de dos años biológicos (2021/2022 y 2022/2023) de la biomasa desovante, razón $BD/BD_{RMS}$ y capturas en base a tres escenarios de reclutamiento proyectado. Asesoría de septiembre 2022"}
+```{r Fig34a, warning=F, include=T, message=F,eval=T,fig.pos="h!", echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig,fig.cap="\\label{Fig44as}Proyección de dos años biológicos (2022/2023 y 2023/2024) de la biomasa desovante, razón $BD/BD_{RMS}$ y capturas en base a tres escenarios de reclutamiento proyectado. Asesoría de septiembre 2022."}
 
 
 par(mfrow=c(2,2),mar=c(4,4,1,1)+0.5)
-yearProy<-c(2022,2023)
+yearProy<-c(2023,2024)
 
 #=======================================================
 # plot reclutamientos 
@@ -3137,9 +3137,9 @@ lines(c(rep1$years,yearProy),
       c(rep1$SSB,c(NA,NA)),type="o",col=1,pch=19)
 
 abline(v=yearProy[1]-1,lty=2)
-legend(2000,2000000,c("Reclprom 1991-2007",
+legend(2000,2190000,c("Reclprom 1991-2007",
                       "Reclprom 2008-2012",
-                      "Reclprom 2013-2021"),pch=19,lwd=1,col=c(4,2,3),bty="n")
+                      "Reclprom 2013-2022"),pch=19,lwd=1,col=c(4,2,3),bty="n")
 #text(2024,2000000,"b)")
 
 #=======================================================
@@ -3188,12 +3188,8 @@ abline(v=yearProy[1]-1,lty=2)
 
 ```
 
-
-
+\pagebreak
 <!-- Proyección del stock (Asesoría de septiembre) -->
-
-
-
 ```{r Tabla_32a,eval=F, warning=F, include=T, message=F, echo=FALSE}
 source(paste(dir.fun,"Fn_Estatus_proy.R",sep=""))
 setwd(paste(dir.0,"/CBA_sept/",sep=""))
@@ -3207,13 +3203,12 @@ setwd(paste(dir.0,"/CBA_sept/",sep=""))
 mfyr<-c(12,22,32)
 escR<-"2008-2012"
 Estatusproy_sept("MAE922",mfyr,escR,year1="2019/20",year2="2020/21",year3="2021/22",year4="2022/23")
-
 ```
 
 ```{r Tabla_32c,eval=F, warning=F, include=T, message=F, echo=FALSE}
 setwd(paste(dir.0,"/CBA_sept/",sep=""))
 mfyr<-c(13,23,33)
-escR<-"2013-2021"
+escR<-"2013-2022"
 Estatusproy_sept("MAE922",mfyr,escR,year1="2019/20",year2="2020/21",year3="2021/22",year4="2022/23")
 ```
 
@@ -3242,28 +3237,28 @@ Fyr        <- exp(subset(std1,name=="log_Ft")$value)
 
 ```
 
-```{r Fig45a_sept, eval=T, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
+```{r Fig45a_sept, eval=T, warning=F, include=T, message=F,fig.align="center", echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
 
 source(paste(dir.fun,"Fn_DiagramaFase_proy.R",sep=""))
 source(paste(dir.fun,"Fn_ProbEstatus_proy.R",sep=""))
 
 escR<-c(rep("Reclprom 1991-2007",1), 
         rep("Reclprom 2008-2012",1),
-        rep("Reclprom 2013-2021",1))
+        rep("Reclprom 2013-2022",1))
 
-pF<-rep(c("Frms*1","Frms*0.9","Frms*1.1"),3)
-n<-3
+pF<-rep(c("Frms*1","Frms*0,9","Frms*1,1"),3)
+n<-1
 nesc<-c(11,21,31)
 admb_sept<-"MAE922"
 
 for(i in 1:n){
 name<-escR[1]
 DiagramaFase_proy(name,
-                  years[30:31],
-                  SpB[30:31],
-                  SpBSE[30:31],
-                  ln_Fyr[30:31],
-                  ln_FSE[30:31],
+                  years[31:32],
+                  SpB[31:32],
+                  SpBSE[31:32],
+                  ln_Fyr[31:32],
+                  ln_FSE[31:32],
                   FRMS,
                   BRMS,
                   BLIM,
@@ -3288,7 +3283,7 @@ points(c(SpBp/BRMS),
 
 text((SpBp/BRMS),
     c(Frmsp/FRMS-0.07),
-    c("2021/22","2022/23"),cex=c(0.5,0.5))
+    c("2022/23","2023/24"),cex=c(0.5,0.5))
 
 text(c(SpB[1]/BRMS,
        SpB[nyears]/BRMS,
@@ -3296,36 +3291,30 @@ text(c(SpB[1]/BRMS,
      c(Fyr[1]/FRMS-0.05,
        Fyr[nyears]/FRMS-0.05,
        Fyr[nyears-1]/FRMS+0.05),
-     c("1990/91","2020/21","2019/20"),
+     c("1990/91","2021/22","2020/21"),
      cex=0.8)
 text(1.7,1.9,pF[i],cex=0.8,col=1)
 }
 
-#setwd(paste(dir.0,"/CBA_sept",sep=""))
-#nesc<-c(11,21,31)
-#pF<-c("Frms*1","Frms*0.9","Frms*0.7")
-#name<-"Reclprom 1991-2007"
-#ProbEstatusproy_sept("MAE0920",nesc,name,pF,nyears=30)
-
 ```
 
-```{r Fig45b_sept, eval=T, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
+```{r Fig45b_sept, eval=T, warning=F, include=T, message=F,fig.align="center", echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig,}
 escR<-c(rep("Reclprom 1991-2007",1), 
         rep("Reclprom 2008-2012",1),
-        rep("Reclprom 2013-2021",1))
-pF<-rep(c("Frms*1","Frms*0.9","Frms*1.1"),3)
-n<-3
+        rep("Reclprom 2013-2022",1))
+pF<-rep(c("Frms*1","Frms*0,9","Frms*1,1"),3)
+n<-1
 nesc<-c(12,22,32)
 admb_sept<-"MAE922"
 
 for(i in 1:n){
 name<-escR[2]
 DiagramaFase_proy(name,
-                  years[30:31],
-                  SpB[30:31],
-                  SpBSE[30:31],
-                  ln_Fyr[30:31],
-                  ln_FSE[30:31],
+                  years[31:32],
+                  SpB[31:32],
+                  SpBSE[31:32],
+                  ln_Fyr[31:32],
+                  ln_FSE[31:32],
                   FRMS,
                   BRMS,
                   BLIM,
@@ -3350,7 +3339,7 @@ points(c(SpBp/BRMS),
 
 text((SpBp/BRMS),
      c(Frmsp/FRMS-0.07),
-     c("2021/22","2022/23"),cex=c(0.5,0.5))
+     c("2022/23","2023/24"),cex=c(0.5,0.5))
 
 text(c(SpB[1]/BRMS,
        SpB[nyears]/BRMS,
@@ -3358,36 +3347,31 @@ text(c(SpB[1]/BRMS,
      c(Fyr[1]/FRMS-0.05,
        Fyr[nyears]/FRMS-0.05,
        Fyr[nyears-1]/FRMS+0.05),
-     c("1990/91","2020/21","2019/20"),
+     c("1990/91","2021/22","2020/21"),
      cex=0.8)
 
 text(1.7,1.9,pF[i],cex=0.8,col=1)
 }
 
-#setwd(paste(dir.0,"/CBA_sept",sep=""))
-#pF<-c("Frms*1","Frms*0.9","Frms*0.7")
-#name<-"Reclprom 2008-2012"
-#nesc<-c(12,22,32)
-#ProbEstatusproy_sept("MAE0920",nesc,name,pF,nyears=30)
 ```
 
-```{r Fig45c_sept, eval=T, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
+```{r Fig45c_sept, eval=T, warning=F, include=T, message=F,fig.align="center", echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig,fig.cap="\\label{Fig44bs}Diagramas de fases de explotación de la biomasa desovante respecto de la mortalidad por pesca mostrando el estatus de sardina común para el año previo 2020/21 (punto verde), año actual 2021/22 (punto y cruz naranjo) y años proyectados 2022/23 y 2023/2024 (puntos rojo) bajo un escenario de reclutamiento promedio bajo [1991-2007], reclutamiento promedio alto [2008-2012], reclutamiento promedio reciente [2013-2022]. Asesoría de septiembre 2022."}
 escR<-c(rep("Reclprom 1991-2007",1), 
         rep("Reclprom 2008-2012",1),
-        rep("Reclprom 2013-2021",1))
-pF<-rep(c("Frms*1","Frms*0.9","Frms*1.1"),3)
-n<-3
+        rep("Reclprom 2013-2022",1))
+pF<-rep(c("Frms*1","Frms*0,9","Frms*1,1"),3)
+n<-1
 nesc<-c(13,23,33)
 admb_sept<-"MAE922"
 
 for(i in 1:n){
 name<-escR[3]
 DiagramaFase_proy(name,
-                  years[30:31],
-                  SpB[30:31],
-                  SpBSE[30:31],
-                  ln_Fyr[30:31],
-                  ln_FSE[30:31],
+                  years[31:32],
+                  SpB[31:32],
+                  SpBSE[31:32],
+                  ln_Fyr[31:32],
+                  ln_FSE[31:32],
                   FRMS,
                   BRMS,
                   BLIM,
@@ -3412,7 +3396,7 @@ points(c(SpBp/BRMS),
 
 text((SpBp/BRMS),
      c(Frmsp/FRMS-0.07),
-     c("2021/22","2022/23"),
+     c("2022/23","2023/24"),
      cex=c(0.5,0.5))
 
 text(c(SpB[1]/BRMS,
@@ -3421,45 +3405,16 @@ text(c(SpB[1]/BRMS,
      c(Fyr[1]/FRMS-0.05,
        Fyr[nyears]/FRMS-0.05,
        Fyr[nyears-1]/FRMS+0.05),
-     c("1990/91","2020/21","2019/20"),
+     c("1990/91","2021/22","2020/21"),
      cex=0.8)
 
 text(1.7,1.9,pF[i],cex=0.8,col=1)
 }
 
-#setwd(paste(dir.0,"/CBA_sept",sep=""))
-#pF<-c("Frms*1","Frms*0.9","Frms*0.7")
-#nesc<-c(13,23,33)
-#name<-"Reclprom 2013-2020"
-#ProbEstatusproy_sept("MAE0920",nesc,name,pF,nyears=30)
-```
-
-
-
-
-```{r Fig42,  warning=F, include=T, message=F, eval=F, echo=FALSE,fig.height=3,fig.width=5,fig.align="center",fig.path=dir.Fig,dev=fig}
-library(strucchange)
-years1<-rep1$years
-nyears1<-length(years1)
-bp.nile <- breakpoints(rep1$Reclutas/1000 ~ 1)
-fm0 <- lm(rep1$Reclutas/1000 ~ 1)
-fm1 <- lm(rep1$Reclutas/1000 ~ breakfactor(bp.nile, breaks = 2))
-quiebres3<-fitted(fm1)
-
-par(mfrow=c(1,1),mar=c(2,4,1,1))
-plot(years1,rep1$Reclutas/1000,type="l",lty=2,pch=19,ylim=c(0,700),
-     xaxp=c(1990,2020,30),yaxs="i",xlab="",ylab="Reclutamientos (miles de millones de ind.)",main="Escenarios de reclutamiento proyectado",cex.main=0.8,cex.axis=0.8,cex.lab=0.8)
-points(years1,rep1$Reclutas/1000,col=1,pch=19)
-lines(years1,quiebres3,lwd=2,col=4)
-text(c(1999,2010,2017),c(fitted(fm1)[1],fitted(fm1)[18],fitted(fm1)[23])+20,round(c(fitted(fm1)[1],fitted(fm1)[18],fitted(fm1)[23]),0),col=2,font=1,cex=0.8)
-
 ```
 
 \pagebreak
-
-
-
-```{r Fig27_CBA,warning=F, include=T, message=F,fig.pos="h!", echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf'),fig.cap="\\label{Fig44cs}Captura 2021/2022 y 2022/2023 a la edad bajo tres escenarios de reclutamiento proyectado en el hito 1. Asesoría Septiembre 2022."}
+```{r Fig27_CBAedad,warning=F, include=T, message=F,fig.pos="h!", echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf'),fig.cap="\\label{Fig44cs}Captura a la edad proyectada años 2022/2023 y 2023/2024  bajo tres escenarios de reclutamiento proyectado en el hito 1."}
 
 dira<-paste(dir.0,"/CBA_sept",sep="")
 setwd(dira)
@@ -3467,9 +3422,46 @@ reps1a     <- reptoRlist("MAE92211.rep")
 reps2a     <- reptoRlist("MAE92212.rep") 
 reps3a     <- reptoRlist("MAE92213.rep") 
 
+
+par(mfrow=c(1,2),mar=c(4,4,1,1)+0.5)
 #===============================================================================================================
+# plot captura a la talla
+plot(seq(0,4,1),reps2a$YTP_p0W_proyectada[1,],type="h",main="Año 2022/2023",lwd=20,ylim=c(0,400000),yaxs= "i",
+     ylab="Captura  a la edad (t)",xlab="Edades",cex.axis=1,cex.main=1,cex.lab=1,col='red2')
+lines(seq(0,4,1),reps3a$YTP_p0W_proyectada[1,],type="h",col='green2',lwd=15)
+lines(seq(0,4,1),reps1a$YTP_p0W_proyectada[1,],type="h",col='blue2',lwd=10)
+text(rep(0.35,3),c(reps1a$YTP_p0W_proyectada[1,1],
+                   reps2a$YTP_p0W_proyectada[1,1],
+                   reps3a$YTP_p0W_proyectada[1,1]),
+                   paste(c(C1eryearR1,C1eryearR2,C1eryearR3)*100,"%",sep=""))
+text(4,380000,'a)')
+
+plot(seq(0,4,1),reps2a$YTP_p0W_proyectada[2,],type="h",main="Año 2023/2024",lwd=20,ylim=c(0,400000),yaxs= "i",
+     ylab="Captura a la edad (t)",xlab="Edades",cex.axis=1,cex.main=1,cex.lab=1,col='red2')
+lines(seq(0,4,1),reps3a$YTP_p0W_proyectada[2,],type="h",col='green2',lwd=15)
+lines(seq(0,4,1),reps1a$YTP_p0W_proyectada[2,],type="h",col='blue2',lwd=10)
+text(rep(0.35,3),c(reps1a$YTP_p0W_proyectada[2,1],
+                   reps2a$YTP_p0W_proyectada[2,1],
+                   reps3a$YTP_p0W_proyectada[2,1]),
+                   paste(c(C1eryearR12,C1eryearR22,C1eryearR32)*100,"%",sep=""))
+text(rep(1.35,3),c(reps1a$YTP_p0W_proyectada[2,2],
+                   reps2a$YTP_p0W_proyectada[2,2],
+                   reps3a$YTP_p0W_proyectada[2,2]),
+                  paste(c(C1eryearR12a,C1eryearR22a,C1eryearR32a)*100,"%",sep=""))
+text(4,380000,'b)')
+
+
+
+#kable(t(data.frame(C1eryearR1,C1eryearR2,C1eryearR3,C2doyearR1,C2doyearR2,C2doyearR3)))
+
+
+```
+
+```{r Fig27_CBA,warning=F, include=T, message=F,fig.pos="h!", echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf'),fig.cap="\\label{Fig44ds}a) Distribución de probabilidad de la Captura al RMS proyectada al 2023 bajo tres escenarios de reclutamiento proyectado en el hito 1. La zona sombreada corresponde a la zona de percentiles de probabilidad de captura (*P) entre el 10 \\% - 50 \\% y b) La CBA estimada para cada *P."}
+
+#==================================================================================================
 # escenario 1
-#===============================================================================================================
+#==================================================================================================
 xca1 <-rnorm(1000, mean = CBAp_sept[1], 
                    sd   = CBApstd_sept[1])
 
@@ -3485,9 +3477,9 @@ xxca <-c(xca[xca>=icca[1]&xca<=icca[2]],
 
 yyca <-c(yca[xca>=icca[1]&xca<=icca[2]],
          rep(0,length(yca[xca>=icca[1]&xca<=icca[2]])))
-#===============================================================================================================
+#==================================================================================================
 # escenario 2
-#===============================================================================================================
+#==================================================================================================
 xcb1 <-rnorm(1000, mean = CBAp_sept[2], 
                    sd   = CBApstd_sept[2])
 
@@ -3505,9 +3497,9 @@ xxcb <-c(xcb[xcb>=iccb[1]&xcb<=iccb[2]],
 
 yycb <-c(ycb[xcb>=iccb[1]&xcb<=iccb[2]],
          rep(0,length(ycb[xcb>=iccb[1]&xcb<=iccb[2]])))
-#===============================================================================================================
+#==================================================================================================
 # escenario 3
-#===============================================================================================================
+#==================================================================================================
 xcc1 <-rnorm(1000, mean = CBAp_sept[3], 
                    sd   = CBApstd_sept[3])
 
@@ -3528,27 +3520,11 @@ yycc <-c(ycc[xcc>=iccc[1]&xcc<=iccc[2]],
 
 
 par(mfrow=c(1,2),mar=c(4,4,1,1)+0.5)
-#===============================================================================================================
-# plot captura a la talla
-plot(seq(0,4,1),reps2a$YTP_p0W_proyectada[1,],type="h",main="Año 2021/2022",lwd=20,ylim=c(0,400000),yaxs= "i",
-     ylab="Captura  a la edad (t)",xlab="Edades",cex.axis=1,cex.main=1,cex.lab=1,col='red2')
-lines(seq(0,4,1),reps3a$YTP_p0W_proyectada[1,],type="h",col='green2',lwd=15)
-lines(seq(0,4,1),reps1a$YTP_p0W_proyectada[1,],type="h",col='blue2',lwd=10)
-text(rep(0.35,3),c(reps1a$YTP_p0W_proyectada[1,1],reps2a$YTP_p0W_proyectada[1,1],reps3a$YTP_p0W_proyectada[1,1]),c('33%','63%','43%'))
-text(4,380000,'a)')
-
-plot(seq(0,4,1),reps2a$YTP_p0W_proyectada[2,],type="h",main="Año 2022/2023 ",lwd=20,ylim=c(0,400000),yaxs= "i",
-     ylab="Captura a la edad (t)",xlab="Edades",cex.axis=1,cex.main=1,cex.lab=1,col='red2')
-lines(seq(0,4,1),reps3a$YTP_p0W_proyectada[2,],type="h",col='green2',lwd=15)
-lines(seq(0,4,1),reps1a$YTP_p0W_proyectada[2,],type="h",col='blue2',lwd=10)
-text(rep(0.35,3),c(reps1a$YTP_p0W_proyectada[2,1],reps2a$YTP_p0W_proyectada[2,1],reps3a$YTP_p0W_proyectada[2,1]),c('38%','48%','43%'))
-text(rep(1.35,3),c(reps1a$YTP_p0W_proyectada[2,2],reps2a$YTP_p0W_proyectada[2,2],reps3a$YTP_p0W_proyectada[2,2]),c('32%','41%','36%'))
-text(4,380000,'b)')
-
-par(mfrow=c(1,2),mar=c(4,4,1,1)+0.5)
-#===============================================================================================================
+#==================================================================================================
 # plot densidad de probabilidad CBA
-plot(xca,yca,type="l",ylab="Densidad de probabilidad",xaxs="i",yaxs= "i",xlab="CBA 2022 (toneladas)",main="", cex.axis=1,cex.main=1,cex.lab=1,xlim=c(50000,1000000),ylim=c(0,8.5e-06))
+plot(xca,yca,type="l",ylab="Densidad de probabilidad",xaxs="i",yaxs= "i",
+     xlab="CBA 2023 (toneladas)",main="", cex.axis=1,cex.main=1,cex.lab=1,
+     xlim=c(50000,1000000),ylim=c(0,8.5e-06))
 
 polygon(xxca,yyca,col=gray(0.8,0.7),border="gray80")
 lines(xca,yca,lwd=1,col="blue2",lty=1)
@@ -3559,22 +3535,25 @@ lines(xcb,ycb,lwd=1,col="red2",lty=1)
 polygon(xxcc,yycc,col=gray(0.8,0.7),border="gray80")
 lines(xcc,ycc,lwd=1,col="green2",lty=1)
 
-legend(90000,8e-06,
-       c(paste("CBA2022_R1991-2007 = [",round(icca[1],0),"-",round(icca[2],0),"]",sep=" "),
-         paste("CBA2022_R2008-2012 = [",round(iccb[1],0),"-",round(iccb[2],0),"]",sep=" "),
-         paste("CBA2022_R2013-2021 = [",round(iccc[1],0),"-",round(iccc[2],0),"]",sep=" ")), lty=c(1,1,1),col=c('blue2',"red2","green2"),bty="n",lwd=1,cex=0.8)
-text(950000,8e-06,'a)')
+legend(90000,8.4e-06,
+       c(paste("CBA2023_R1991-2007 = [",round(icca[1],0),"-",round(icca[2],0),"]",sep=" "),
+         paste("CBA2023_R2008-2012 = [",round(iccb[1],0),"-",round(iccb[2],0),"]",sep=" "),
+         paste("CBA2023_R2013-2022 = [",round(iccc[1],0),"-",round(iccc[2],0),"]",sep=" ")), lty=c(1,1,1),col=c('blue2',"red2","green2"),bty="n",lwd=1,cex=0.8)
+text(951000,8e-06,'a)')
 box()
 
-#===============================================================================================================
+#=================================================================================================
 # plot percentiles de captura
-plot(seq(10,50,10),CBA_sept[1,],type="o", ylab="CBA 2022 (toneladas)",xlab="Percentil de Captura (P*)",main="",cex.axis=1,cex.main=1,cex.lab=1,col="blue2",ylim=c(0,800000))
+plot(seq(10,50,10),CBA_sept[1,],type="o", ylab="CBA 2023 (toneladas)",
+     xlab="Percentil de Captura (*P)",main="",cex.axis=1,cex.main=1,cex.lab=1,
+     col="blue2",ylim=c(0,850000))
 lines(seq(10,50,10),CBA_sept[2,],type="o",col="red2")
 lines(seq(10,50,10),CBA_sept[3,],type="o",col="green2")
 
-legend(12,8e+05,c("R1991-2007","R2008-2012","R2013-2021"),col=c(4,2,3),pch=c(19,19,19),lwd=1,bty="n",cex=0.8)
+legend(12,8.1e+05,c("R1991-2007","R2008-2012","R2013-2022"),
+       col=c(4,2,3),pch=c(19,19,19),lwd=1,bty="n",cex=0.8)
 text(49,8e+05,'b)')
-#===============================================================================================================
+#=================================================================================================
 # plot resguardo
 
 #plot(seq(10,50,10),buffer[1,],type="o",ylim=c(0,0.35), ylab="Resguardo = (1-CBA/Crms)",xlab="Percentil de Captura (*P)",main="",lwd=2,lty=1,col='blue2')
@@ -3582,24 +3561,12 @@ text(49,8e+05,'b)')
 #lines(seq(10,50,10),buffer[3,],type="o",col='green2')
 #text(49,0.345,'d)')
 
-
-C1eryearR1<-round(reps1a$YTP_p0W_proyectada[1,],0)
-C1eryearR2<-round(reps2a$YTP_p0W_proyectada[1,],0)
-C1eryearR3<-round(reps3a$YTP_p0W_proyectada[1,],0)
-
-C2doyearR1<-round(reps1a$YTP_p0W_proyectada[2,],0)
-C2doyearR2<-round(reps2a$YTP_p0W_proyectada[2,],0)
-C2doyearR3<-round(reps3a$YTP_p0W_proyectada[2,],0)
-
-kable(t(data.frame(C1eryearR1,C1eryearR2,C1eryearR3,C2doyearR1,C2doyearR2,C2doyearR3)))
-
-
 ```
 
 \pagebreak
-
+<!--- ######################################################################################### -->
 <!--- # Primera revisión CBA  (Asesoría de marzo) -->
-
+<!--- ######################################################################################### -->
 ```{r proyeccion1eraRevision,warning=F, include=T, message=F,eval=F, echo=F}
 
 dira<-paste(dir.0,"/CBA_marzo/",sep="")
@@ -3775,8 +3742,9 @@ kable(probEstatus)
 
 ```
 
+<!--- ######################################################################################### -->
 <!--- # Figuras de proyección  (Asesoría de marzo) -->
-
+<!--- ######################################################################################### -->
 ```{r Fig34a_marzo, warning=F, include=T, message=F,eval=F, echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig}
 par(mfrow=c(2,2),mar=c(4,4,1,1)+0.5)
 yearProy<-c(2023)
@@ -3883,11 +3851,10 @@ text(2024,900000,"d)")
 
 ```
 
-
 \pagebreak
-
+<!--- ######################################################################################### -->
 <!--- # Proyeccion de Estatus de proyección (Asesoría de marzo) -->
-
+<!--- ######################################################################################### -->
 ```{r Tabla32_CBA_marzo, echo=FALSE, warning=F, include=T, message=F,eval=F}
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
 
@@ -3907,7 +3874,6 @@ for(i in 1:nes){
 	CBAp_marzo[i]    <-subset(std,name=="CBA_c0")$value[1]
 	CBApstd_marzo[i] <-subset(std,name=="CBA_c0")$std[1]
 	for(j in 1:nq){	CBA_marzo[i,j]<-qnorm(q[j],CBAp_marzo[i],CBApstd_marzo[i])}}
-
 ```
 
 ```{r Tabla_32a_marzo,eval=F, warning=F, include=T, message=F, echo=FALSE}
@@ -3923,7 +3889,6 @@ setwd(paste(dir.0,"/CBA_marzo/",sep=""))
 mfyr<-c(12,22,32)
 escR<-"2008-2012"
 Estatusproy_marzo("MAE322",mfyr,escR,year2="2021/22",year3="2022/23")
-
 ```
 
 ```{r Tabla_32c_marzo,eval=F, warning=F, include=T, message=F, echo=FALSE}
@@ -3955,7 +3920,6 @@ SpBSE      <- subset(std2,name=="SSB")$std                           # desviaci�
 ln_Fyr     <- subset(std2,name=="log_Ft")$value                                # logaritmo de Ft
 ln_FSE     <- subset(std2,name=="log_Ft")$std                                 # logaritmo de la desviación standar de Ft
 Fyr        <- exp(subset(std2,name=="log_Ft")$value)
-
 ```
 
 ```{r Fig45a_marzo, eval=F, warning=F, include=T, message=F, echo=FALSE,fig.height=2.3,fig.width=2.2,fig.path=dir.Fig,dev=fig}
@@ -4150,12 +4114,10 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 #ProbEstatusproy_sept("MAE0920",nesc,name,pF,nyears=30)
 ```
 
-
-
 \pagebreak
-
+<!--- ######################################################################################### -->
 <!--- # PRIMERA REVISIÓN DE CBA (Asesoría de marzo) -->
-
+<!--- ######################################################################################### -->
 ```{r CBAinicial_marzo, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
@@ -4241,8 +4203,9 @@ kable(t(tablaincrementos))
 
 ```
 
+<!--- ######################################################################################### -->
 <!--- # CBA - desembarque (Asesoría de marzo) -->
-
+<!--- ######################################################################################### -->
 ```{r CBAinicial_marzo-desembarque2doSem, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
@@ -4267,7 +4230,6 @@ for(i in 1:nes){
 	CBA_marzoD2S[i,j]<-qnorm(q[j],CBAp_marzoD2S[i],CBApstd_marzoD2S[i])}}
 
 ```
-
 
 ```{r CBAinicial_marzoDescarte-desembarque2doSem, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
@@ -4294,7 +4256,6 @@ for(i in 1:nes){
 
 ```
 
-
 ```{r Tabla29a_CBA_marzo-Desembarque2doSem,eval=F, echo=FALSE, warning=F, include=T, message=F}
 tCBA_marzoD2S<-cbind(CBAp_marzoD2S,CBApstd_marzoD2S,CBA_marzoD2S)
 colnames(tCBA_marzoD2S)<-c("mean","std",c("10%","20%","30%","40%","50%"))
@@ -4317,7 +4278,6 @@ row.names(bufferD2S)<-c("1991-2007","2008-2012","2013-2021")
 kable(t(bufferD2S))
 ```
 
-
 ```{r Tabla31b_diferenciasdescarte_marzo-Desembarque2doSem, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 descarte_marzoD2S <- matrix(ncol=nq,nrow=nes)
@@ -4334,9 +4294,9 @@ row.names(tablaincrementosD2S)<-c("1991-2007","2008-2012","2013-2021")
 kable(t(tablaincrementosD2S))
 
 ```
-
+<!--- ######################################################################################### -->
 <!--- # CBA - desembarque - Remanente (Asesoría de marzo) -->
-
+<!--- ######################################################################################### -->
 ```{r CBA_marzo-desembarque2doSem-Remanente, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_marzo/",sep="")
@@ -4435,9 +4395,9 @@ row.names(tablaincrementosD2SR)<-c("1991-2007","2008-2012","2013-2021")
 kable(t(tablaincrementosD2SR))
 
 ```
-
+<!--- ######################################################################################### -->
 <!--- # Figuras de CBA_RMS -->
-
+<!--- ######################################################################################### -->
 ```{r Fig27_CBAmarzo,warning=F, include=T, message=F,eval=F, echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
 
 dira<-paste(dir.0,"/CBA_marzo",sep="")
@@ -4588,9 +4548,9 @@ kable(t(data.frame(C1eryearR1act2,C1eryearR12,C1eryearR22,C1eryearR32)))
 ```
 
 \pagebreak
-
+<!--- ######################################################################################### -->
 <!--- # SEGUNDA REVISION CBA (Asesoría de JULIO) -->
-
+<!--- ######################################################################################### -->
 ```{r proyeccion2daRevision,warning=F, include=T, message=F,eval=F, echo=F}
 
 dira<-paste(dir.0,"/CBA_julio/",sep="")
@@ -4766,9 +4726,9 @@ kable(probEstatus)
 
 
 ```
-
+<!--- ######################################################################################### -->
 <!--- # Figuras de proyección  (Asesoría de julio) -->
-
+<!--- ######################################################################################### -->
 ```{r Fig34a_julio, warning=F, include=T, message=F,eval=F, echo=F,fig.height=7,fig.width=9,fig.align="center",fig.path="Figuras/",dev=fig}
 par(mfrow=c(2,2),mar=c(4,4,1,1)+0.5)
 yearProy<-c(2023)
@@ -4876,9 +4836,9 @@ text(2024,900000,"d)")
 ```
 
 \pagebreak
-
+<!--- ######################################################################################### -->
 <!--- # Proyeccion de Estatus de proyección (Asesoría de julio) -->
-
+<!--- ######################################################################################### -->
 ```{r Tabla32_CBA_julio, echo=FALSE, warning=F, include=T, message=F,eval=F}
 dir.4<-paste(dir.0,"/CBA_julio/",sep="")
 
@@ -5143,12 +5103,10 @@ text(1.7,1.9,pF[i],cex=0.8,col=1)
 #ProbEstatusproy_sept("MAE0920",nesc,name,pF,nyears=30)
 ```
 
-
 \pagebreak
-
+<!--- ######################################################################################### -->
 <!--- # CBA (Asesoría de julio) -->
-
-
+<!--- ######################################################################################### -->
 ```{r CBA_julio, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 dir.4<-paste(dir.0,"/CBA_julio/",sep="")
@@ -5174,7 +5132,6 @@ for(i in 1:nes){
 
 ```
 
-
 ```{r Tabla29a_CBA_julio,eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 tCBA_julio            <- cbind(CBAp_julio,CBApstd_julio,CBA_julio)
@@ -5183,10 +5140,10 @@ row.names(tCBA_julio) <- c("1991-2007","2008-2012","2013-2022")
 kable(t(round(tCBA_julio,0)))
 
 ```
-
+<!--- ######################################################################################### -->
 <!-- CBA julio menos descarte -->
+<!--- ######################################################################################### -->
 <!-- Este análisis se realiza en el tercer informe (asesoría de julio), se debe revisar que el código corresponda a julio del año correspondiente (ejemplo MAE723, codigo MAE de julio (7) del año 2023 (23) y cambiar eval=T -->
-
 
 ```{r CBA_julio_Descarte, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
@@ -5213,7 +5170,6 @@ for(i in 1:nes){
 
 ```
 
-
 ```{r Tabla29a_CBA_julio_Descarte,eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 tCBA_julio_D            <- cbind(CBAp_julio_D,CBApstd_julio_D,CBA_julio_D)
@@ -5222,10 +5178,9 @@ row.names(tCBA_julio_D) <- c("1991-2007","2008-2012","2013-2022")
 kable(t(round(tCBA_julio_D,0)))
 
 ```
-
+<!--- ######################################################################################### -->
 <!--- # Resguardo CBA julio -->
-
-
+<!--- ######################################################################################### -->
 ```{r Tabla30_resguardo_julio, eval=F,echo=FALSE, warning=F, include=T, message=F}
 
 for(i in 1:nes){for(j in 1:nq){	
@@ -5235,10 +5190,9 @@ row.names(buffer) <- c("1991-2007","2008-2012","2013-2021")
 kable(t(buffer))
 
 ```
-
-
+<!--- ######################################################################################### -->
 <!--- # Diferencia entre CBAs asesoría de septiembre y julio -->
-
+<!--- ######################################################################################### -->
 ```{r Tabla31b_diferenciasdescarte_julioseptiembre, eval=F, echo=FALSE, warning=F, include=T, message=F}
 
 descarte_julio <- matrix(ncol=nq,nrow=nes)
@@ -5282,11 +5236,10 @@ kable(t(tablaincrementos_julio_marzo))
 
 ```
 
-
 \pagebreak
-
+<!--- ######################################################################################### -->
 <!--- # Figuras de CBA_RMS -->
-
+<!--- ######################################################################################### -->
 
 ```{r Fig27_CBAjulio,warning=F, include=T, message=F,eval=F, echo=F,fig.height=5,fig.width=10,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
 
@@ -5295,10 +5248,9 @@ setwd(dira)
 reps1a     <- reptoRlist("MAE72211.rep")  
 reps2a     <- reptoRlist("MAE72212.rep") 
 reps3a     <- reptoRlist("MAE72213.rep") 
-
-#===============================================================================================================
+#==================================================================================================
 # escenario 1
-#===============================================================================================================
+#==================================================================================================
 xca1 <-rnorm(1000, mean = CBAp_julio[1], 
                    sd   = CBApstd_julio[1])
 
@@ -5316,9 +5268,9 @@ xxca <-c(xca[xca>=icca[1]&xca<=icca[2]],
 
 yyca <-c(yca[xca>=icca[1]&xca<=icca[2]],
          rep(0,length(yca[xca>=icca[1]&xca<=icca[2]])))
-#===============================================================================================================
+#=================================================================================================
 # escenario 2
-#===============================================================================================================
+#=================================================================================================
 xcb1 <-rnorm(1000, mean = CBAp_julio[2], 
                    sd   = CBApstd_julio[2])
 
@@ -5336,9 +5288,9 @@ xxcb <-c(xcb[xcb>=iccb[1]&xcb<=iccb[2]],
 
 yycb <-c(ycb[xcb>=iccb[1]&xcb<=iccb[2]],
          rep(0,length(ycb[xcb>=iccb[1]&xcb<=iccb[2]])))
-#===============================================================================================================
+#=================================================================================================
 # escenario 3
-#===============================================================================================================
+#=================================================================================================
 xcc1 <-rnorm(1000, mean = CBAp_julio[3], 
                    sd   = CBApstd_julio[3])
 
@@ -5359,7 +5311,7 @@ yycc <-c(ycc[xcc>=iccc[1]&xcc<=iccc[2]],
 
 
 par(mfrow=c(1,2),mar=c(4,4,1,1)+0.5)
-#===============================================================================================================
+#================================================================================================
 
 
 C1eryearR1act<-round(reps1a$YTP_r0W_actual[1]/sum(reps1a$YTP_r0W_actual),2)
@@ -5373,22 +5325,24 @@ C1eryearR12<-round(reps1a$YTP_p0W_proyectada[1,2]/sum(reps1a$YTP_p0W_proyectada[
 C1eryearR22<-round(reps2a$YTP_p0W_proyectada[1,2]/sum(reps2a$YTP_p0W_proyectada[1,]),2)
 C1eryearR32<-round(reps3a$YTP_p0W_proyectada[1,2]/sum(reps3a$YTP_p0W_proyectada[1,]),2)
 
-#===============================================================================================================
+#================================================================================================
 
 # plot captura a la talla
-plot(seq(0,4,1),reps1a$YTP_r0W_actual,type="h",main="Año 2021/2022",
-     lwd=20,ylim=c(0,400000),yaxs= "i",
-     ylab="Captura  a la edad (t)",xlab="Edades",cex.axis=1,cex.main=1,cex.lab=1,col='gray50')
-text(c(rep(0.35,1),1.35),c(reps1a$YTP_r0W_actual[1],reps1a$YTP_r0W_actual[2]),c(C1eryearR1act,C1eryearR1act2))
+plot(seq(0,4,1),reps1a$YTP_r0W_actual,type="h",main="Año 2021/2022",lwd=20,ylim=c(0,400000),
+     yaxs= "i", ylab="Captura  a la edad (t)",xlab="Edades",
+     cex.axis=1,cex.main=1,cex.lab=1,col='gray50')
+text(c(rep(0.35,1),1.35),c(reps1a$YTP_r0W_actual[1],
+                           reps1a$YTP_r0W_actual[2]),
+                         c(C1eryearR1act,C1eryearR1act2))
 text(4,380000,'a)')
 
 
 
-plot(seq(0,4,1),reps2a$YTP_p0W_proyectada[1,],type="h",main="Año 2022/2023 ",lwd=20,ylim=c(0,400000),yaxs= "i",ylab="Captura a la edad (t)",xlab="Edades",cex.axis=1,cex.main=1,cex.lab=1,col='red2')
-
+plot(seq(0,4,1),reps2a$YTP_p0W_proyectada[1,],type="h",main="Año 2022/2023 ",
+     lwd=20,ylim=c(0,400000),yaxs= "i",ylab="Captura a la edad (t)",
+     xlab="Edades",cex.axis=1,cex.main=1,cex.lab=1,col='red2')
 lines(seq(0,4,1),reps3a$YTP_p0W_proyectada[1,],type="h",col='green2',lwd=15)
 lines(seq(0,4,1),reps1a$YTP_p0W_proyectada[1,],type="h",col='blue2',lwd=10)
-
 text(rep(0.35,3),c(reps1a$YTP_p0W_proyectada[1,1],
                    reps2a$YTP_p0W_proyectada[1,1],
                    reps3a$YTP_p0W_proyectada[1,1]),
@@ -5396,7 +5350,7 @@ text(rep(0.35,3),c(reps1a$YTP_p0W_proyectada[1,1],
 text(4,380000,'b)')
 
 par(mfrow=c(1,2),mar=c(4,4,1,1)+0.5)
-#===============================================================================================================
+#==================================================================================================
 # plot densidad de probabilidad CBA
 plot(xca,yca,type="l",ylab="Densidad de probabilidad",xaxs="i",yaxs= "i",xlab="CBA 2022 (toneladas)",main="", cex.axis=1,cex.main=1,cex.lab=1,xlim=c(180000,480000),ylim=c(0,2.35e-05))
 
@@ -5416,7 +5370,7 @@ legend(200000,2.35e-05,
 text(200000,2.2e-05,'a)')
 box()
 
-#===============================================================================================================
+#=================================================================================================
 # plot percentiles de captura
 plot(seq(10,50,10),CBA_julio[1,],type="o", ylab="CBA 2022 (toneladas)",xlab="Percentil de Captura (P*)",main="",cex.axis=1,cex.main=1,cex.lab=1,col="blue2",ylim=c(0,600000))
 lines(seq(10,50,10),CBA_julio[2,],type="o",col="red2")
@@ -5424,7 +5378,7 @@ lines(seq(10,50,10),CBA_julio[3,],type="o",col="green2")
 
 legend(12,6e+05,c("R1991-2007","R2008-2012","R2013-2022"),col=c(4,2,3),pch=c(19,19,19),lwd=1,bty="n",cex=0.8)
 text(49,5.8e+05,'b)')
-#===============================================================================================================
+#==================================================================================================
 # plot resguardo
 
 #plot(seq(10,50,10),buffer[1,],type="o",ylim=c(0,0.35), ylab="Resguardo = (1-CBA/Crms)",xlab="Percentil de Captura (*P)",main="",lwd=2,lty=1,col='blue2')
@@ -5433,9 +5387,9 @@ text(49,5.8e+05,'b)')
 #text(49,0.345,'d)')
 
 
-kable(t(data.frame(C1eryearR1act,C1eryearR1,C1eryearR2,C1eryearR3)))
+#kable(t(data.frame(C1eryearR1act,C1eryearR1,C1eryearR2,C1eryearR3)))
 
-kable(t(data.frame(C1eryearR1act2,C1eryearR12,C1eryearR22,C1eryearR32)))
+#kable(t(data.frame(C1eryearR1act2,C1eryearR12,C1eryearR22,C1eryearR32)))
 
 ```
 
@@ -5443,15 +5397,20 @@ kable(t(data.frame(C1eryearR1act2,C1eryearR12,C1eryearR22,C1eryearR32)))
 
 
 
-# \Huge \textbf{TABLAS} {-}
+# TABLAS
 
 
 
 ```{r kbl_t1, echo=FALSE,eval=T,warning=F, include=T, message=F}
-
-kbl(dataInd, booktabs = T,format = "latex",position="h!",escape = F,align="c",format.args=list(big.mark = '.'),
-    col.names = linebreak(c("Año\ncalendario ", "Biomasa crucero\nde verano\n(toneladas)",
-                            "Biomasa crucero\nde otoño\n(toneladas)","Biomasa desovante\nMPDH\n(toneladas)"),align="c"),
+#-----------
+# TABLA 
+#-----------
+kbl(dataInd, booktabs = T,format = "latex",position="h!",escape = F,align="c",
+    format.args=list(big.mark = '.'),
+    col.names = linebreak(c("Año\ncalendario ",
+                            "Biomasa crucero\nde verano\n(toneladas)",
+                            "Biomasa crucero\nde otoño\n(toneladas)",
+                            "Biomasa desovante\nMPDH\n(toneladas)"),align="c"),
 caption = "\\label{t1} Estimaciones de biomasas utilizadas en la evaluación de stock de sardina común provenientes de los cruceros de Verano (RECLAS), Otoño (PELACES) y crucero de huevos (MPDH).") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=10)
@@ -5462,10 +5421,19 @@ caption = "\\label{t1} Estimaciones de biomasas utilizadas en la evaluación de 
 
 
 ```{r kbl_t2 desembarques y descarte, echo=FALSE,eval=T,warning=F, include=T, message=F}
-
-kbl(dataDes_y_descar, booktabs = T,format = "latex",position="h!",align="c",format.args=list(big.mark = '.'),
+#-----------
+# TABLA 
+#-----------
+kbl(dataDes_y_descar, booktabs = T,format = "latex",position="h!",align="c",
+    format.args=list(big.mark = '.'),escape=F,
+col.names = linebreak(c("Año\nbiológico ",
+                        "Desembarques\n(toneladas)",
+                        "Porcentaje\nDescarte",
+                        "Captura\ndescartada\n(toneladas)",
+                        "Captura\ntotal\n(toneladas)"),align="c"),   
 caption = "\\label{t2} Desembarques en toneladas, porcentaje de descarte supuesto,
-captura descartada (toneladas) y captura total (toneladas) estimadas en año biológico para sardina común de las Regiones de Valparaíso a Los Lagos.") %>% kable_styling(latex_options = c("striped", "condensed"),
+captura descartada (toneladas) y captura total (toneladas) estimadas en año biológico para sardina común de las Regiones de Valparaíso a Los Lagos.") %>% 
+  kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=10)
 
 ```
@@ -5483,13 +5451,17 @@ VarPobl1<- cbind(yearsb,
                  format(round(c(Rt1),0),nsmall=0, big.mark="."),
                  formatC(c(round(exp(Ft1),3)),decimal.mark = ",",digits = 3))
 
-
+#-----------
+# TABLA 
+#-----------
 VarPobl1 %>%
 kbl(booktabs = T,format = "latex",position="h!",escape = F,align="c",
-    col.names = linebreak(c('Año\nbiológico',"Biomasa\ndesovante",
-                            "Biomasa\ntotal","Reclutamientos",
+    col.names = linebreak(c('Año\nbiológico',
+                            "Biomasa\ndesovante",
+                            "Biomasa\ntotal",
+                            "Reclutamientos",
                             "Mortalidad\npor pesca"),align="c"),
-caption = "\\label{Tab17}Estimaciones medias de las biomasa desovante (t) , biomasa total (t), reclutamientos (\\#) y  mortalidad por pesca (año-1)  estimadas en la asesoría de septiembre 2022 de sardina común de las regiones de Valparaíso a Los Lagos.") %>% 
+caption = "\\label{Tab20a}Estimaciones medias de las biomasa desovante (t) , biomasa total (t), reclutamientos (\\#) y  mortalidad por pesca (año-1)  estimadas en la asesoría de septiembre 2022 de sardina común de las regiones de Valparaíso a Los Lagos.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=8)
 
@@ -5498,104 +5470,7 @@ caption = "\\label{Tab17}Estimaciones medias de las biomasa desovante (t) , biom
 
 ```
 
-
-
-
-```{r Tabla_20_promedios, echo=F,warning=FALSE,include=F,eval=T}
-
-# Reclutimientos 
-Rprom_1991_2007<-mean(Rt1[1:17])
-Rprom_2008_2012<-mean(Rt1[18:22])
-Rprom_2013_2022<-mean(Rt1[23:32])
-Rprom_2013_2021<-mean(Rt1[23:31])
-Rprom_historico<-mean(Rt1)
-
-Rprom<-rbind(Rprom_1991_2007,
-      Rprom_2008_2012,
-      Rprom_2013_2022,
-      Rprom_2013_2021,
-      Rprom_historico)
-
-#diferencia del Rúltimo año y los promedios de los tres períodos principales
-Rlast_1991_2007<-1-(Rt1[32]/Rprom_1991_2007)
-Rlast_2008_2012<-1-(Rt1[32]/Rprom_2008_2012)
-Rlast_2013_2022<-1-(Rt1[32]/Rprom_2013_2022)
-Rlast_2013_2021<-1-(Rt1[32]/Rprom_2013_2021)
-Rlast_historico<-1-(Rt1[32]/Rprom_historico)
-
-difR<-rbind(Rlast_1991_2007,
-      Rlast_2008_2012,
-      Rlast_2013_2022,
-      Rlast_2013_2021,
-      Rlast_historico)
-
-# Biomasa total (BT) asesoría marzo 2021
-BTprom_1991_2007<-mean(BT1[1:17])
-BTprom_2008_2012<-mean(BT1[18:22])
-BTprom_2013_2022<-mean(BT1[23:32])
-BTprom_2013_2021<-mean(BT1[23:31])
-BTprom_historico<-mean(BT1)
-
-BTprom<-rbind(BTprom_1991_2007,
-      BTprom_2008_2012,
-      BTprom_2013_2022,
-      BTprom_2013_2021,
-      BTprom_historico)
-
-#diferencia del BT último año y los promedios de los tres períodos principales
-BTlast_1991_2007<-1-(BT1[32]/BTprom_1991_2007)
-BTlast_2008_2012<-1-(BT1[32]/BTprom_2008_2012)
-BTlast_2013_2022<-1-(BT1[32]/BTprom_2013_2022)
-BTlast_2013_2021<-1-(BT1[32]/BTprom_2013_2021)
-BTlast_historico<-1-(BT1[32]/BTprom_historico)
-
-difBT<- rbind(BTlast_1991_2007,
-      BTlast_2008_2012,
-      BTlast_2013_2022,
-      BTlast_2013_2021,
-      BTlast_historico)
-
-
-# Biomasa desovante (BD) asesoría marzo 2021
-
-BDprom_1991_2007<-mean(BD1[1:17])
-BDprom_2008_2012<-mean(BD1[18:22])
-BDprom_2013_2022<-mean(BD1[23:32])
-BDprom_2013_2021<-mean(BD1[23:31])
-BDprom_historico<-mean(BD1)
-  
-BDprom<-rbind(BDprom_1991_2007,
-      BDprom_2008_2012,
-      BDprom_2013_2022,
-      BDprom_2013_2021,
-      BDprom_historico)
-
-#diferencia del BD último año y los promedios de los tres períodos principales
-BDlast_1991_2007<-1-(BD1[32]/BDprom_1991_2007)
-BDlast_2008_2012<-1-(BD1[32]/BDprom_2008_2012)
-BDlast_2013_2022<-1-(BD1[32]/BDprom_2013_2022)
-BDlast_2013_2021<-1-(BD1[32]/BDprom_2013_2021)
-BDlast_historico<-1-(BD1[32]/BDprom_historico)
-
-difBD<-rbind(BDlast_1991_2007,
-      BDlast_2008_2012,
-      BDlast_2013_2022,
-      BDlast_2013_2021,
-      BDlast_historico)
-
-
-diferencias<-cbind(difR,difBT,difBD,Rprom,BTprom,BDprom)
-colnames(diferencias)<-c("difRt","difBT","difBD","Rprom","BTprom","BDprom")
-diferencias
-
-#write.csv(diferencias, file="Tablas/diferencias.csv")
-
-
-```
-
 \pagebreak
-
-
 ```{r Tabla_22_indicesEstatus, echo=F,warning=FALSE}
 yearsb<-c("1990/91","1991/92","1992/93","1993/94","1994/95","1995/96","1996/97","1997/98","1998/99","1999/00","2000/01","2001/02","2002/03","2003/04","2004/05","2005/06","2006/07","2007/08","2008/09","2009/10","2010/11","2011/12","2012/13","2013/14","2014/15","2015/16","2016/17","2017/18","2018/19","2019/20",'2020/21','2021/22')
 
@@ -5605,7 +5480,9 @@ VarPobl2<- data.frame('Años'=yearsb,
                  "Y_BT"=formatC(c(round(rep1$desembarquepred/BT1,3)), decimal.mark = ","),
                  "C_N"=formatC(c(round(rowSums(rep1$pred_Ctot)/rowSums(rep1$N),3)), decimal.mark = ","))
 
-
+#-----------
+# TABLA 
+#-----------
 kbl(VarPobl2, booktabs = T,format = "latex",position="h!",escape = F,align="c",
     col.names = linebreak(c('Año\nbiológico',
                             '$F/F_{RMS}$',
@@ -5633,12 +5510,8 @@ write.csv(VarPobl2b, file="Tablas/tasasExplotacion.csv")
 
 ```
 
-
-
 \pagebreak
-
 <!--- RESULTADOS DE CALCULO DE PBRS PARA LA  ASESORÍA DE SEPTIEMBRE (HITO 1) -->
-
 ```{r Tabla_18_PBRs_septiembre, echo=F,eval=T,warning=FALSE,include=T,message=F}
 
 etapas<-c("Paso 1", "Paso 1", "Paso 2","Paso 2","Paso 3", "Paso 3", "Paso 4", "Paso 5", "Paso 6")
@@ -5675,7 +5548,9 @@ Valores<-c(round(Bmed1/10^3,0),
 
 tablapbrs<-data.frame("Etapas"=etapas,"Cálculo"=calculo,"Aproximación"=pbrs,"Valores"=Valores)
 
-
+#-----------
+# TABLA 
+#-----------
 kbl(tablapbrs, booktabs = T,format = "latex",position="h!",align="cllc",escape = FALSE,
 caption = "\\label{Tab21}Procedimiento de cálculo de los puntos biológicos de referencia de biomasa (miles de t) estimados en la evaluación de stock de septiembre 2022 para sardina común de las regiones de Valparaíso a Los Lagos, calculados siguiendo los pasos descritos en la metodología de este informe.") %>%
   collapse_rows(columns = 1:2,latex_hline = "major", valign = "middle")%>% 
@@ -5683,8 +5558,6 @@ caption = "\\label{Tab21}Procedimiento de cálculo de los puntos biológicos de 
                 full_width = FALSE,font_size=10)
 
 ```
-
-
 
 ```{r Tabla23_probEstatus_sept, echo=F,eval=T,warning=FALSE,include=T,message=F}
 Tabla4.1<-rbind("Año biológico"=c("2021/22"),
@@ -5705,6 +5578,9 @@ footnote<-c("Probabilidad que $BD$ del año más reciente sea menor a $BD_{RMS}$
             "Probabilidad de estar en colapso =$p(BD_{last}/BD_{RMS}<0,5)$",
             "Probabilidad de estar en sobrepesca = $p(F_{last}/F_{RMS}>1,1)$")
 
+#-----------
+# TABLA 
+#-----------
 kbl(Tabla4.1, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
 caption = "\\label{Tab23}Puntos Biológicos de referencia (PBRs) y probabilidades de estar bajo $BD_{RMS}$ y sobre $F_{RMS}$ y en sobreexplotación, colapsado o sobrepesca.") %>% 
   kable_styling(latex_options = c("striped"),
@@ -5715,63 +5591,8 @@ column_spec(1, width = "30em")
 
 ```
 
-
 \pagebreak
-
 <!--- RESULTADOS DE PROYECCIÓN ASESORÍA DE SEPTIEMBRE (HITO 1) -->
-
-```{r warning=F, include=T, message=F, echo=F}
-# PRIMER AÑO PROYECTADO
-#######################################################################################
-### *Probabilidad de estar bajo BRMS* 
-#######################################################################################
-pa1<-pnorm(0.9,RpRps1[1],RpRps1std[1],lower.tail = TRUE,log.p = F)
-pa2<-pnorm(0.9,RpRps2[1],RpRps2std[1],lower.tail = TRUE,log.p = F)
-pa3<-pnorm(0.9,RpRps3[1],RpRps3std[1],lower.tail = TRUE,log.p = F)
-#######################################################################################
-### *Probabilidad de estar en zona de sobreexplotacion*
-#######################################################################################
-pc1<-pnorm(0.9,RpRps1[1],RpRps1std[1],lower.tail = TRUE,log.p = F)-pnorm(0.5,
-               RpRps1[1],RpRps1std[1],lower.tail = TRUE,log.p = F)
-pc2<-pnorm(0.9,RpRps2[1],RpRps2std[1],lower.tail = TRUE,log.p = F)-pnorm(0.5,
-               RpRps2[1],RpRps2std[1],lower.tail = TRUE,log.p = F)
-pc3<-pnorm(0.9,RpRps3[1],RpRps3std[1],lower.tail = TRUE,log.p = F)-pnorm(0.5,
-               RpRps3[1],RpRps3std[1],lower.tail = TRUE,log.p = F)
-#######################################################################################
-### *Probabilidad de estar en zona de colapso*
-#######################################################################################
-pd1<-pnorm(0.5,RpRps1[1],RpRps1std[1],lower.tail = TRUE,log.p = F)
-pd2<-pnorm(0.5,RpRps2[1],RpRps2std[1],lower.tail = TRUE,log.p = F)
-pd3<-pnorm(0.5,RpRps3[1],RpRps3std[1],lower.tail = TRUE,log.p = F)
-
-#######################################################################################
-# SEGUNDO AÑO PROYECTADO
-#######################################################################################
-### *Probabilidad de estar bajo BRMS* 
-#######################################################################################
-pa12<-pnorm(0.9,RpRps1[2],RpRps1std[2],lower.tail = TRUE,log.p = F)
-pa22<-pnorm(0.9,RpRps2[2],RpRps2std[2],lower.tail = TRUE,log.p = F)
-pa32<-pnorm(0.9,RpRps3[2],RpRps3std[2],lower.tail = TRUE,log.p = F)
-#######################################################################################
-### *Probabilidad de estar en zona de sobreexplotacion*
-#######################################################################################
-pc12<-pnorm(0.9,RpRps1[2],RpRps1std[2],lower.tail = TRUE,log.p = F)-pnorm(0.5,
-                RpRps1[2],RpRps1std[2],lower.tail = TRUE,log.p = F)
-pc22<-pnorm(0.9,RpRps2[2],RpRps2std[2],lower.tail = TRUE,log.p = F)-pnorm(0.5,
-                RpRps2[2],RpRps2std[2],lower.tail = TRUE,log.p = F)
-pc32<-pnorm(0.9,RpRps3[2],RpRps3std[2],lower.tail = TRUE,log.p = F)-pnorm(0.5,
-                RpRps3[2],RpRps3std[2],lower.tail = TRUE,log.p = F)
-#######################################################################################
-### *Probabilidad de estar en zona de colapso*
-#######################################################################################
-pd12<-pnorm(0.5,RpRps1[2],RpRps1std[2],lower.tail = TRUE,log.p = F)
-pd22<-pnorm(0.5,RpRps2[2],RpRps2std[2],lower.tail = TRUE,log.p = F)
-pd32<-pnorm(0.5,RpRps3[2],RpRps3std[2],lower.tail = TRUE,log.p = F)
-
-#######################################################################################
-
-```
-
 ```{r estatusproyectado,warning=F, include=T, message=F, echo=F}
 
 probEstatus<-rbind("$R_{proy}$"=formatC(c(reps1a$Np[1],reps2a$Np[1],reps3a$Np[1],
@@ -5787,11 +5608,14 @@ probEstatus<-rbind("$R_{proy}$"=formatC(c(reps1a$Np[1],reps2a$Np[1],reps3a$Np[1]
                    "$p(agotado/colapsado)^2$"=formatC(round(c(pd1,pd2,pd3,
                                                             pd12,pd22,pd32),2), decimal.mark = ","))
 
-colnames(probEstatus)<-rep(c("$R_{1991-2007}$",'$R_{2008-2012}$','$R_{2013-2021}$'),2)
+colnames(probEstatus)<-rep(c("$R_{1991-2007}$",'$R_{2008-2012}$','$R_{2013-2022}$'),2)
 
 footnote2<-c("Probabilidad de estar en sobreexplotación = $p(0,5<BD_{last}/BD_{RMS}<0,9)$",
              "Probabilidad de estar en colapso =$p(BD_{last}/BD_{RMS}<0,5)$")
 
+#-----------
+# TABLA 
+#-----------
 kbl(probEstatus, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
 caption = "\\label{Tab25s}Proyección de la biomasa desovante hacia el año biológico 2022/2023 y 2023/2024 considerando tres escenarios de reclutamientos y mortalidad por pesca igual al $F_{RMS}$. Probabilidad de estar bajo $BD_{RMS}$ y sobre $F_{RMS}$ y la probabilidad de sobre-explotación y colapso.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
@@ -5803,9 +5627,7 @@ caption = "\\label{Tab25s}Proyección de la biomasa desovante hacia el año biol
                     "Estatus 2022/2023" = 3,"Estatus 2023/2024" = 3),line = F)%>%
 footnote(number = footnote2,threeparttable = T,escape = FALSE,fixed_small_size = TRUE)
 
-
 ```
-
 
 ```{r Capturaproyectado,warning=F, include=T, message=F, echo=F}
 
@@ -5817,11 +5639,11 @@ Capturaproy<-rbind('Año biológico proyectada 2022/2023'=round(c(cs1[1],cs2[1],
                                                          (cs2[1]*0.7)+(cs2[2]*0.3),
                                                          (cs3[1]*0.7)+(cs3[2]*0.3))/1000,0))
 
-colnames(Capturaproy)<-c("$R_{1991-2007}$",'$R_{2008-2012}$','$R_{2013-2021}$')
+colnames(Capturaproy)<-c("$R_{1991-2007}$",'$R_{2008-2012}$','$R_{2013-2022}$')
 
-
-
-
+#-----------
+# TABLA 
+#-----------
 kbl(Capturaproy, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
 caption = "\\label{Tab26s}Proyección de la captura estimada para los años biológicos 2022/2023 y 2023/2024 considerando una mortalidad por pesca igual al $F_{RMS}$, con sus respectivos escenarios de reclutamientos. El cálculo de la Captura para el año calendario 2023 se obtiene como el promedio ponderado según la estacionalidad semestral de la pesquería que a la fecha se asume 70\\% para el primer semestre y 30\\% para el segundo semestre.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
@@ -5831,19 +5653,21 @@ caption = "\\label{Tab26s}Proyección de la captura estimada para los años biol
 ```
 
 \pagebreak
-
-
 ```{r Tabla25a_CBAinicial_sept,eval=T, echo=FALSE, warning=F, include=T, message=F}
 
 percentiles<-c("10\\%","20\\%","30\\%","40\\%","50\\%")
-escrec<-c("$R_{1991-2007}$","$R_{2008-2012}$","$R_{2013-2021}$")
+escrec<-c("$R_{1991-2007}$","$R_{2008-2012}$","$R_{2013-2022}$")
 
 tCBA<-t(data.frame(CBAp_sept,CBApstd_sept,CBA_sept))
 colnames(tCBA)<-escrec
 row.names(tCBA)<-c('mean','sd',percentiles)
 
-kbl(round(tCBA,0), booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,format.args=list(big.mark = '.'),
-caption = "CBA inicial año calendario 2023 de sardina común calculada bajo $F_{RMS}$ con sus respectivos percentiles de captura entre 10\\% y 50\\% y tres escenarios de reclutamientos.") %>% 
+#-----------
+# TABLA 
+#-----------
+kbl(round(tCBA,0), booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
+    format.args=list(big.mark = '.'),
+caption = "\\label{Tab27s}CBA inicial año calendario 2023 de sardina común calculada bajo $F_{RMS}$ con sus respectivos percentiles de captura entre 10\\% y 50\\% y tres escenarios de reclutamientos.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=10)%>% 
   add_header_above(c(" " = 1,
@@ -5853,16 +5677,18 @@ caption = "CBA inicial año calendario 2023 de sardina común calculada bajo $F_
 
 ```
 
-
-
 ```{r Tabla25a_CBAinicial-descarte_sept,eval=T, echo=FALSE, warning=F, include=T, message=F}
 
 tCBAd<-t(data.frame(CBApd_sept,CBApdstd_sept,CBAd_sept))
 colnames(tCBAd)<-escrec
 row.names(tCBAd)<-c('mean','sd',percentiles)
 
-kbl(round(tCBAd,0), booktabs = T,format = "latex",position="h!",escape = FALSE,align="c",format.args=list(big.mark = '.'),
-caption = "CBA inicial año calendario 2023 considerando el descuento del 4\\% de descarte.") %>% 
+#-----------
+# TABLA 
+#-----------
+kbl(round(tCBAd,0), booktabs = T,format = "latex",position="h!",escape = FALSE,align="c",
+    format.args=list(big.mark = '.'),
+caption = "\\label{Tab27s_b}CBA inicial año calendario 2023 considerando el descuento del 4\\% de descarte.") %>% 
   kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=10)%>% 
   add_header_above(c(" " = 1,
@@ -5872,31 +5698,28 @@ caption = "CBA inicial año calendario 2023 considerando el descuento del 4\\% d
 
 ```
 
-
 ```{r Tabla26_resguardo_sept, eval=T,echo=FALSE, warning=F, include=T, message=F}
 
-buffer<-matrix(ncol=5,nrow=3)
-
-for(i in 1:nes){for(j in 1:nq){	
-buffer[i,j]<-round(1-CBA_sept[i,j]/CBA_sept[i,5],2)}}
 
 buffer2<-data.frame(t(buffer))
 colnames(buffer2)<-escrec
 row.names(buffer2)<-percentiles
 
-
-kbl(buffer2, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,format.args=list(decimal.mark = ','),
-caption = "Nivel de resguardo de cada percentil de Captura al RMS") %>% 
-  kable_styling(latex_options = c("striped", "condensed"),
+#-----------
+# TABLA 
+#-----------
+kbl(buffer2, booktabs = T,format = "latex",position="h!",align="c",escape = FALSE,
+    format.args=list(decimal.mark = ','),
+    caption = "\\label{Tab28s}Nivel de resguardo de cada percentil de Captura al RMS") %>% 
+    kable_styling(latex_options = c("striped", "condensed"),
                 full_width = FALSE,font_size=10)%>% 
-  add_header_above(c(" " = 1,
+    add_header_above(c(" " = 1,
                     "Escenarios de reclutamiento" = 3),line = F)%>% 
-  add_header_above(c(" " = 1,
+    add_header_above(c(" " = 1,
                     "Resguardo" = 3))
 
 ```
 
-
 \pagebreak
 
-# REFERENCIAS {-}
+# REFERENCIAS
