@@ -24,7 +24,7 @@ Este repositorio contiene los archivos utilizados para el cálculo de CBA inicia
 
 - **Figuras** y **Tablas** contienen las Figuras y Tablas generadas por el código Rmd llamado *FigyTab_PrimerInforme*.
 
-- **SUBDECON_483-259** contiene PRIMER INFORME, base de datos y FAI listos para ser enviados a revisión
+- **SUBDECON_483-260** debe contener PRIMER INFORME, base de datos y FAI listos para ser enviados a revisión
 
 
 ## ARCHIVOS
