@@ -1,0 +1,502 @@
+---
+title: Estatus y  Captura Biológicamente Aceptable 2023 para la sardina común de las Regiones de Valparaíso a Los Lagos.
+author: "Grupo Pelágicos DER"
+date: 'Sesión N°6: 12-14 de octubre 2022'
+output:
+   beamer_presentation:
+    colortheme: rose
+    theme: Antibes
+subtitle: Comité Científico de Pesquerías de Pequeños Pelágicos
+institute: INSTITUTO DE FOMENTO PESQUERO
+---
+
+# Procedimiento de manejo de sardina común
+
+```{=tex}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Figuras/Fig14.png}
+\end{center}
+```
+
+#  \small Antecedentes - Alternancia sardina común y anchoveta
+
+```{=tex}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Figuras/CCTPP_alternanciaEstatus-1.pdf}
+\end{center}
+```
+
+
+# \small Antecedentes - CBAs recomendadas por hito
+
+```{=tex}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{Figuras/CCTPP_alternaciaCBA-1.pdf}
+\includegraphics[width=0.45\textwidth]{Figuras/CCTPP_alternaciaCBA1eraRevision-1.pdf}
+\includegraphics[width=0.45\textwidth]{Figuras/CCTPP_alternaciaCBA2daRevision-1.pdf}
+\end{center}
+```
+
+
+# \small Antecedentes - CBAs recomendadas y desembarques de sardina común
+
+
+```{=tex}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Figuras/CCTPP_CBAporHito_sardina-1.pdf}
+\end{center}
+```
+
+* Desembarque 2022 acumulado al mes de junio (178 mil t)
+
+# \small Antecedentes -  desembarques mensuales  de sardina común
+
+```{=tex}
+\begin{table}[h!]
+    \centering
+    \resizebox{10cm}{!}{
+    \begin{tabular}{lcccccccc}
+    \hline 
+  Desembarques             & 2015    & 2016    & 2017    & 2018    & 2019    & 2020    & 2021    & 2022 \\ \hline 
+ \textbf{TOTAL}            & 435.863 & 280.421 & 340.684 & 341.508 & 318.126 & 258.089 & 339.537 & 177.706\\
+ \textbf{Total Semestre 1} & 281.705 & 145.696 & 264.690 & 272.953 & 233.001 & 188.251 & 306.825 & 177.706\\
+ \textbf{Total Semestre 2} & 154.158 & 134.725 & 75.994  & 68.555  & 85.125  & 69.838  &  32.712 & -    \\ 
+ \hline
+  \end{tabular}}
+        \end{table}
+```
+
+
+
+```{=tex}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Figuras/CCTPP_Desembarquessemestral_sardina-1.pdf}
+\end{center}
+```
+
+# \small Evaluación de stock - Ajustes del modelo a los datos - sardina común
+
+
+```{=tex}
+
+\begin{figure}
+\includegraphics[width=0.7\textwidth]{Figuras/Fig26-1.pdf}
+\end{figure}
+
+```
+
+# \small Evaluación de stock - Ajuste Flota de sardina común
+
+```{=tex}
+
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{Figuras/Fig28-1.pdf}
+\end{figure}
+
+```
+
+
+# \small Evaluación de stock - Ajuste Crucero de verano de sardina común
+
+
+```{=tex}
+
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{Figuras/Fig29-1.pdf}
+\end{figure}
+
+```
+
+# \small Evaluación de stock - Ajuste Crucero de otoño de sardina común
+
+
+```{=tex}
+
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{Figuras/Fig30-1.pdf}
+\end{figure}
+ 
+```
+
+
+# \small Evaluación de stock - Indicadores poblacionales de sardina común
+
+
+```{=tex}
+
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{Figuras/Fig35-1.pdf}
+\end{figure}
+
+```
+
+
+
+# \small Evaluación de stock - Estatus 2021/22 de sardina común
+
+```{=tex}
+\begin{columns}
+\column{0.6\textwidth}
+\begin{figure}
+\includegraphics[width=1\textwidth]{Figuras/Fig39-1.pdf}
+\end{figure}
+
+\column{0.5\textwidth}
+\begin{figure}
+\includegraphics[width=1\textwidth]{Figuras/Fig40-1.pdf}
+\end{figure}
+\end{columns}
+
+```
+\tiny
+
+La condición 2021/2022 estimada con información completa indica que sardina común se encuentra al límite de la subexplotación con un 2,2% de probabilidad de sobreexplotación y 0% de probabilidad de sobrepesca.
+
+# \small Proyección del stock año biológico 2022/23 y 2023/24 
+
+
+
+```{=tex}
+
+\begin{figure}[h!]
+\includegraphics[width=0.85\textwidth]{Figuras/Fig34a-1.pdf}
+\end{figure}
+
+```
+
+
+
+# \small Estatus proyectado año biológico 2022/23 y 2023/24 de sardina común
+
+
+```{=tex}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.32\textwidth]{Figuras/Fig45a_sept-1.pdf}
+\includegraphics[width=0.32\textwidth]{Figuras/Fig45b_sept-1.pdf}
+\includegraphics[width=0.32\textwidth]{Figuras/Fig45c_sept-1.pdf}
+\end{figure}
+```
+  \tiny
+  
+La condición proyectada hacia el año 2022/2023 indica que exite un 53,8%  probabilidad de sobreexplotación. 
+
+# \small Análisis retrospectivo
+
+
+```{=tex}
+
+\begin{figure}[h!]
+\includegraphics[width=0.7\textwidth]{Figuras/Fig33-1.pdf}
+\end{figure}
+
+```
+
+
+
+# \small Rango de CBA  2023 de sardina común
+
+## CBA 
+
+```{=tex}
+\begin{table}[h!]
+ \small
+    \centering
+    \resizebox{10cm}{!} {
+    \begin{tabular}{|c|ccc|ccc|}
+    \hline 
+  Percentiles   & \multicolumn{3}{c}{$CBA_{2023}$}                     & \multicolumn{3}{c}{$CBA_{2023}-4\%descarte$}  \\ 
+  de            & \multicolumn{3}{c}{\textit{Escenarios de reclutamiento}}    & \multicolumn{3}{c}{\textit{Escenarios de reclutamiento}}  \\ 
+   $C_{RMS}$    & $R_{1991-2007}$ & $R_{2008-2012}$  & $R_{2013-2022}$ & $R_{1991-2007}$ & $R_{2008-2012}$  & $R_{2013-2022}$\\ \hline 
+  mean          & 290.520  &  652.010 & 369.160 & 278.900 & 625.930 & 354.390  \\ 
+  sd            & 56.695   &  99.075  & 74.928  & 54.427  & 95.112  & 71.930 \\ \hline 
+  10\%          & 217.862  &  525.040 & 273.136 & 209.149 & 504.039 & 262.208  \\ 
+  20\%          & 242.804  &  568.626 & 306.099 & 233.093 & 545.882 & 293.852 \\
+  30\%          & 260.789  &  600.055 & 329.868 & 250.358 & 576.053 & 316.670 \\ 
+  40\%          & 276.156  &  626.910 & 350.177 & 265.111 & 601.834 & 336.167 \\
+  50\%          & 290.520  &  652.010 & 369.160 & 278.900 & 625.930 & 354.390  \\ \hline
+  \end{tabular}}
+        \end{table}
+```
+
+
+
+```{r, echo=F,eval=F}
+
+
+percentiles <-seq(10,50,10)
+CBA1_sard_R1 <- c(183722,201409,214162,225059,235244)
+CBA1_sard_R2 <- c(332226,362690,384656,403426,420970)
+CBA1_sard_R3 <- c(210004,234980,252990,268378,282761)
+
+CBA2_sard_R1 <- c(224700,237110,246059,253705,260851)
+CBA2_sard_R2 <- c(258321,272803,283246,292169,300509)
+CBA2_sard_R3 <- c(226667,240989,251316,260140,268387)
+
+CBA3_sard_R1 <- c(336138,345539,352317,358110,363523)
+CBA3_sard_R2 <- c(368475,380379,388962,396297,403152)
+CBA3_sard_R3 <- c(338239,349156,357028,363755,370042)
+
+
+par(mfrow=c(2,2),mar=c(4,4,1,1))
+plot(percentiles, CBA1_sard_R1, type="o",col=1,ylim=c(0,500000))
+lines(percentiles,CBA2_sard_R1, type="o",col=2)
+lines(percentiles,CBA3_sard_R1, type="o",col=3)
+
+plot(percentiles, CBA1_sard_R2, type="o",col=1,ylim=c(0,500000))
+lines(percentiles,CBA2_sard_R2, type="o",col=2)
+lines(percentiles,CBA3_sard_R2, type="o",col=3)
+
+plot(percentiles, CBA1_sard_R3, type="o",col=1,ylim=c(0,500000))
+lines(percentiles,CBA2_sard_R3, type="o",col=2)
+lines(percentiles,CBA3_sard_R3, type="o",col=3)
+```
+
+
+```{r CCTPP_relacionRt_BDt, echo=F,include=T, message=F,warning=F,eval=F, echo=FALSE,fig.height=4,fig.width=6,fig.align="center",fig.path="FigurasInforme_Marzo/", dev=c('pdf', 'bmp')}
+
+years<-seq(1991,2020,1)
+Rt1<-c(169.6,93.8,94.4,142.4,115.5,212.6,83.3,35.4,34.8,47.2,88.2,126.9,105.99,73.7,67.5,364.3,72.3,586.5,332.6,275.0,364.2,495.6,97.4,289.2,243.2,107.5,244.4,270.1,75.6,58.1)
+BDt1<-c(1344,645,358,390,470,649,348,315,199,124,255,272,221,133,168,621,547,1264,894,975,1189,1117,884,1284,1048,852,935,1331,849,NA)
+
+par(mar=c(2,4,1,4)+.1)
+plot(years,BDt1,type="l",ylab="",xlab="")
+points(2020,440,pch=19,col=1)
+mtext("Biomasa desovante",side=2,line=3)
+par(new=TRUE)
+plot(years,Rt1,type="l",col=2,ylab="",axes=F,xlab="")
+axis(4)
+mtext("Reclutamientos",side=4,line=3)
+legend(1991,600,c("Reclutamientos","Biomasa desovante"),lty=1,col=c(2,1),bty="n")
+```
+
+
+
+# CBAs  por hito de revisión de sardina común
+
+```{=tex}
+\begin{table}[h]
+    \centering
+    \resizebox{7cm}{!} {
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+AÑO  & CBA inicial  & 1era revisión CBA  & 2da revisión CBA     & Desembarques  \\ 
+     & (miles de t) & (miles de t)       & (miles de t)         & (miles de t)   \\ \hline
+2014 & 373          & 572                & \textit{statu quo}   & 543 \\
+2015 & 323          & 356                & 478                  & 430 \\
+2016 & 286          & 326                & \textit{statu quo}   & 275 \\
+2017 & 273          & 310                & 336                  & 335 \\
+2018 & 296          & 321                & \textit{statu quo}   & 341 \\
+2019 & 274          & 335                & 337                  & 318 \\
+2020 & 321          & \textit{statu quo} & \textit{statu quo}   & 258   \\ 
+2021 & 201          & 251                & 357                  & 339 \\
+2022 & 323          & 360                & \textit{statu quo}   & 178* \\\hline
+  \end{tabular}}
+        \end{table}
+```
+
+\tiny
++ \*178 mil t corresponde al desembarque acumulado a junio 2022 según base de datos Sernapesca.
+
+
+\vspace{-0.45cm}
+
+
+#
+
+GRACIAS POR SU ATENCIÓN
+
+
+
+```{r CCTPP_CBAporHito_sardina,include=T, message=F,warning=F,eval=F, echo=FALSE,fig.height=3,fig.width=6,fig.align="center",fig.path="Figuras/", dev=c('pdf', 'bmp')}
+library(stringr)
+library(lattice)
+library(ggplot2)
+library(reshape)
+library(dplyr)
+library(ggthemes)
+library(stringr)
+library(knitr)
+
+year<-    c(2014,2015,2016,2017,2018,2019,2020,2021,2022)
+CBAhito1<-c(373,323,286,273,296,274,321,201.4,323)
+CBAhito2<-c(572,356,326,310,321,335,321,251,360)
+CBAhito3<-c(572,478,326,336,321,337,321,357,360)
+Desembarques <- c(543,435,280,340,341,318,258,339,NA)
+
+
+ind           <- cbind(CBAhito1,CBAhito2,CBAhito3,Desembarques) 
+data          <- data.frame(ind) %>% mutate (Asesoria='data')%>% mutate (yrs= year)%>%melt(id.var=c('yrs', 'Asesoria'))
+
+f1 <- ggplot(data, aes(yrs,value,colour=variable))+ geom_line()+ geom_point( size=2, shape=21, fill="white") + 
+      labs(x = 'Años', y = 'CBA y desembarques  (toneladas)')  +
+      scale_colour_manual(values=c(4,3,2,1))+
+      theme_bw(base_size=9) + 
+      ggtitle('Sardina común')+
+      theme(plot.title = element_text(hjust = 0.5))
+f1
+
+```
+
+
+```{r CCTPP_Desembarquessemestral_sardina,include=T, message=F,warning=F,eval=F, echo=FALSE,fig.height=3,fig.width=6,fig.align="center",fig.path="Figuras/", dev=c('pdf', 'bmp')}
+library(stringr)
+library(lattice)
+library(ggplot2)
+library(reshape)
+library(dplyr)
+library(ggthemes)
+library(stringr)
+library(knitr)
+
+year<-    c(2015,2016,2017,2018,2019,2020,2021,2022)
+Desembarque_Sem1<-c(281.7,145.7,264.7,272.9,233.0,188.2,306.8,177.7)
+Desembarque_Sem2<-c(154.1,134.7,75.9,68.5,85.1,69.8,32.7,NA)
+Desembarque_Total<-c(435.8,280.4,340.7,341.5,318.12,258.09,339.5,NA)
+
+
+
+ind           <- cbind(Desembarque_Sem1,Desembarque_Sem2,Desembarque_Total) 
+data          <- data.frame(ind) %>% mutate (Asesoria='data')%>% mutate (yrs= year)%>%melt(id.var=c('yrs', 'Asesoria'))
+
+f1 <- ggplot(data, aes(yrs,value,colour=variable))+ geom_line()+ geom_point( size=2, shape=21, fill="white") + 
+      labs(x = 'Años', y = 'desembarques  (toneladas)')  +
+      scale_colour_manual(values=c(4,3,2,1))+
+      theme_bw(base_size=9) + 
+      ggtitle('Sardina común')+
+      theme(plot.title = element_text(hjust = 0.5))
+f1
+
+```
+
+
+```{r CCTPP_alternaciaCBA,  eval=F, include=T, message=F, echo=FALSE,fig.height=3,fig.width=4,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
+year<-seq(2014,2022,1)
+CBAanch<-c(42.2,34.4,34.4,58.4,49.4,81.3,162.9,210.2,173)
+CBAsard<-c(373,323,286,273,296,274,321,201.4,323)
+CBAmixta<-rowSums(cbind(CBAanch,CBAsard))
+
+par(mfrow=c(1,1),mar=c(4,4,1,1))
+plot(year,CBAanch,type="o",ylim=c(40,530),xlim=c(2014,2022),pch=19,ylab="CBA inicial (miles de t)",xlab="Años",cex.lab=0.7,cex.axis=0.7)
+lines(year,CBAsard,col=2,type="o",pch=19)
+lines(year,CBAmixta,col=3,type="o",pch=19)
+text(c(rep(2020,3),rep(2021,3),rep(2022,3)),c(170,321,483.9,215,190,411.6,173,323,496)+5,c("162.9 ","321.3","484.1","210.4","201.4","411.6","173","323","496"),cex=0.6)
+legend(2016,530,c("CBAanch","CBAsard","CBAanch+sard"),col=c(1,2,3),lwd=1,pch=19,cex=0.7,bty="n")
+```
+
+
+
+```{r CCTPP_alternaciaCBA1eraRevision, eval=F, include=T, message=F, echo=FALSE,fig.height=3,fig.width=4,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
+year<-seq(2014,2022,1)
+CBAanch<-c(42.2,34.4,39.9,58.4,49.4,120.5,162.9,210.2,236.2)
+CBAsard<-c(572,356,326,310,321,335,321,251,360)
+CBAmixta2<-rowSums(cbind(CBAanch,CBAsard))
+
+par(mfrow=c(1,1),mar=c(4,4,1,1))
+plot(year,CBAanch,type="o",ylim=c(40,630),xlim=c(2014,2022),pch=19,ylab="Primera Revisión de CBA (miles de t)",xlab="Años",cex.lab=0.7,cex.axis=0.7)
+lines(year,CBAsard,col=2,type="o",pch=19)
+lines(year,CBAmixta2,col=3,type="o",pch=19)
+text(c(rep(2020,3),rep(2021,3),rep(2022,3)),c(CBAsard[7],CBAanch[7],CBAmixta2[7],CBAsard[8],CBAanch[8],CBAmixta2[8],CBAsard[9],CBAanch[9],CBAmixta2[9])+8,c(CBAsard[7],CBAanch[7],CBAmixta2[7],CBAsard[8],CBAanch[8],CBAmixta2[8]),cex=0.6)
+legend(2016,630,c("CBAanch","CBAsard","CBAanch+sard"),col=c(1,2,3),lwd=1,pch=19,cex=0.7,bty="n")
+```
+
+
+
+```{r CCTPP_alternaciaCBA2daRevision, eval=F, include=T, message=F, echo=FALSE,fig.height=3,fig.width=4,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
+year<-seq(2014,2022,1)
+CBAanch<-c(42,34.4,39.9,58.4,59.5,127.1,162.9,210.2,236)
+CBAsard<-c(572,478,326,336,321,337,321,357,360)
+CBAmixta2<-rowSums(cbind(CBAanch,CBAsard))
+
+par(mfrow=c(1,1),mar=c(4,4,1,1))
+plot(year,CBAanch,type="o",ylim=c(40,650),xlim=c(2014,2022),pch=19,ylab="Segunda Revisión de CBA (miles de t)",xlab="Años",cex.lab=0.7,cex.axis=0.7)
+lines(year,CBAsard,col=2,type="o",pch=19)
+lines(year,CBAmixta2,col=3,type="o",pch=19)
+text(c(rep(2020,3),rep(2021,3),rep(2022,3)),c(CBAsard[7],CBAanch[7],CBAmixta2[7],CBAsard[8],CBAanch[8],CBAmixta2[8],CBAsard[9],CBAanch[9],CBAmixta2[9])+8,c(CBAsard[7],CBAanch[7],CBAmixta2[7],CBAsard[8],CBAanch[8],CBAmixta2[8],CBAsard[9],CBAanch[9],CBAmixta2[9]),cex=0.6)
+legend(2016,650,c("CBAanch","CBAsard","CBAanch+sard"),col=c(1,2,3),lwd=1,pch=19,cex=0.7,bty="n")
+```
+
+
+```{r CCTPP_alternanciaEstatus, eval=F, echo=FALSE,fig.height=3,fig.width=4,fig.align="center",fig.path="Figuras/",dev=c('pdf')}
+
+years1<-seq(1997,2022,1)
+
+
+rpr_sard<-c(0.80,0.43,0.39,0.25,0.16,0.32,0.33,0.27,0.16,0.22,0.80,0.72,1.64,1.15,1.20,1.46,1.41,1.13,1.61,1.33,1.09,1.17,1.72,1.168,0.77,1.373)
+
+rpr_anch<-c(0.88,0.50,0.54,0.51,0.59,1.01,1.44,1.80,1.56,1.68,1.77,1.24,0.77,0.40,0.17,0.15,0.16,0.21,0.26,0.30,0.44,0.55,0.7,0.97,1.458,1.477)
+
+par(mfrow=c(1,1),mar=c(4,4,1,1))
+plot(years1,rpr_sard,type="l",ylab="BD/BDrms",xlab="",ylim=c(0,2.5),xaxp=c(1990,2022,32),las=1,lwd=2,cex.lab=0.7,cex.axis=0.7,col=2)
+
+lines(years1,rpr_anch,col=1,lwd=2)
+#points(2020,1.02,pch=19,cex=1,col=1)
+#text(2020,0.9,"2020",cex=0.8)
+abline(h=c(1,0.5),col=c(3,2))
+legend(1998,2.5,c("anchoveta centro-sur","sardina común"),col=c(1,2),lwd=c(2,2),bty="n",cex=0.7)
+
+```
+
+
+#
+```{r CCTPP_ressguarsoVSstatusambos, include=T, warning=F,message=F,eval=F, echo=FALSE,fig.height=3,fig.width=4,fig.align="center",fig.path="FigurasInforme_Marzo/", dev=c('pdf', 'bmp')}
+library(stringr)
+library(lattice)
+library(ggplot2)
+library(reshape)
+library(dplyr)
+library(ggthemes)
+library(stringr)
+library(knitr)
+
+name2<-"Anchoveta Centro-sur"
+asesoria2<-c("julio20","marzo20","sept19","julio19","marzo19","sept18","julio18","marzo18","sept17","julio17","marzo17","sept16")
+CBA<-c(163,163,163,127,120,81,60,49,49,NA,NA,58)
+Crms<-c(169,203,193,142,174,130,82,75,89,NA,NA,78)
+BD_BDrms2<-c(0.90,1.24,0.71,0.72,0.94,0.43,0.46,0.51,0.28,0.329,0.326,0.35)
+c_crms2<-CBA/Crms
+
+name3<-"Sardina común Centro-sur"
+asesoria3<-c("julio20","marzo20","sept19","julio19","marzo19","sept18","julio18","marzo18","sept17","julio17","marzo17","sept16")
+CBA3<-c(321,321,321,337,335,274,321,321,296,336,310,273)
+Crms3<-c(282,306,345,381,390,311,410,415,345,411,355,294)
+BD_BDrms3<-c(1.05,0.93,1.46,1.46,1.15,0.95,0.95,1.05,0.94,0.926,0.901,1.48)
+c_crms3<-CBA3/Crms3
+
+CBA21_sarR1<-c(191.5,210,223.3,234.6,245.2)
+CBA21_sarR2<-c(346.3,378.1,401,420.6,438.9)
+CBA21_sarR3<-c(218.9,245,263.7,279.8,294.8)
+ressarR1<-CBA21_sarR1/CBA21_sarR1[5]
+ressarR2<-CBA21_sarR2/CBA21_sarR2[5]
+ressarR3<-CBA21_sarR3/CBA21_sarR3[5]
+
+CBA21_anchR1<-c(185.8,207.8,223.7,237.3,250)
+CBA21_anchR2<-c(172.2,194.2,210.2,223.8,236.5)
+CBA21_anchR3<-c(156,178.1,194.1,207.7,220.5)
+resanchR1<-CBA21_anchR1/CBA21_anchR1[5]
+resanchR2<-CBA21_anchR2/CBA21_anchR2[5]
+resanchR3<-CBA21_anchR3/CBA21_anchR3[5]
+
+ind1 <-data.frame(BD_BDrms=c(BD_BDrms2,BD_BDrms3),CBA_Crms=c(c_crms2,c_crms3),
+                  BD_BDrms21s=c(rep(0.53,5),rep(NA,19)),
+                  BD_BDrms21a=c(rep(1.4,5),rep(NA,19)),
+                  CBA21s_Crms=c(ressarR1,rep(NA,19)),
+                  CBA21a_Crms=c(resanchR1,rep(NA,19)))
+
+f1<-ggplot(ind1) + 
+    lims(x=c(0,1.5),y=c(0,1.5)) +
+    geom_point(aes(BD_BDrms,CBA_Crms),size=2,shape=21,fill="white")+
+    geom_point(aes(BD_BDrms21s,CBA21s_Crms),size=2,shape=21,fill="red")+
+    geom_point(aes(BD_BDrms21a,CBA21a_Crms),size=2,shape=21,fill="green")+
+    geom_smooth(aes(BD_BDrms,CBA_Crms),method=lm,formula=y~splines::bs(x,3))+
+    geom_vline(xintercept=c(.5,.9,1),col=c(2,1,1),lty=c(1,2,1))+
+    geom_hline(yintercept=1) +
+    scale_x_continuous(breaks = seq(from = 0, to = 2, by = 0.1)) +
+    scale_y_continuous(breaks = seq(from = 0, to = 2, by = 0.1)) +
+    labs(x = 'BD/BDrms', y = 'CBA/Crms')+
+    theme_bw(base_size=9) + 
+    ggtitle('Ranch[1997-2009] y Rsard[1991-2007]')+
+     theme(plot.title = element_text(hjust = 0.5),legend.position="none")
+f1
+
+```

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.4)  6 SEP 2022 18:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.4)  11 OCT 2022 21:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1216,13 +1216,13 @@ Package rerunfilecheck Info: File `FigyTab_PrimerInforme.out' has not changed.
 Here is how much of TeX's memory you used:
  18735 strings out of 477017
  312935 string characters out of 5825064
- 738702 words of memory out of 5000000
+ 738700 words of memory out of 5000000
  39019 multiletter control sequences out of 15000+600000
  557040 words of font info for 340 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,17n,67p,1018b,467s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></Users/mariajosezunigabasualto/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on FigyTab_PrimerInforme.pdf (35 pages, 1190746 bytes).
+Output written on FigyTab_PrimerInforme.pdf (35 pages, 1197190 bytes).
 PDF statistics:
  611 PDF objects out of 1000 (max. 8388607)
  481 compressed objects within 5 object streams
